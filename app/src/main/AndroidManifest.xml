@@ -19,6 +19,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CalendarioActivity"
+            android:label="ProjectASEE" />
+        <activity android:name=".ConfiguracionActivity"
+        android:label="ProjectASEE" />
+        <activity android:name=".GraficasActivity"
+            android:label="ProjectASEE" />
+        <activity android:name=".InfoRutaActivity"
+            android:label="ProjectASEE" />
+        <activity android:name=".ListaRutasActivity"
+            android:label="ProjectASEE" />
+        <activity android:name=".PerfilActivity"
+            android:label="ProjectASEE" />
+        <activity android:name=".ResumenActivity"
+            android:label="ProjectASEE" />
     </application>
-
 </manifest>
