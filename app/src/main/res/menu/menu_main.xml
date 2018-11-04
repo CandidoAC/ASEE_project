@@ -2,9 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.usuario.projectasee.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+    <item android:icon="@drawable/setting"
+        android:id="@+id/ic_action_setting"
+        android:title="@string/setting"
         app:showAsAction="never" />
 </menu>
