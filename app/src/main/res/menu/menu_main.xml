@@ -2,9 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.usuario.projectasee.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+    <item android:icon="@drawable/setting"
+        android:id="@+id/ic_action_setting"
+        android:title="@string/setting"
+        app:showAsAction="always" />
+    <item android:icon="@drawable/perfil"
+        android:id="@+id/ic_action_perfil"
+        android:title="@string/perfil"
+        app:showAsAction="always" />
 </menu>
