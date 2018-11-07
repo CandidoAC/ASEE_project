@@ -19,16 +19,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.MapFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private AdapterTabs AdapterTabs;
-    private MenuToolbar menuToolbar;
 
     private ViewPager mViewPager;
-    private ViewPager menu;
     private Toolbar toolbar;
 
     @Override
@@ -53,29 +52,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt ( 2 ).setText ( "Calendario" );
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
-        //menu de la app
-
-        menuToolbar =new MenuToolbar ( getSupportFragmentManager ());
-        mViewPager=(ViewPager) findViewById ( R.id.contenedor );
-        setupViewPager ( mViewPager );
-
-        Toolbar toolbarMenu=(Toolbar) findViewById ( R.id.toolbar );
-        toolbarMenu.setOnMenuItemClickListener ( new Toolbar.OnMenuItemClickListener () {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.ic_action_perfil:
-                        new FragmentPerfil ();
-                        return true;
-                    case R.id.ic_action_setting:
-                        new FragmentConfiguracion ();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        } );
-
 
     }
 
@@ -85,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
-    
+
     private void setupViewPager(ViewPager viewPager) {
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
         adapter.addFragment ( new FragmentPrincipal () , "Principal" );
@@ -95,11 +71,16 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter ( adapter );
     }
 
-    private void setupViewPager2(ViewPager viewPager) {
-        AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
-        adapter.addFragment ( new FragmentConfiguracion () , "setting" );
-        adapter.addFragment ( new FragmentPerfil () , "perfil");
-        viewPager.setAdapter ( adapter );
+
+    public void onclick( MenuItem item) {
+        switch (item.getItemId ()){
+            case R.id.ic_action_perfil :
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor,new FragmentPerfil () ).commit();
+                break;
+            case  R.id.ic_action_setting:
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor,new FragmentConfiguracion () ).commit ();
+                break;
+        }
     }
 }
 
