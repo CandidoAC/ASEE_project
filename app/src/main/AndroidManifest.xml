@@ -23,7 +23,7 @@
         </activity>
         <activity android:name=".CalendarioActivity"
             android:label="ProjectASEE" />
-        <activity android:name=".ConfiguracionActivity"
+        <activity android:name=".FragmentConfiguracion"
         android:label="ProjectASEE" />
         <activity android:name=".GraficasActivity"
             android:label="ProjectASEE" />
@@ -31,7 +31,7 @@
             android:label="ProjectASEE" />
         <activity android:name=".ListaRutasActivity"
             android:label="ProjectASEE" />
-        <activity android:name=".PerfilActivity"
+        <activity android:name=".FragmentPerfil"
             android:label="ProjectASEE" />
         <activity android:name=".ResumenActivity"
             android:label="ProjectASEE" />

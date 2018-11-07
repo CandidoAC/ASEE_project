@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 
 public class FragmentCalendario extends Fragment {
 
-    private static final String TAG = "TabTiempoRest";
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
