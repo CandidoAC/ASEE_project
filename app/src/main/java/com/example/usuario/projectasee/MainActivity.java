@@ -2,6 +2,7 @@ package com.example.usuario.projectasee;
 
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.system.Os;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +25,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.MapFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
     private AdapterTabs AdapterTabs;
 
@@ -52,13 +54,14 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt ( 2 ).setText ( "Calendario" );
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
-
+        //menu
+        toolbar.setOnMenuItemClickListener ( this );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater ();
+        inflater.inflate ( R.menu.menu_main , menu );
         return true;
     }
 
@@ -72,15 +75,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void onclick( MenuItem item) {
-        switch (item.getItemId ()){
-            case R.id.ic_action_perfil :
-                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor,new FragmentPerfil () ).commit();
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId ()) {
+            case R.id.ic_action_perfil:
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).commit ();
+                getSupportFragmentManager ().executePendingTransactions ();
                 break;
-            case  R.id.ic_action_setting:
-                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor,new FragmentConfiguracion () ).commit ();
+            case R.id.ic_action_setting:
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
+                getSupportFragmentManager ().executePendingTransactions ();
                 break;
         }
+        return true;
     }
 }
 

@@ -5,11 +5,9 @@
     <item android:icon="@drawable/setting"
         android:id="@+id/ic_action_setting"
         android:title="@string/setting"
-        android:onClick="onclick"
         app:showAsAction="always" />
     <item android:icon="@drawable/perfil"
         android:id="@+id/ic_action_perfil"
         android:title="@string/perfil"
-        android:onClick="onclick"
         app:showAsAction="always" />
 </menu>
