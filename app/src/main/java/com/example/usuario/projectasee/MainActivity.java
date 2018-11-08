@@ -2,6 +2,7 @@ package com.example.usuario.projectasee;
 
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.system.Os;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,16 +21,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.MapFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
     private AdapterTabs AdapterTabs;
-    private MenuToolbar menuToolbar;
 
     private ViewPager mViewPager;
-    private ViewPager menu;
     private Toolbar toolbar;
 
     @Override
@@ -53,39 +54,17 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt ( 2 ).setText ( "Calendario" );
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
-        //menu de la app
-
-        menuToolbar =new MenuToolbar ( getSupportFragmentManager ());
-        mViewPager=(ViewPager) findViewById ( R.id.contenedor );
-        setupViewPager ( mViewPager );
-
-        Toolbar toolbarMenu=(Toolbar) findViewById ( R.id.toolbar );
-        toolbarMenu.setOnMenuItemClickListener ( new Toolbar.OnMenuItemClickListener () {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.ic_action_perfil:
-                        new FragmentPerfil ();
-                        return true;
-                    case R.id.ic_action_setting:
-                        new FragmentConfiguracion ();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        } );
-
-
+        //menu
+        toolbar.setOnMenuItemClickListener ( this );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater ();
+        inflater.inflate ( R.menu.menu_main , menu );
         return true;
     }
-    
+
     private void setupViewPager(ViewPager viewPager) {
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
         adapter.addFragment ( new FragmentPrincipal () , "Principal" );
@@ -95,11 +74,20 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter ( adapter );
     }
 
-    private void setupViewPager2(ViewPager viewPager) {
-        AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
-        adapter.addFragment ( new FragmentConfiguracion () , "setting" );
-        adapter.addFragment ( new FragmentPerfil () , "perfil");
-        viewPager.setAdapter ( adapter );
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId ()) {
+            case R.id.ic_action_perfil:
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).commit ();
+                getSupportFragmentManager ().executePendingTransactions ();
+                break;
+            case R.id.ic_action_setting:
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
+                getSupportFragmentManager ().executePendingTransactions ();
+                break;
+        }
+        return true;
     }
 }
 

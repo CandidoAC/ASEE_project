@@ -8,9 +8,11 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="MainActivity">
-<TextView
-    android:id="@+id/textView3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Pantalla principal" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pantalla principal" />
+
 </android.support.design.widget.CoordinatorLayout>

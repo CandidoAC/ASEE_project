@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.usuario.projectasee">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,19 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CalendarioActivity"
-            android:label="ProjectASEE" />
-        <activity android:name=".FragmentConfiguracion"
-        android:label="ProjectASEE" />
         <activity android:name=".GraficasActivity"
             android:label="ProjectASEE" />
         <activity android:name=".InfoRutaActivity"
-            android:label="ProjectASEE" />
-        <activity android:name=".ListaRutasActivity"
-            android:label="ProjectASEE" />
-        <activity android:name=".FragmentPerfil"
-            android:label="ProjectASEE" />
-        <activity android:name=".ResumenActivity"
             android:label="ProjectASEE" />
     </application>
 </manifest>
