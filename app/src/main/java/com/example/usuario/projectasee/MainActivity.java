@@ -2,28 +2,18 @@ package com.example.usuario.projectasee;
 
 
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.system.Os;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.MapFragment;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
@@ -32,10 +22,16 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private ViewPager mViewPager;
     private Toolbar toolbar;
 
+    List<Ruta> ruteList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_main );
+
+        ruteList=new ArrayList<Ruta> () ;
+        prepareRuteData ();
+
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
 
@@ -68,9 +64,13 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private void setupViewPager(ViewPager viewPager) {
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
         adapter.addFragment ( new FragmentPrincipal () , "Principal" );
-        adapter.addFragment ( new FragmentListaRutas () , "Lista rutas" );
+        FragmentListaRutas fr=new FragmentListaRutas ();
+        fr.setRuteList ( ruteList );
+        adapter.addFragment ( fr , "Lista rutas" );
         adapter.addFragment ( new FragmentCalendario () , "Calendario" );
-        adapter.addFragment ( new FragmentResumen () , "Resumen" );
+        FragmentResumen fr1=new FragmentResumen ();
+        fr1.setRuteList ( ruteList );
+        adapter.addFragment ( fr1, "Resumen" );
         viewPager.setAdapter ( adapter );
     }
 
@@ -89,5 +89,21 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
         return true;
     }
+
+    private void prepareRuteData() {
+        Ruta rute = new Ruta ("Nombre1",1,5,new Time (0,1,25 ) );
+        ruteList.add ( rute );
+
+        rute = new Ruta ("Nombre2",4,3,new Time ( 1,0,25 ) );
+        ruteList.add ( rute );
+
+        rute = new Ruta ("Nombre3",6,1,new Time ( 0,1,0 ) );
+        ruteList.add ( rute );
+
+        rute = new Ruta ("Nombre4",3,6,new Time ( 0,0,15 ) );
+        ruteList.add ( rute );
+
+    }
+
 }
 

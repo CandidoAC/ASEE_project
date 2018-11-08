@@ -36,25 +36,15 @@ public class FragmentListaRutas extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration (getActivity (), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
 
-        prepareRuteData();
+        mAdapter.notifyDataSetChanged();
         return view;
     }
 
-    private void prepareRuteData() {
-        Ruta rute = new Ruta ("Nombre1",1,5,new Date ( 0,0,0,1,25 ) );
-        ruteList.add ( rute );
+    public List <Ruta> getRuteList() {
+        return ruteList;
+    }
 
-        rute = new Ruta ("Nombre2",4,3,new Date ( 0,0,0,0,25 ) );
-        ruteList.add ( rute );
-
-        rute = new Ruta ("Nombre3",6,1,new Date ( 0,0,0,1,0 ) );
-        ruteList.add ( rute );
-
-        rute = new Ruta ("Nombre4",3,6,new Date ( 0,0,0,0,15 ) );
-        ruteList.add ( rute );
-
-
-
-        mAdapter.notifyDataSetChanged();
+    public void setRuteList(List <Ruta> ruteList) {
+        this.ruteList = ruteList;
     }
 }

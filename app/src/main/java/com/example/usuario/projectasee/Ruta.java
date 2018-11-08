@@ -1,17 +1,19 @@
 package com.example.usuario.projectasee;
 
 
+import java.sql.Time;
 import java.util.Date;
 
 public class Ruta {
     private String nombre;
-    private int distancia,calorías;
-    private Date tiempo;
+    private float distancia;
+    int calorías;
+    private Time tiempo;
 
     public Ruta() {
     }
 
-    public Ruta(String nombre , int distancia , int calorías , Date tiempo) {
+    public Ruta(String nombre , float distancia , int calorías , Time tiempo) {
         this.nombre = nombre;
         this.distancia = distancia;
         this.calorías = calorías;
@@ -26,11 +28,11 @@ public class Ruta {
         this.nombre = nombre;
     }
 
-    public int getDistancia() {
+    public float getDistancia() {
         return distancia;
     }
 
-    public void setDistancia(int distancia) {
+    public void setDistancia(float distancia) {
         this.distancia = distancia;
     }
 
@@ -42,11 +44,11 @@ public class Ruta {
         this.calorías = calorías;
     }
 
-    public Date getTiempo() {
+    public Time getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(Date tiempo) {
+    public void setTiempo(Time tiempo) {
         this.tiempo = tiempo;
     }
 }
