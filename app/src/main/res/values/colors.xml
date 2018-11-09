@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBackground">#8FD9DB</color>
-    <color name="colorTabNoSelected">#b7e8e4</color>
+    <color name="colorBackground">#B7E8E4</color>
+    <color name="colorBackgroundToolBar">#8FD9DB</color>
+    <color name="colorTabNoSelected">#8FD9DB</color>
     <color name="colorTabSelected">#0CC1DB</color>
     <color name="colorTexto">#090A0A</color>
 </resources>

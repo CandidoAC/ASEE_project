@@ -8,4 +8,8 @@
     <string name="setting">setting</string>
     <string name="perfil">perfil</string>
     <string name="pantalla_setting">Pantalla setting</string>
+    <string name="distancia">Distancia</string>
+    <string name="calorias">Calorías</string>
+    <string name="tiempo">Tiempo</string>
+    <string name="graficas">Gráficas</string>
 </resources>

@@ -82,8 +82,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         switch (item.getItemId ()) {
             case R.id.ic_action_perfil:
                 FragmentManager fragmentManager = getSupportFragmentManager ();
-                fragmentManager.beginTransaction ().add ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
+                fragmentManager.beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
                 fragmentManager.executePendingTransactions ();
+                Log.i("Comprobacion", "JAJAJAJAJJAJAJA se ha cargado el fragment de perfil");
                 break;
             case R.id.ic_action_setting:
                 getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
