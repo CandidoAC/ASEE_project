@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.MapFragment;
 
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private AdapterTabs AdapterTabs;
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
         //menu
-        toolbar.setOnMenuItemClickListener ( this );
+        //toolbar.setOnMenuItemClickListener ( this );
     }
 
     @Override
@@ -76,18 +76,35 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId ()) {
-            case R.id.ic_action_perfil:
-                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).commit ();
-                getSupportFragmentManager ().executePendingTransactions ();
-                break;
-            case R.id.ic_action_setting:
-                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
-                getSupportFragmentManager ().executePendingTransactions ();
-                break;
+    public boolean onOptionsItemSelected(MenuItem item) {
+       // switch (item.getItemId ()) {
+         //   case R.id.ic_action_perfil:
+           //     getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).commit ();
+             //   getSupportFragmentManager ().executePendingTransactions ();
+               // break;
+            //case R.id.ic_action_setting:
+              //  getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
+                //getSupportFragmentManager ().executePendingTransactions ();
+                //break;
+        //}
+        int id = item.getItemId();
+
+
+        Fragment fragment = null;
+        if (id == R.id.ic_action_perfil) {
+            fragment = new FragmentPerfil();
+        }else if(id == R.id.ic_action_setting){
+            fragment = new FragmentConfiguracion();
+
         }
-        return true;
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.contenedor,fragment);
+        //ft.setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out);
+        ft.commit();
+        getSupportFragmentManager ().executePendingTransactions ();
+        return super.onOptionsItemSelected(item);
     }
 }
 

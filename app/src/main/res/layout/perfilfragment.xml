@@ -13,5 +13,5 @@
         android:id="@+id/textView3"
         android:layout_width="265dp"
         android:layout_height="175dp"
-        android:text="Pantalla perfil" />
+        android:text="@string/perfil" />
 </android.support.design.widget.CoordinatorLayout>

@@ -13,5 +13,5 @@
     android:id="@+id/textView1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Pantalla calendario" />
+    android:text="@string/tab4" />
 </android.support.design.widget.CoordinatorLayout>
