@@ -2,47 +2,45 @@ package com.example.usuario.projectasee;
 
 
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.system.Os;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.MapFragment;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
     private AdapterTabs AdapterTabs;
 
     private ViewPager mViewPager;
     private Toolbar toolbar;
 
+    List<Ruta> ruteList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_main );
+
+        ruteList=new ArrayList<Ruta> () ;
+        prepareRuteData ();
+
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
 
         //Prepara la parte donde se situaran los fragments
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
 
-        mViewPager = (ViewPager) findViewById ( R.id.contenedor );
+        mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
         setupViewPager ( mViewPager );
 
         //Tabs de la aplicacion
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
         //menu
-        //toolbar.setOnMenuItemClickListener ( this );
+        toolbar.setOnMenuItemClickListener ( this );
     }
 
     @Override
@@ -68,43 +66,47 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
         adapter.addFragment ( new FragmentPrincipal () , "Principal" );
-        adapter.addFragment ( new FragmentListaRutas () , "Lista rutas" );
+        FragmentListaRutas fr=new FragmentListaRutas ();
+        fr.setRuteList ( ruteList );
+        adapter.addFragment ( fr , "Lista rutas" );
         adapter.addFragment ( new FragmentCalendario () , "Calendario" );
-        adapter.addFragment ( new FragmentResumen () , "Resumen" );
+        FragmentResumen fr1=new FragmentResumen ();
+        fr1.setRuteList ( ruteList );
+        adapter.addFragment ( fr1, "Resumen" );
         viewPager.setAdapter ( adapter );
     }
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-       // switch (item.getItemId ()) {
-         //   case R.id.ic_action_perfil:
-           //     getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).commit ();
-             //   getSupportFragmentManager ().executePendingTransactions ();
-               // break;
-            //case R.id.ic_action_setting:
-              //  getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
-                //getSupportFragmentManager ().executePendingTransactions ();
-                //break;
-        //}
-        int id = item.getItemId();
-
-
-        Fragment fragment = null;
-        if (id == R.id.ic_action_perfil) {
-            fragment = new FragmentPerfil();
-        }else if(id == R.id.ic_action_setting){
-            fragment = new FragmentConfiguracion();
-
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId ()) {
+            case R.id.ic_action_perfil:
+                FragmentManager fragmentManager = getSupportFragmentManager ();
+                fragmentManager.beginTransaction ().add ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
+                fragmentManager.executePendingTransactions ();
+                break;
+            case R.id.ic_action_setting:
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
+                getSupportFragmentManager ().executePendingTransactions ();
+                break;
         }
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.contenedor,fragment);
-        //ft.setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out);
-        ft.commit();
-        getSupportFragmentManager ().executePendingTransactions ();
-        return super.onOptionsItemSelected(item);
+        return true;
     }
+
+    private void prepareRuteData() {
+        Ruta rute = new Ruta ("Nombre1",1,5,new Time (0,1,25 ) );
+        ruteList.add ( rute );
+
+        rute = new Ruta ("Nombre2",4,3,new Time ( 1,0,25 ) );
+        ruteList.add ( rute );
+
+        rute = new Ruta ("Nombre3",6,1,new Time ( 0,1,0 ) );
+        ruteList.add ( rute );
+
+        rute = new Ruta ("Nombre4",3,6,new Time ( 0,0,15 ) );
+        ruteList.add ( rute );
+
+    }
+
 }
 

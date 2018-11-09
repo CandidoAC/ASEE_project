@@ -27,7 +27,7 @@
                 android:text="Distancia" />
 
             <TextView
-                android:id="@+id/TextDistancia"
+                android:id="@+id/TextDistanciaRuta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -47,7 +47,7 @@
                 android:text="Calorías" />
 
             <TextView
-                android:id="@+id/TextCalorias"
+                android:id="@+id/TextCaloriasRuta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -67,7 +67,7 @@
                 android:text="Tiempo" />
 
             <TextView
-                android:id="@+id/TextTime"
+                android:id="@+id/TextTimeRuta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
