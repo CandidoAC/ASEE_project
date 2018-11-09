@@ -3,9 +3,11 @@ package com.example.usuario.projectasee;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         //Prepara la parte donde se situaran los fragments
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
 
-        mViewPager = (ViewPager) findViewById ( R.id.contenedor );
+        mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
         setupViewPager ( mViewPager );
 
         //Tabs de la aplicacion
@@ -79,8 +81,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId ()) {
             case R.id.ic_action_perfil:
-                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).commit ();
-                getSupportFragmentManager ().executePendingTransactions ();
+                FragmentManager fragmentManager = getSupportFragmentManager ();
+                fragmentManager.beginTransaction ().add ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
+                fragmentManager.executePendingTransactions ();
                 break;
             case R.id.ic_action_setting:
                 getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -34,13 +35,13 @@ public class FragmentResumen extends Fragment {
 
         }
 
-         t1=view.findViewById ( R.id.TextDistancia );
+        TextView t1=view.findViewById ( R.id.TextDistancia );
         t1.setText ( String.valueOf ( distancia ) );
 
-        EditText t2=view.findViewById ( R.id.TextCalorias );
+        TextView t2=view.findViewById ( R.id.TextCalorias );
         t2.setText ( String.valueOf ( calorias) );
 
-        EditText t3= view.findViewById ( R.id.TextTime);
+        TextView t3= view.findViewById ( R.id.TextTime);
         t3.setText ( tiempo.toString ());
         return view;
     }
