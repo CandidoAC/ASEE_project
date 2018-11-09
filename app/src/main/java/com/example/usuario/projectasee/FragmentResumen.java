@@ -34,7 +34,7 @@ public class FragmentResumen extends Fragment {
 
         }
 
-        EditText t1=view.findViewById ( R.id.TextDistancia );
+         t1=view.findViewById ( R.id.TextDistancia );
         t1.setText ( String.valueOf ( distancia ) );
 
         EditText t2=view.findViewById ( R.id.TextCalorias );

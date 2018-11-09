@@ -28,7 +28,7 @@ public class FragmentListaRutas extends Fragment {
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        mAdapter = new RutesAdapter(ruteList);
+        mAdapter = new RutesAdapter(ruteList,null);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getActivity ().getBaseContext ());
         recyclerView.setLayoutManager(mLayoutManager);
