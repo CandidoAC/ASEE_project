@@ -3,7 +3,6 @@ package com.example.usuario.projectasee;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -80,15 +79,16 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        FragmentManager fragmentManager = getSupportFragmentManager ();
         switch (item.getItemId ()) {
             case R.id.ic_action_perfil:
+                FragmentManager fragmentManager = getSupportFragmentManager ();
                 fragmentManager.beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
                 fragmentManager.executePendingTransactions ();
+                Log.i("Comprobacion", "JAJAJAJAJJAJAJA se ha cargado el fragment de perfil");
                 break;
             case R.id.ic_action_setting:
-                fragmentManager.beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
-                fragmentManager.executePendingTransactions ();
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
+                getSupportFragmentManager ().executePendingTransactions ();
                 break;
         }
         return true;

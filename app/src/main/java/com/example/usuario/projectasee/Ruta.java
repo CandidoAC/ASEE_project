@@ -7,16 +7,16 @@ import java.util.Date;
 public class Ruta {
     private String nombre;
     private float distancia;
-    int calorías;
+    int calorias;
     private Time tiempo;
 
     public Ruta() {
     }
 
-    public Ruta(String nombre , float distancia , int calorías , Time tiempo) {
+    public Ruta(String nombre , float distancia , int calorias , Time tiempo) {
         this.nombre = nombre;
         this.distancia = distancia;
-        this.calorías = calorías;
+        this.calorias = calorias;
         this.tiempo = tiempo;
     }
 
@@ -37,11 +37,11 @@ public class Ruta {
     }
 
     public int getCalorías() {
-        return calorías;
+        return calorias;
     }
 
-    public void setCalorías(int calorías) {
-        this.calorías = calorías;
+    public void setCalorías(int calorias) {
+        this.calorias = calorias;
     }
 
     public Time getTiempo() {
