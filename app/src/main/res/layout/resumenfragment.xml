@@ -11,7 +11,7 @@
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TableRow
             android:id="@+id/Distancia"
@@ -81,9 +81,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="110dp"
-        android:text="Gráficas"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        android:text="@string/graficas"
+
+
+        app:layout_constraintBottom_toBottomOf="@id/tableLayout"/>
 
 </android.support.constraint.ConstraintLayout>
