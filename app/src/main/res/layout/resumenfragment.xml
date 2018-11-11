@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Distancia" />
+                android:text="@string/distancia" />
 
             <TextView
                 android:id="@+id/TextDistancia"
@@ -45,7 +45,7 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calorías" />
+                android:text="@string/calorias" />
 
             <TextView
                 android:id="@+id/TextCalorias"
@@ -65,7 +65,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tiempo" />
+                android:text="@string/tiempo" />
 
             <TextView
                 android:id="@+id/TextTime"
@@ -83,8 +83,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="110dp"
         android:text="@string/graficas"
-
-
         app:layout_constraintBottom_toBottomOf="@id/tableLayout"/>
 
 </FrameLayout>

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuItemClickListener*/ {
 
     private AdapterTabs AdapterTabs;
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         //Prepara la parte donde se situaran los fragments
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
 
-        mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
+      mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
         setupViewPager ( mViewPager );
 
         //Tabs de la aplicacion
@@ -53,13 +53,15 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
         //menu
-        toolbar.setOnMenuItemClickListener ( this );
+        //toolbar.setOnMenuItemClickListener ( this );
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater ();
-        inflater.inflate ( R.menu.menu_main , menu );
+        /*MenuInflater inflater = getMenuInflater ();
+        inflater.inflate ( R.menu.menu_main , menu );*/
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -76,8 +78,31 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         viewPager.setAdapter ( adapter );
     }
 
-
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case  R.id.ic_action_setting:
+                Log.i("setting","Configuracion");
+                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
+                getSupportFragmentManager ().executePendingTransactions ();
+                break;
+            case  R.id.ic_action_perfil:
+                Log.i("perfil","Perfil");
+                FragmentManager fragmentManager = getSupportFragmentManager ();
+                fragmentManager.beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
+                fragmentManager.executePendingTransactions ();
+                break;
+
+            default:
+                   return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+
+
+   /* @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId ()) {
             case R.id.ic_action_perfil:
@@ -92,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 break;
         }
         return true;
-    }
+    }*/
 
     private void prepareRuteData() {
         Ruta rute = new Ruta ("Nombre1",1,5,new Time (0,1,25 ) );

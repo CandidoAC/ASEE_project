@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 
 public class FragmentPerfil extends Fragment {
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
+    }*/
 
     @Nullable
     @Override
@@ -22,8 +22,8 @@ public class FragmentPerfil extends Fragment {
         return view;
     }
 
-    @Override
+    /*@Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
+    }*/
 }

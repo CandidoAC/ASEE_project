@@ -11,16 +11,17 @@ import android.widget.TextView;
 
 public class FragmentConfiguracion extends Fragment {
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         Log.i("Configuracion","Carga el layout de setting");
         View view = inflater.inflate(R.layout.settingfragment ,container,false);
+        Log.i("Prueba", container.toString());
         return view;
     }
 }

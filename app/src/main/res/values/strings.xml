@@ -12,4 +12,7 @@
     <string name="calorias">Calorías</string>
     <string name="tiempo">Tiempo</string>
     <string name="graficas">Gráficas</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="edad">Edad</string>
 </resources>
