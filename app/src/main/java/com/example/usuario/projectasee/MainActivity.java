@@ -9,12 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuItemClickListener*/ {
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
         //Prepara la parte donde se situaran los fragments
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
 
-      mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
+        mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
         setupViewPager ( mViewPager );
 
         //Tabs de la aplicacion
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
             case  R.id.ic_action_perfil:
                 Log.i("perfil","Perfil");
                 FragmentManager fragmentManager = getSupportFragmentManager ();
-                fragmentManager.beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
+                fragmentManager.beginTransaction ().replace ( R.id.contenedor2 , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
                 fragmentManager.executePendingTransactions ();
                 Log.i("perfil","Perfil terminado");
                 break;

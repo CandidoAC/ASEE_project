@@ -27,28 +27,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/contenedor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/contenedor2">
-    </FrameLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/contenedor2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </android.support.v4.view.ViewPager>
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:tabBackground="@drawable/selector"
-        app:tabIndicatorColor="@color/colorTabNoSelected"
-        android:layout_gravity="bottom"
-        />
-
+    <include  layout="@layout/framevistas" android:id="@+id/contenedor" />
 
 </android.support.design.widget.CoordinatorLayout>

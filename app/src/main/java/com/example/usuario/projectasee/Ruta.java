@@ -2,6 +2,7 @@ package com.example.usuario.projectasee;
 
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.sql.Time;
@@ -17,6 +18,7 @@ public class Ruta {
     private int calorias;
     private Time tiempo;
 
+    @Ignore
     public Ruta() {
     }
 
