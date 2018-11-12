@@ -28,7 +28,7 @@ public class FragmentResumen extends Fragment {
         Time tiempo=new Time ( 0,0,0 );
         for(int i=0;i<ruteList.size ();i++){
             distancia=distancia+ruteList.get ( i ).getDistancia ();
-            calorias=calorias+ruteList.get ( i ).getCalorías ();
+            calorias=calorias+ruteList.get ( i ).getCalorias();
             tiempo.setHours ( tiempo.getHours ()+ruteList.get ( i ).getTiempo ().getHours () );
             tiempo.setMinutes ( tiempo.getMinutes ()+ruteList.get ( i ).getTiempo ().getMinutes ());
             tiempo.setSeconds ( tiempo.getSeconds ()+ruteList.get ( i ).getTiempo ().getSeconds ());
