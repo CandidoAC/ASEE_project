@@ -15,6 +15,10 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
     private List<Ruta> rutaList;
     private final OnItemClickListener listener;
 
+    public interface OnItemClickListener {
+        void onItemClick(Ruta ruta);     //Type of the element to be returned
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView nombre,distancia;
 
@@ -30,11 +34,10 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
             distancia.setText ("\t" +f+" km.");
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-
+            itemView.setOnClickListener ( new View.OnClickListener () {
                 @Override
                 public void onClick(View v) {
-                    //listener.onItemClick(Ruta);
+                    listener.onItemClick ( Ruta );
                 }
             });
         }
@@ -46,22 +49,18 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
         this.rutaList = rutaList;
         this.listener = listener;
     }
-
-
     public List<Ruta> rutaList () {
         return this.rutaList;
     }
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RutesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_listrutes, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(Ruta item);     //Type of the element to be returned
-    }
+
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
@@ -73,4 +72,5 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
     public int getItemCount() {
         return rutaList.size();
     }
+
 }

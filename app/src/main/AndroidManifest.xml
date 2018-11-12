@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,8 +31,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".GraficasActivity"
-            android:label="ProjectASEE" />
-        <activity android:name=".InfoRutaActivity"
             android:label="ProjectASEE" />
     </application>
 </manifest>

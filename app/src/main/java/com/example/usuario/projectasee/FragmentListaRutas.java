@@ -1,13 +1,18 @@
 package com.example.usuario.projectasee;
 
+import android.app.Activity;
 import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,20 +25,28 @@ public class FragmentListaRutas extends Fragment {
     private List<Ruta> ruteList = new ArrayList<> ();
     private RecyclerView recyclerView;
     private RutesAdapter mAdapter;
-
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listarutasfragment ,container,false);
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-
-        mAdapter = new RutesAdapter(ruteList,null);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager (getActivity ().getBaseContext ());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator ());
         recyclerView.addItemDecoration(new DividerItemDecoration (getActivity (), LinearLayoutManager.VERTICAL));
+        mAdapter = new RutesAdapter ( ruteList , new RutesAdapter.OnItemClickListener () {
+            @Override
+            public void onItemClick(Ruta item) {//TODO Conseguir que cambie la pantalla a la de info rutas
+                InfoRutaFragment r=new InfoRutaFragment ();
+                FragmentTransaction ft=getFragmentManager ().beginTransaction ();
+                ft.hide ( getFragmentManager ().findFragmentById ( R.id.contenedor2 ) );
+                ft.replace ( R.id.contenedor,r );
+                ft.commit();
+            }
+        } );
+
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.notifyDataSetChanged();
@@ -46,5 +59,11 @@ public class FragmentListaRutas extends Fragment {
 
     public void setRuteList(List <Ruta> ruteList) {
         this.ruteList = ruteList;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i("onDestroy","**************");
     }
 }

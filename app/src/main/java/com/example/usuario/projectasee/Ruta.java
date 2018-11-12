@@ -1,15 +1,23 @@
 package com.example.usuario.projectasee;
 
 
+import android.content.Intent;
+import android.net.rtp.RtpStream;
+
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.Date;
 
 public class Ruta {
     private String nombre;
     private float distancia;
-    int calorias;
+    private int calorias;
     private Time tiempo;
 
+    public final static String NOMBRE = "nombre";
+    public final static String DISTANCIA = "distancia";
+    public final static String CALORIAS = "calorias";
+    public final static String TIEMPO = "tiempo";
     public Ruta() {
     }
 
@@ -50,5 +58,14 @@ public class Ruta {
 
     public void setTiempo(Time tiempo) {
         this.tiempo = tiempo;
+    }
+    public static void packageIntent(Intent intent, String nombre,
+                                     float distancia, float calorias, Time Tiempo) {
+
+        intent.putExtra(Ruta.NOMBRE,nombre );
+        intent.putExtra(Ruta.CALORIAS, String.valueOf ( calorias ));
+        intent.putExtra(Ruta.DISTANCIA,  String.valueOf ( distancia ));
+        intent.putExtra(Ruta.TIEMPO,Tiempo);
+
     }
 }
