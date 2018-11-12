@@ -86,12 +86,14 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
                 Log.i("setting","Configuracion");
                 getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
                 getSupportFragmentManager ().executePendingTransactions ();
+                Log.i("setting","Configuracion terminada");
                 break;
             case  R.id.ic_action_perfil:
                 Log.i("perfil","Perfil");
                 FragmentManager fragmentManager = getSupportFragmentManager ();
                 fragmentManager.beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
                 fragmentManager.executePendingTransactions ();
+                Log.i("perfil","Perfil terminado");
                 break;
 
             default:

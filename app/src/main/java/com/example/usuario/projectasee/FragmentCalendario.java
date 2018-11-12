@@ -24,6 +24,7 @@ public class FragmentCalendario extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.calendariofragment ,container,false);
         Log.i("Prueba2", container.toString());
         return view;

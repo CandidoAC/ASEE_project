@@ -15,4 +15,6 @@
     <string name="nombre">Nombre</string>
     <string name="apellidos">Apellidos</string>
     <string name="edad">Edad</string>
+    <string name="altura">Altura</string>
+    <string name="peso">Peso</string>
 </resources>
