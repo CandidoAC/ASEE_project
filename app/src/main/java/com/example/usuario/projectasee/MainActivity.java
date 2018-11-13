@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -107,12 +108,12 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
         switch (item.getItemId ()) {
             case R.id.ic_action_perfil:
                 FragmentManager fragmentManager = getSupportFragmentManager ();
-                fragmentManager.beginTransaction ().replace ( R.id.contenedor , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
+                fragmentManager.beginTransaction ().add ( R.id.contenedor2 , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
                 fragmentManager.executePendingTransactions ();
                 Log.i("Comprobacion", "JAJAJAJAJJAJAJA se ha cargado el fragment de perfil");
                 break;
             case R.id.ic_action_setting:
-                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
+                getSupportFragmentManager ().beginTransaction ().add ( R.id.contenedor2 , new FragmentConfiguracion () , "Configuración" ).commit ();
                 getSupportFragmentManager ().executePendingTransactions ();
                 break;
         }
