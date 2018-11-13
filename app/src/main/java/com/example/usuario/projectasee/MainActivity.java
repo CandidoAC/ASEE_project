@@ -1,16 +1,15 @@
 package com.example.usuario.projectasee;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -83,15 +82,14 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
         switch (item.getItemId()){
             case  R.id.ic_action_setting:
                 Log.i("setting","Configuracion");
-                getSupportFragmentManager ().beginTransaction ().replace ( R.id.contenedor , new FragmentConfiguracion () , "Configuración" ).commit ();
-                getSupportFragmentManager ().executePendingTransactions ();
+                Intent i=new Intent (this,ActivityConfiguracion.class);
+                startActivity ( i );
                 Log.i("setting","Configuracion terminada");
                 break;
             case  R.id.ic_action_perfil:
                 Log.i("perfil","Perfil");
-                FragmentManager fragmentManager = getSupportFragmentManager ();
-                fragmentManager.beginTransaction ().replace ( R.id.contenedor2 , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
-                fragmentManager.executePendingTransactions ();
+                i=new Intent (this,ActivityPerfil.class);
+                startActivity ( i );
                 Log.i("perfil","Perfil terminado");
                 break;
 
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
         switch (item.getItemId ()) {
             case R.id.ic_action_perfil:
                 FragmentManager fragmentManager = getSupportFragmentManager ();
-                fragmentManager.beginTransaction ().add ( R.id.contenedor2 , new FragmentPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
+                fragmentManager.beginTransaction ().add ( R.id.contenedor2 , new ActivityPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
                 fragmentManager.executePendingTransactions ();
                 Log.i("Comprobacion", "JAJAJAJAJJAJAJA se ha cargado el fragment de perfil");
                 break;
