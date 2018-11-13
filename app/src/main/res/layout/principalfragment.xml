@@ -15,10 +15,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
-    <TextView
-        android:id="@+id/textView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Intentando meter el mapa de google"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Intentando meter el mapa de google"
+            />
+        <Button android:id="@+id/startFinish" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="@string/startStopButton"
+        android:layout_centerInParent="true"></Button>
+    </RelativeLayout>
+
 </LinearLayout>
