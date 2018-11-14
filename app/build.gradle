@@ -44,4 +44,5 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     implementation 'com.google.code.gson:gson:2.6.2'
     api 'com.github.sundeepk:compact-calendar-view:3.0.0'
+
 }
