@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true"
-    tools:context="MainActivity">
+    tools:context=".ActivityConfiguracion">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -22,8 +22,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorBackgroundToolBar"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
-        </android.support.v7.widget.Toolbar>
+            app:title="@string/app_name"></android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
     <FrameLayout
@@ -42,7 +41,10 @@
             android:layout_height="wrap_content"
             android:text="@string/pantalla_setting" />
     </FrameLayout>
-    <include
-        android:id="@+id/contenedorTabs"
-        layout="@layout/tabslayout" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment"
+    />
+
 </android.support.design.widget.CoordinatorLayout>
