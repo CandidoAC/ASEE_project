@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Chronometer;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +32,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class FragmentPrincipal extends Fragment   {
     private GoogleMap googleMap;
     MapView mMapView;
+    Chronometer focus;
+    Button start, stop, reset;
+    long x = 0;
+    long timeElapsed = 0;
 
     @Nullable
     @Override
@@ -39,6 +46,31 @@ public class FragmentPrincipal extends Fragment   {
         mMapView.onCreate ( savedInstanceState );
 
         mMapView.onResume (); // needed to get the map to display immediately
+
+        start = (Button) rootView.findViewById(R.id.startFinish);
+        focus = (Chronometer) rootView.findViewById(R.id.chronometer);
+        focus.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                timeElapsed = SystemClock.elapsedRealtime() - focus.getBase();
+            }
+        });
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(x == 0){
+                    focus.setBase(SystemClock.elapsedRealtime());
+                    x = 1;
+                    focus.start();
+                }
+
+                if(x != 0){
+                    timeElapsed = 0;
+                    x = 0;
+                    focus.stop();
+                }
+            }
+        });
 
         try {
             MapsInitializer.initialize ( getActivity ().getApplicationContext () );

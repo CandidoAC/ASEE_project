@@ -1,6 +1,9 @@
 package com.example.usuario.projectasee;
 
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.content.Intent;
 import android.net.rtp.RtpStream;
 
@@ -8,7 +11,11 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.util.Date;
 
+@Entity(tableName = "rutas")
 public class Ruta {
+
+    @PrimaryKey
+    private int id;
     private String nombre;
     private float distancia;
     private int calorias;
@@ -18,6 +25,8 @@ public class Ruta {
     public final static String DISTANCIA = "distancia";
     public final static String CALORIAS = "calorias";
     public final static String TIEMPO = "tiempo";
+
+    @Ignore
     public Ruta() {
     }
 
@@ -26,6 +35,14 @@ public class Ruta {
         this.distancia = distancia;
         this.calorias = calorias;
         this.tiempo = tiempo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -44,11 +61,11 @@ public class Ruta {
         this.distancia = distancia;
     }
 
-    public int getCalorías() {
+    public int getCalorias() {
         return calorias;
     }
 
-    public void setCalorías(int calorias) {
+    public void setCalorias(int calorias) {
         this.calorias = calorias;
     }
 
