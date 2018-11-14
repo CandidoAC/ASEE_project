@@ -1,13 +1,10 @@
 package com.example.usuario.projectasee;
 
-import android.app.Activity;
-import android.graphics.Movie;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FragmentListaRutas extends Fragment {
@@ -39,11 +35,8 @@ public class FragmentListaRutas extends Fragment {
         mAdapter = new RutesAdapter ( ruteList , new RutesAdapter.OnItemClickListener () {
             @Override
             public void onItemClick(Ruta item) {//TODO Conseguir que cambie la pantalla a la de info rutas
-                InfoRutaFragment r=new InfoRutaFragment ();
-                FragmentTransaction ft=getFragmentManager ().beginTransaction ();
-                ft.hide ( getFragmentManager ().findFragmentById ( R.id.contenedor2 ) );
-                ft.replace ( R.id.contenedor,r );
-                ft.commit();
+                Intent i=new Intent ( getContext (),ActivityInfoRuta.class );
+                startActivity ( i );
             }
         } );
 

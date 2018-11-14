@@ -40,5 +40,10 @@
             android:label="ProjectASEE"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"/>
+        <activity android:name=".ActivityInfoRuta"
+            android:label="ProjectASEE"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"/>
+
     </application>
 </manifest>
