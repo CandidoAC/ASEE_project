@@ -9,9 +9,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icono_app"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/icono_app_round"
         android:supportsRtl="true"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         tools:ignore="GoogleAppIndexingWarning">
@@ -22,7 +22,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,19 +32,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".GraficasActivity"
-            android:label="ProjectASEE" />
+            android:label="ProjectASEE"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ActivityPerfil"
             android:label="ProjectASEE"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ActivityConfiguracion"
             android:label="ProjectASEE"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ActivityInfoRuta"
             android:label="ProjectASEE"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 </manifest>
