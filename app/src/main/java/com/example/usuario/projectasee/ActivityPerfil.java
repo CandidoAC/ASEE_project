@@ -39,8 +39,11 @@ public class ActivityPerfil extends AppCompatActivity {
         if(p.getString ( "listColor","" ).equals ( "Azul" )){
             findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.defaultBackground ) );
         }else{
-            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
-        }
+            if (p.getString ( "listColor" , "" ).equals ( "Blanco" )) {
+                findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
+            }else{
+                findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.VerdeBackground ) );
+            }        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
