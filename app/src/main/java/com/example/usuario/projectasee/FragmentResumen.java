@@ -24,7 +24,7 @@ public class FragmentResumen extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.resumenfragment ,container,false);
         float distancia=0;
-        int calorias=0;
+        double calorias=0;
         Time tiempo=new Time ( 0,0,0 );
         for(int i=0;i<ruteList.size ();i++){
             distancia=distancia+ruteList.get ( i ).getDistancia ();

@@ -1,27 +1,36 @@
 package com.example.usuario.projectasee;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import java.sql.Time;
+
 
 public class FragmentPrincipal extends Fragment   {
     private GoogleMap googleMap;
-    MapView mMapView;
-    Chronometer focus;
-    Button start, stop, reset;
-    boolean clicked;
+    private String m_Text = "";
+    private MapView mMapView;
+    private Chronometer focus;
+    private Button start;
+    private boolean clicked;
+    private int h, m,s;
+    private float distancia, calorias;
 
     @Nullable
     @Override
@@ -42,9 +51,9 @@ public class FragmentPrincipal extends Fragment   {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                int h   = (int)(time /3600000);
-                int m = (int)(time - h*3600000)/60000;
-                int s= (int)(time - h*3600000- m*60000)/1000 ;
+                h   = (int)(time /3600000);
+                m = (int)(time - h*3600000)/60000;
+                s= (int)(time - h*3600000- m*60000)/1000 ;
                 String t = (h < 10 ? "0"+h: h)+":"+(m < 10 ? "0"+m: m)+":"+ (s < 10 ? "0"+s: s);
                 chronometer.setText(t);
             }
@@ -64,6 +73,24 @@ public class FragmentPrincipal extends Fragment   {
                     focus.stop();
                     focus.setBase(SystemClock.elapsedRealtime());
                     focus.setText("00:00:00");
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                    alertDialog.setTitle("Ruta completada");
+                    alertDialog.setMessage("Escribe el nombre de la ruta:");
+
+                    final EditText input = new EditText(getActivity());
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    alertDialog.setView(input);
+                    alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            m_Text = input.getText().toString();
+                            distancia = h * 6000 + m * 6000/60 + s * 6000/3600;
+                            calorias = 8/*13.75 * peso + 5 * altura - 6.76 * edad + 66*/;
+                            Ruta ruta = new Ruta(m_Text,distancia,5,new Time(h,m,s));
+                        }
+                    });
+
+                    alertDialog.show();
                 }
             }
         });

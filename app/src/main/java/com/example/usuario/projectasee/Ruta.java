@@ -18,7 +18,7 @@ public class Ruta {
     private int id;
     private String nombre;
     private float distancia;
-    private int calorias;
+    private double calorias;
     private Time tiempo;
 
     public final static String NOMBRE = "nombre";
@@ -30,7 +30,7 @@ public class Ruta {
     public Ruta() {
     }
 
-    public Ruta(String nombre , float distancia , int calorias , Time tiempo) {
+    public Ruta(String nombre , float distancia , double calorias , Time tiempo) {
         this.nombre = nombre;
         this.distancia = distancia;
         this.calorias = calorias;
@@ -61,11 +61,11 @@ public class Ruta {
         this.distancia = distancia;
     }
 
-    public int getCalorias() {
+    public double getCalorias() {
         return calorias;
     }
 
-    public void setCalorias(int calorias) {
+    public void setCalorias(double calorias) {
         this.calorias = calorias;
     }
 
