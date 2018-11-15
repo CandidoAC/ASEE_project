@@ -2,7 +2,9 @@ package com.example.usuario.projectasee;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +55,16 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
         //menu
         //toolbar.setOnMenuItemClickListener ( this );
 
+    }
+    @Override
+    protected void onStart() {
+        super.onStart ();
+        SharedPreferences p=PreferenceManager.getDefaultSharedPreferences ( this );
+        if(p.getString ( "listColor","" ).equals ( "Azul" )){
+            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.defaultBackground ) );
+        }else{
+            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
+        }
     }
 
     @Override

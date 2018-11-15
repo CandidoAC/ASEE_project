@@ -9,4 +9,10 @@
         android:switchTextOn="Switch on"
         android:switchTextOff="Switch off">
     </SwitchPreference>
+    <ListPreference
+        android:key="listColor"
+        android:title="Color de fondo"
+        android:entryValues="@array/listColor"
+        android:entries="@array/listColor">
+    </ListPreference>
 </PreferenceScreen>

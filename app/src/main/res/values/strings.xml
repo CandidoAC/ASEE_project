@@ -18,4 +18,8 @@
     <string name="altura">Altura</string>
     <string name="peso">Peso</string>
     <string name="startStopButton">Start/Stop</string>
+    <array name="listColor">
+        <item>Azul</item>
+        <item>Blanco</item>
+    </array>
 </resources>
