@@ -15,7 +15,9 @@
     <string name="nombre">Nombre</string>
     <string name="apellidos">Apellidos</string>
     <string name="edad">Edad</string>
-    <string name="altura">Altura</string>
+    <string name="altura">Altura (cm)</string>
     <string name="peso">Peso</string>
     <string name="startStopButton">Start/Stop</string>
+    <string name="sexo">Sexo</string>
+    <string name="fotoPerfil">Foto de perfil</string>
 </resources>

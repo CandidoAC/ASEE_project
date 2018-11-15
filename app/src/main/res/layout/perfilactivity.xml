@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/main_content"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/colorBackground"
-android:fitsSystemWindows="true"
-tools:context="MainActivity">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
+    android:fitsSystemWindows="true"
+    tools:context="MainActivity">
 
 <android.support.design.widget.AppBarLayout
     android:id="@+id/appbar"
@@ -27,6 +28,26 @@ tools:context="MainActivity">
 
 </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_person_black_120dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:text="@string/fotoPerfil"/>
+        </LinearLayout>
+    </RelativeLayout>
 <TableLayout
     android:id="@+id/tableLayoutPerfil"
     android:layout_width="match_parent"
@@ -36,7 +57,8 @@ tools:context="MainActivity">
     <TableRow
         android:id="@+id/Nombre"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:id="@+id/TextViewNombre"
@@ -53,12 +75,20 @@ tools:context="MainActivity">
             android:ems="10"
             android:inputType="text" />
 
+        <ImageButton
+            android:id="@+id/botonNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create_black_20dp"
+            android:background="@color/colorBackground"/>
+
     </TableRow>
 
     <TableRow
         android:id="@+id/Apellidos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:id="@+id/textViewApellidos"
@@ -73,12 +103,48 @@ tools:context="MainActivity">
             android:ems="10"
             android:inputType="text" />
 
+        <ImageButton
+            android:id="@+id/botonApellidos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create_black_20dp"
+            android:background="@color/colorBackground"/>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/Sexo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/textViewSexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sexo" />
+
+        <TextView
+            android:id="@+id/TextSexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/botonSexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create_black_20dp"
+            android:background="@color/colorBackground"/>
+
     </TableRow>
 
     <TableRow
         android:id="@+id/Edad"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:id="@+id/textViewEdad"
@@ -92,12 +158,20 @@ tools:context="MainActivity">
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/botonEdad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create_black_20dp"
+            android:background="@color/colorBackground"/>
     </TableRow>
 
     <TableRow
         android:id="@+id/Altura"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:id="@+id/textViewAltura"
@@ -111,12 +185,20 @@ tools:context="MainActivity">
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/botonAltura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create_black_20dp"
+            android:background="@color/colorBackground"/>
     </TableRow>
 
     <TableRow
         android:id="@+id/Peso"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:id="@+id/textViewPeso"
@@ -130,6 +212,12 @@ tools:context="MainActivity">
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text" />
+        <ImageButton
+            android:id="@+id/botonPeso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_create_black_20dp"
+            android:background="@color/colorBackground"/>
     </TableRow>
 
     </TableLayout>
@@ -137,4 +225,4 @@ tools:context="MainActivity">
     <include
         android:id="@+id/contenedorTabs"
         layout="@layout/tabslayout" />
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

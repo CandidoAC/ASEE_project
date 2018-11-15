@@ -1,6 +1,7 @@
 package com.example.usuario.projectasee;
 
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,6 +19,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuItemClickListener*/ {
 
     private AdapterTabs AdapterTabs;
+    private static AppDatabase database;
 
     private ViewPager mViewPager;
     private Toolbar toolbar;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_main );
+        database = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"rutasdb").build();
 
         ruteList=new ArrayList<Ruta> () ;
         prepareRuteData ();
