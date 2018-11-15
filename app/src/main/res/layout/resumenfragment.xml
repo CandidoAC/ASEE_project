@@ -83,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="110dp"
         android:text="@string/graficas"
-        app:layout_constraintBottom_toBottomOf="@id/tableLayout"/>
+        app:layout_constraintBottom_toBottomOf="@id/tableLayout"
+        android:background="@color/colorBotones"/>
 
 </FrameLayout>

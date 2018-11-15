@@ -5,4 +5,5 @@
     <color name="colorTabNoSelected">#8FD9DB</color>
     <color name="colorTabSelected">#0CC1DB</color>
     <color name="colorTexto">#090A0A</color>
+    <color name="colorBotones">#04B9E6</color>
 </resources>
