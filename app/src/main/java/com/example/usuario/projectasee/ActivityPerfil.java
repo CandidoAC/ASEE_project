@@ -3,7 +3,9 @@ package com.example.usuario.projectasee;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -18,7 +20,19 @@ import android.widget.TextView;
 public class ActivityPerfil extends AppCompatActivity {
     private ImageButton bnombre, bapellidos, bsexo, bedad, baltura, bpeso;
     private TextView edit;
+    private SharedPreferences.Editor prefsEditor;
+    private SharedPreferences prefs;
 
+    @Override
+    protected void onStart() {
+        super.onStart ();
+        SharedPreferences p=PreferenceManager.getDefaultSharedPreferences ( this );
+        if(p.getString ( "listColor","" ).equals ( "Azul" )){
+            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.defaultBackground ) );
+        }else{
+            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +47,28 @@ public class ActivityPerfil extends AppCompatActivity {
                 finish();
             }
         } );
+        prefsEditor = getSharedPreferences("User", MODE_PRIVATE).edit();
+        prefs = getSharedPreferences("User", MODE_PRIVATE);
+
+        /*Iniciamos el valor de todos los campos*/
+        edit = (TextView) findViewById(R.id.TextNombre);
+        edit.setText(prefs.getString("Nombre", null));
+
+        edit = (TextView) findViewById(R.id.TextApellidos);
+        edit.setText(prefs.getString("Apellidos", null));
+
+        edit = (TextView) findViewById(R.id.TextSexo);
+        edit.setText(prefs.getString("Sexo", null));
+
+        edit = (TextView) findViewById(R.id.TextEdad);
+        edit.setText(prefs.getString("Edad", null));
+
+        edit = (TextView) findViewById(R.id.TextAltura);
+        edit.setText(prefs.getString("Altura", null));
+
+        edit = (TextView) findViewById(R.id.TextPeso);
+        edit.setText(prefs.getString("Peso", null));
+
         setSupportActionBar ( toolbar );
         bnombre = (ImageButton) findViewById(R.id.botonNombre);
         bapellidos = (ImageButton) findViewById(R.id.botonApellidos);
@@ -55,7 +91,9 @@ public class ActivityPerfil extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     edit = (TextView) findViewById(R.id.TextNombre);
-                    edit.setText(input.getText().toString());
+                    prefsEditor.putString("Nombre", input.getText().toString());
+                    prefsEditor.commit();
+                    edit.setText(prefs.getString("Nombre", null));
                 }
                 });
                 alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -83,7 +121,9 @@ public class ActivityPerfil extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     edit = (TextView) findViewById(R.id.TextApellidos);
-                    edit.setText(input.getText().toString());
+                    prefsEditor.putString("Apellidos", input.getText().toString());
+                    prefsEditor.commit();
+                    edit.setText(prefs.getString("Apellidos", null));
                 }
              });
                 alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -110,7 +150,9 @@ public class ActivityPerfil extends AppCompatActivity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 edit = (TextView) findViewById(R.id.TextSexo);
-                                                edit.setText(input.getText().toString());
+                                                prefsEditor.putString("Sexo", input.getText().toString());
+                                                prefsEditor.commit();
+                                                edit.setText(prefs.getString("Sexo", null));
                                             }
                                         });
 
@@ -133,13 +175,15 @@ public class ActivityPerfil extends AppCompatActivity {
                                         alertDialog.setMessage("Editar edad:");
 
                                         final EditText input = new EditText(getBaseContext());
-                                        input.setInputType(InputType.TYPE_CLASS_TEXT);
+                                        input.setInputType(InputType.TYPE_CLASS_NUMBER);
                                         alertDialog.setView(input);
                                         alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 edit = (TextView) findViewById(R.id.TextEdad);
-                                                edit.setText(input.getText().toString());
+                                                prefsEditor.putString("Edad", input.getText().toString());
+                                                prefsEditor.commit();
+                                                edit.setText(prefs.getString("Edad", null));
                                             }
                                         });
 
@@ -156,13 +200,15 @@ public class ActivityPerfil extends AppCompatActivity {
                                           alertDialog.setMessage("Editar altura:");
 
                                           final EditText input = new EditText(getBaseContext());
-                                          input.setInputType(InputType.TYPE_CLASS_TEXT);
+                                          input.setInputType(InputType.TYPE_CLASS_NUMBER);
                                           alertDialog.setView(input);
                                           alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                                               @Override
                                               public void onClick(DialogInterface dialog, int which) {
                                                   edit = (TextView) findViewById(R.id.TextAltura);
-                                                  edit.setText(input.getText().toString());
+                                                  prefsEditor.putString("Altura", input.getText().toString());
+                                                  prefsEditor.commit();
+                                                  edit.setText(prefs.getString("Altura", null));
                                               }
                                           });
                                           alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -184,13 +230,15 @@ public class ActivityPerfil extends AppCompatActivity {
                                         alertDialog.setMessage("Editar peso:");
 
                                         final EditText input = new EditText(getBaseContext());
-                                        input.setInputType(InputType.TYPE_CLASS_TEXT);
+                                        input.setInputType(InputType.TYPE_CLASS_NUMBER);
                                         alertDialog.setView(input);
                                         alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 edit = (TextView) findViewById(R.id.TextPeso);
-                                                edit.setText(input.getText().toString());
+                                                prefsEditor.putString("Peso", input.getText().toString());
+                                                prefsEditor.commit();
+                                                edit.setText(prefs.getString("Peso", null));
                                             }
                                         });
                                         alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

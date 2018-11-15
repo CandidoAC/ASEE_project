@@ -2,6 +2,7 @@ package com.example.usuario.projectasee;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -21,6 +22,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.sql.Time;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class FragmentPrincipal extends Fragment   {
     private GoogleMap googleMap;
@@ -31,6 +34,7 @@ public class FragmentPrincipal extends Fragment   {
     private boolean clicked;
     private int h, m,s;
     private float distancia, calorias;
+
 
     @Nullable
     @Override
@@ -136,6 +140,11 @@ public class FragmentPrincipal extends Fragment   {
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
 
     /**
      * Manipulates the map once available.
