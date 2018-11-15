@@ -3,7 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="preference">
     <SwitchPreference
-        android:key="switch"
-        android:title="Show notification">
+        android:id="@+id/Notification"
+        android:key="switchId"
+        android:title="Show notification"
+        android:switchTextOn="Switch on"
+        android:switchTextOff="Switch off">
     </SwitchPreference>
 </PreferenceScreen>

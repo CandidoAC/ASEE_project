@@ -1,7 +1,11 @@
 package com.example.usuario.projectasee;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -11,6 +15,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,11 +34,10 @@ public class ActivityConfiguracion extends AppCompatActivity {
                 finish();
             }
         } );
-        setSupportActionBar ( toolbar );
         getFragmentManager().beginTransaction()
-                .add(R.id.fragment, new SettingFragment ())
+                .replace(R.id.fragment, new SettingFragment ())
                 .commit();
-
+        setSupportActionBar ( toolbar );
     }
 
     @Override

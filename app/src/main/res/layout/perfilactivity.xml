@@ -31,7 +31,7 @@ tools:context="MainActivity">
     android:id="@+id/tableLayoutPerfil"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="55dp">
+    android:layout_marginTop="230dp">
 
     <TableRow
         android:id="@+id/Nombre"
@@ -136,5 +136,14 @@ tools:context="MainActivity">
 
     <include
         android:id="@+id/contenedorTabs"
-        layout="@layout/tabslayout" />
+        layout="@layout/tabslayout"
+        app:layout_anchor="@+id/appbar"
+        app:layout_anchorGravity="bottom|center" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:src="@tools:sample/avatars"
+        android:layout_marginTop="55dp"/>
 </android.support.design.widget.CoordinatorLayout>
