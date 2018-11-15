@@ -1,7 +1,20 @@
 package com.example.usuario.projectasee;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -11,6 +24,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,12 +43,23 @@ public class ActivityConfiguracion extends AppCompatActivity {
                 finish();
             }
         } );
-        setSupportActionBar ( toolbar );
         getFragmentManager().beginTransaction()
-                .add(R.id.fragment, new SettingFragment ())
+                .replace(R.id.fragment, new SettingFragment ())
                 .commit();
-
+        setSupportActionBar ( toolbar );
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart ();
+        SharedPreferences p=PreferenceManager.getDefaultSharedPreferences ( this );
+        if(p.getString ( "listColor","" ).equals ( "Azul" )){
+            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.defaultBackground ) );
+        }else{
+            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,6 +89,23 @@ public class ActivityConfiguracion extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+
     }
-}
+    // Creates and displays a notification
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void addNotification() {
+        Intent i = new Intent ( this , MainActivity.class );
+        PendingIntent pi = PendingIntent.getActivity ( this , 0 , i , 0 );
+        Notification.Builder not = new Notification.Builder ( this );
+        not.setContentTitle ( "La aplicacion esta activa" ).
+                setSmallIcon ( R.mipmap.icono_app_round ).
+                setLargeIcon ( BitmapFactory.decodeResource ( getResources () , R.mipmap.icono_app_round ) ).
+                setContentIntent ( pi ).
+                setVibrate ( new long[]{Notification.DEFAULT_VIBRATE} ).
+                setPriority ( Notification.PRIORITY_MAX );
+        NotificationManager nm = (NotificationManager) this.getSystemService ( Context.NOTIFICATION_SERVICE );
+        nm.notify ( 0 , not.build () );
+    }
+    }
 
