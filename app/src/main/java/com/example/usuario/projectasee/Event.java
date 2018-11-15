@@ -1,18 +1,35 @@
 package com.example.usuario.projectasee;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.Date;
 
+@Entity(tableName = "eventos")
 public class Event {
-    Date date;
 
-    String nombre;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private Date date;
+    private String nombre;
 
+    @Ignore
     public Event() {
     }
 
-    public Event(Date date , String nombre) {
+    public Event(int id, Date date , String nombre) {
+        this.id = id;
         this.date = date;
         this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getDate() {

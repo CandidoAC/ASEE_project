@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity(tableName = "rutas")
 public class Ruta {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String nombre;
     private float distancia;
@@ -30,7 +30,8 @@ public class Ruta {
     public Ruta() {
     }
 
-    public Ruta(String nombre , float distancia , double calorias , Time tiempo) {
+    public Ruta(int id, String nombre , float distancia , double calorias , Time tiempo) {
+        this.id = id;
         this.nombre = nombre;
         this.distancia = distancia;
         this.calorias = calorias;

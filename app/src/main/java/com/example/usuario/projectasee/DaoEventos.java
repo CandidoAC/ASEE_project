@@ -3,25 +3,19 @@ package com.example.usuario.projectasee;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-
 
 import java.util.List;
 
 @Dao
-public interface DaoRutas {
+public interface DaoEventos {
 
     @Insert
-    public void anadirRuta(Ruta ruta);
-
-    @Query("select * from rutas")
-    public List<Ruta> getRutas();
+    public void anadirEvento(Event evento);
 
     @Delete
-    public void borrarRuta(Ruta ruta);
+    public void borrarEvento(Event evento);
 
     @Update
-    public void editarUsuario(Ruta ruta);
-
+    public void editarEvento(Event evento);
 }
