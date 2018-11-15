@@ -55,8 +55,12 @@ public class ActivityConfiguracion extends AppCompatActivity {
         SharedPreferences p=PreferenceManager.getDefaultSharedPreferences ( this );
         if(p.getString ( "listColor","" ).equals ( "Azul" )){
             findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.defaultBackground ) );
-        }else{
-            findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
+        }else {
+            if (p.getString ( "listColor" , "" ).equals ( "Blanco" )) {
+                findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
+            }else{
+                findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.VerdeBackground ) );
+            }
         }
     }
 
