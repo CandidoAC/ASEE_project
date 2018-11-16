@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class FragmentCalendario extends Fragment  {
-    List<Event> listE;
-    private static TextView dateView;
+    static List<Event> listE;
+    private static String dateView;
     private static Date date;
     @Nullable
     @Override
@@ -57,9 +57,8 @@ public class FragmentCalendario extends Fragment  {
                 builder.setPositiveButton ( "Confirmar" , new DialogInterface.OnClickListener () {
                     public void onClick(DialogInterface dialog , int id) {
                         if(!input.getText ().toString ().equals ( "" )) {
+                            dateView=input.getText ().toString ();
                             showDatePickerDialog ();
-                            Event e = new Event ( date , input.getText ().toString () );
-                            addEvent ( e );
                         }
                     }
                 } );
@@ -81,18 +80,15 @@ public class FragmentCalendario extends Fragment  {
         return view;
     }
 
-    public void addEvent(Event e){
-        Log.i("Calendar","Añadiendo evento con nombre "+e.nombre+" para el día "+e.date.toString ());//quitar 1900 años
-        listE.add ( e );
-    }
 
     public void verEvents(Date date){
         String s="";
-
         for (int i= 0;i<listE.size ();i++){
             Event e=(Event)listE.get ( i );
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            if( sdf.format(e.getDate ()).compareTo(sdf.format(date))==0);
+            Log.i ( "Cale",e.getDate().toString() );
+            Log.i ( "Cale",date.toString () );
+            if(e.getDate ().toString ().equals (   e.getDate ().toString () ));
                 Log.i("Calendar","Igual fecha,añadiendo evento a mostrar");
                 s+=String.valueOf (i+1)+"."+e.getNombre()+'\n';
             }
@@ -128,6 +124,12 @@ public class FragmentCalendario extends Fragment  {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             date=new Date ( year,monthOfYear,dayOfMonth );
+            Event e = new Event ( date ,  dateView);
+            addEvent ( e );
+        }
+        public void addEvent(Event e){
+            Log.i("Calendar","Añadiendo evento con nombre "+e.nombre+" para el día "+e.date.toString ());//quitar 1900 años
+            listE.add ( e );
         }
 
     }
