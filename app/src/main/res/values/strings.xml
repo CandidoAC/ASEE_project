@@ -23,5 +23,6 @@
     <array name="listColor">
         <item>Azul</item>
         <item>Blanco</item>
+        <item>Verde</item>
     </array>
 </resources>
