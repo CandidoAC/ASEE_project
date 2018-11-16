@@ -1,12 +1,13 @@
 package com.example.usuario.projectasee;
 
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +19,9 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuItemClickListener*/ {
+public class MainActivity extends AppCompatActivity  {
 
     private AdapterTabs AdapterTabs;
-    private static AppDatabase database;
-
     private ViewPager mViewPager;
     private Toolbar toolbar;
 
@@ -32,10 +31,9 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_main );
-        database = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"rutasdb").build();
 
-        ruteList=new ArrayList<Ruta> () ;
-        prepareRuteData ();
+        //ruteList=new ArrayList<Ruta> () ;
+//        prepareRuteData ();
 
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
 
         mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
+        mViewPager.setOffscreenPageLimit(3);
         setupViewPager ( mViewPager );
 
         //Tabs de la aplicacion
@@ -85,11 +84,11 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
         adapter.addFragment ( new FragmentPrincipal () , "Principal" );
         FragmentListaRutas fr=new FragmentListaRutas ();
-        fr.setRuteList ( ruteList );
+       // fr.setRuteList ( ruteList );
         adapter.addFragment ( fr , "Lista rutas" );
         adapter.addFragment ( new FragmentCalendario () , "Calendario" );
         FragmentResumen fr1=new FragmentResumen ();
-        fr1.setRuteList ( ruteList );
+       // fr1.setRuteList ( ruteList );
         adapter.addFragment ( fr1, "Resumen" );
         viewPager.setAdapter ( adapter );
     }
@@ -118,38 +117,23 @@ public class MainActivity extends AppCompatActivity /*implements Toolbar.OnMenuI
     }
 
 
+//    private void prepareRuteData() {
+//        Ruta rute = new Ruta (0,"Nombre1",1,5,new Time (0,1,25 ) );
+//        ruteList.add ( rute );
+//
+//        rute = new Ruta (0,"Nombre2",4,3,new Time ( 1,0,25 ) );
+//        ruteList.add ( rute );
+//
+//        rute = new Ruta (0,"Nombre3",6,1,new Time ( 0,1,0 ) );
+//        ruteList.add ( rute );
+//
+//        rute = new Ruta (0,"Nombre4",3,6,new Time ( 0,0,15 ) );
+//        ruteList.add ( rute );
+//
+//
+//    }
 
-   /* @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId ()) {
-            case R.id.ic_action_perfil:
-                FragmentManager fragmentManager = getSupportFragmentManager ();
-                fragmentManager.beginTransaction ().add ( R.id.contenedor2 , new ActivityPerfil () , "Perfil" ).addToBackStack ( null ).commit ();
-                fragmentManager.executePendingTransactions ();
-                Log.i("Comprobacion", "JAJAJAJAJJAJAJA se ha cargado el fragment de perfil");
-                break;
-            case R.id.ic_action_setting:
-                getSupportFragmentManager ().beginTransaction ().add ( R.id.contenedor2 , new FragmentConfiguracion () , "Configuración" ).commit ();
-                getSupportFragmentManager ().executePendingTransactions ();
-                break;
-        }
-        return true;
-    }*/
 
-    private void prepareRuteData() {
-        Ruta rute = new Ruta ("Nombre1",1,5,new Time (0,1,25 ) );
-        ruteList.add ( rute );
-
-        rute = new Ruta ("Nombre2",4,3,new Time ( 1,0,25 ) );
-        ruteList.add ( rute );
-
-        rute = new Ruta ("Nombre3",6,1,new Time ( 0,1,0 ) );
-        ruteList.add ( rute );
-
-        rute = new Ruta ("Nombre4",3,6,new Time ( 0,0,15 ) );
-        ruteList.add ( rute );
-
-    }
 
 }
 

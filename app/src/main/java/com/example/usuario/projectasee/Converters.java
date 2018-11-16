@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.sql.Time;
 
 public class Converters {
+
     @TypeConverter
     public static Time fromString(String value) {
         Type timeType = new TypeToken<Time>() {}.getType();
@@ -21,4 +22,5 @@ public class Converters {
         String json = gson.toJson(time);
         return json;
     }
+
 }

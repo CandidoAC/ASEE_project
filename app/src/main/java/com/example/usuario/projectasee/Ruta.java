@@ -77,6 +77,7 @@ public class Ruta {
     public void setTiempo(Time tiempo) {
         this.tiempo = tiempo;
     }
+
     public static void packageIntent(Intent intent, String nombre,
                                      float distancia, float calorias, Time Tiempo) {
 

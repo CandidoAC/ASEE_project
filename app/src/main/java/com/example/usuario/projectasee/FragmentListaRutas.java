@@ -1,6 +1,7 @@
 package com.example.usuario.projectasee;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,13 +19,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentListaRutas extends Fragment {
-    private List<Ruta> ruteList = new ArrayList<> ();
+    private List<Ruta> ruteList;
     private RecyclerView recyclerView;
     private RutesAdapter mAdapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ruteList = new ArrayList<> ();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listarutasfragment ,container,false);
+        new AsyncLoad().execute();
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
@@ -50,6 +59,7 @@ public class FragmentListaRutas extends Fragment {
         return ruteList;
     }
 
+
     public void setRuteList(List <Ruta> ruteList) {
         this.ruteList = ruteList;
     }
@@ -59,4 +69,22 @@ public class FragmentListaRutas extends Fragment {
         super.onPause();
         Log.i("onDestroy","**************");
     }
+//    public void cargarRutas(){
+//        new AsyncLoad().execute();
+//    }
+    class AsyncLoad extends AsyncTask<Void, Void, List<Ruta>> {
+        @Override
+        protected List<Ruta> doInBackground(Void... voids) {
+            AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+            List<Ruta> rutas = db.daoRutas().getRutas();
+            return rutas;
+        }
+
+        @Override
+        protected void onPostExecute(List<Ruta> rutas) {
+            super.onPostExecute(rutas);
+            ruteList.addAll(rutas);
+        }
+    }
+
 }

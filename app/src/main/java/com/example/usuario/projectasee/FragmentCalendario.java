@@ -50,7 +50,7 @@ public class FragmentCalendario extends Fragment  {
                     builder.setPositiveButton ( "Confirmar" , new DialogInterface.OnClickListener () {
                         public void onClick(DialogInterface dialog , int id) {
                             if(!input.getText ().toString ().equals ( "" )) {
-                                Event e = new Event ( new Date ( year , month , dayOfMonth ) , input.getText ().toString () );
+                                Event e = new Event ( 0,new Date ( year , month , dayOfMonth ) , input.getText ().toString () );
                                 addEvent ( e );
                             }
                         }
