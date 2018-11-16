@@ -133,38 +133,6 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
 
         mMapView.getMapAsync ( this);
-//              new OnMapReadyCallback () {
-//            @Override
-//            public void onMapReady(GoogleMap mMap) {
-//                /*googleMap = mMap;
-//
-//                // For showing a move to my location button
-//                if (ActivityCompat.checkSelfPermission ( mMapView.getContext () , Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission (  mMapView.getContext ()  , Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return;
-//                }
-//                googleMap.setMyLocationEnabled ( true );
-//
-//                // For dropping a marker at a point on the Map
-//                LatLng sydney = new LatLng(-34, 151);
-//                // create marker
-//                MarkerOptions marker = new MarkerOptions().position(sydney).title("Hello Maps");
-//
-//                googleMap.addMarker(marker);
-//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-//
-//                // For zooming automatically to the location of the marker
-//                googleMap.moveCamera ( CameraUpdateFactory.newLatLng ( sydney ) );
-//                googleMap.getUiSettings ().setAllGesturesEnabled ( false );
-//               // CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(17).build();
-//                //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//            */}
-        //});
         return rootView;
     }
 
@@ -176,7 +144,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
     public void anadirMarker(double lat , double lon) {
         LatLng coord = new LatLng ( lat , lon );
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 16 );
+        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 18 );
         if (marker != null) {
             marker.remove ();
         }
@@ -188,38 +156,6 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     *//*
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
-    }*/
 
     public void actualizarUb(Location location) {
         if (location != null) {
@@ -262,7 +198,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
             actualizarUb(location);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 15000,0,locListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
         }
     }
 
