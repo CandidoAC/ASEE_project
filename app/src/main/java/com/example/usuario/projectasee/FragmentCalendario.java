@@ -74,6 +74,8 @@ public class FragmentCalendario extends Fragment  {
         c.setOnDateChangeListener ( new CalendarView.OnDateChangeListener () {
             @Override
             public void onSelectedDayChange(CalendarView view , final int year , final int month , final int dayOfMonth) {
+                TextView t=(TextView) getView ().findViewById ( R.id.calendarText );
+                t.setText("");
                 verEvents ( new Date ( year ,month,dayOfMonth ) );
             }
         } );
@@ -88,19 +90,19 @@ public class FragmentCalendario extends Fragment  {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             Log.i ( "Cale",e.getDate().toString() );
             Log.i ( "Cale",date.toString () );
-            if(e.getDate ().toString ().equals (   e.getDate ().toString () ));
-                Log.i("Calendar","Igual fecha,añadiendo evento a mostrar");
-                s+=String.valueOf (i+1)+"."+e.getNombre()+'\n';
+            if(e.getDate().toString().equals(date.toString())) {
+                Log.i("Calendar", "Igual fecha,añadiendo evento a mostrar");
+                s += String.valueOf(i + 1) + "." + e.getNombre() + '\n';
+            }
             }
 
-        Log.i ( "Calendar",s );
+        Log.i ( "Calendar2",s );
         TextView t=(TextView) getView ().findViewById ( R.id.calendarText );
         t.setText ( s );
     }
 
 
     private void showDatePickerDialog() {
-        //TODO - Create a Date Picker Dialog and show it
         android.app.DialogFragment datePicker = new DatePickerFragment();
         datePicker.show(getActivity ().getFragmentManager(), "datePicker");
 
@@ -124,11 +126,11 @@ public class FragmentCalendario extends Fragment  {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             date=new Date ( year,monthOfYear,dayOfMonth );
-            Event e = new Event ( date ,  dateView);
+            Event e = new Event (0, date ,  dateView);
             addEvent ( e );
         }
         public void addEvent(Event e){
-            Log.i("Calendar","Añadiendo evento con nombre "+e.nombre+" para el día "+e.date.toString ());//quitar 1900 años
+            Log.i("Calendar","Añadiendo evento con nombre "+e.getNombre()+" para el día "+e.getDate().toString ());//quitar 1900 años
             listE.add ( e );
         }
 
