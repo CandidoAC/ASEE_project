@@ -1,13 +1,13 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
-import android.os.AsyncTask;
 
-import java.util.List;
+import com.example.usuario.projectasee.Modelo.Event;
+import com.example.usuario.projectasee.Modelo.Ruta;
 
 
 @Database(entities = {Ruta.class, Event.class}, version = 1)

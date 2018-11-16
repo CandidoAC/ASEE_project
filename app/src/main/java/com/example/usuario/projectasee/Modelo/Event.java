@@ -1,4 +1,4 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Modelo;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;

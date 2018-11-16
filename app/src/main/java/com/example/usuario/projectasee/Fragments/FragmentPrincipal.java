@@ -1,9 +1,9 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Fragments;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -22,6 +22,9 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 
+import com.example.usuario.projectasee.Database.AppDatabase;
+import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,7 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.sql.Time;
 
-import static android.content.Context.LOCATION_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private GoogleMap googleMap;
@@ -48,7 +51,9 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private Button start;
     private boolean clicked;
     private int h, m,s;
-    private float distancia, calorias;
+    private float distancia;
+    private double calorias;
+    private SharedPreferences prefs;
 
     private static final int PETICION_PERMISO_LOCALIZACION=101;
 
@@ -56,6 +61,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prefs = getActivity().getSharedPreferences("User", MODE_PRIVATE);
     }
 
     @Nullable
@@ -114,7 +120,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                             int mins = (int)(time - h*3600000)/60000;
                             int ss= (int)(time - h*3600000- m*60000)/1000 ;
                             distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
-                            calorias = 8/*13.75 * peso + 5 * altura - 6.76 * edad + 66*/;
+                            float peso = Float.valueOf(prefs.getString("Peso", String.valueOf(0)));
+                            int altura = Integer.valueOf(prefs.getString("Altura", String.valueOf(0)));
+                            int edad = Integer.valueOf(prefs.getString("Edad", String.valueOf(0)));
+                            if(peso != 0 && altura != 0 && edad != 0){
+                                calorias = 13.75 * peso + 5 * altura - 6.76 * edad + 66;
+                            }else{
+                                calorias = 13.75 + 5 - 6.76 + 66;
+                            }
+
                             Ruta ruta = new Ruta(0,m_Text,distancia,calorias,new Time(hs,mins,ss));
                             new AsyncInsert().execute(ruta);
                         }
@@ -133,38 +147,6 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
 
         mMapView.getMapAsync ( this);
-//              new OnMapReadyCallback () {
-//            @Override
-//            public void onMapReady(GoogleMap mMap) {
-//                /*googleMap = mMap;
-//
-//                // For showing a move to my location button
-//                if (ActivityCompat.checkSelfPermission ( mMapView.getContext () , Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission (  mMapView.getContext ()  , Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return;
-//                }
-//                googleMap.setMyLocationEnabled ( true );
-//
-//                // For dropping a marker at a point on the Map
-//                LatLng sydney = new LatLng(-34, 151);
-//                // create marker
-//                MarkerOptions marker = new MarkerOptions().position(sydney).title("Hello Maps");
-//
-//                googleMap.addMarker(marker);
-//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-//
-//                // For zooming automatically to the location of the marker
-//                googleMap.moveCamera ( CameraUpdateFactory.newLatLng ( sydney ) );
-//                googleMap.getUiSettings ().setAllGesturesEnabled ( false );
-//               // CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(17).build();
-//                //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//            */}
-        //});
         return rootView;
     }
 
@@ -176,7 +158,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
     public void anadirMarker(double lat , double lon) {
         LatLng coord = new LatLng ( lat , lon );
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 16 );
+        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 20 );
         if (marker != null) {
             marker.remove ();
         }
@@ -186,40 +168,6 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                 .icon ( BitmapDescriptorFactory.fromResource ( R.mipmap.icono ) ) );
         googleMap.animateCamera ( ub );
     }
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     *//*
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
-    }*/
 
     public void actualizarUb(Location location) {
         if (location != null) {
@@ -262,11 +210,11 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
             actualizarUb(location);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 15000,0,locListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
         }
     }
 
-    class AsyncInsert extends AsyncTask<Ruta, Void, Ruta> {
+    class AsyncInsert extends AsyncTask<Ruta, Ruta, Ruta> {
         @Override
         protected Ruta doInBackground(Ruta... rutas) {
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());

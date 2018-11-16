@@ -1,4 +1,4 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Database;
 
 import android.arch.persistence.room.TypeConverter;
 

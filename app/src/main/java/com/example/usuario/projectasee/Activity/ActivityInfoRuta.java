@@ -1,4 +1,4 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.usuario.projectasee.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -118,7 +119,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
 
     public void anadirMarker(double lat , double lon) {
         LatLng coord = new LatLng ( lat , lon );
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 16 );
+        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 20 );
         if (marker != null) {
             marker.remove ();
         }
@@ -128,40 +129,6 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                 .icon ( BitmapDescriptorFactory.fromResource ( R.mipmap.icono ) ) );
         googleMap.animateCamera ( ub );
     }
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     *//*
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mMapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mMapView.onLowMemory();
-    }*/
 
     public void actualizarUb(Location location) {
         if (location != null) {
@@ -204,7 +171,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
             actualizarUb(location);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 15000,0,locListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
         }
     }
 

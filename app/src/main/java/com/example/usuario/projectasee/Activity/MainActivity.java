@@ -1,18 +1,11 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Activity;
 
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,13 +13,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.sql.Time;
-import java.util.ArrayList;
+import com.example.usuario.projectasee.Adapters.AdapterTabs;
+import com.example.usuario.projectasee.Fragments.FragmentCalendario;
+import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
+import com.example.usuario.projectasee.Fragments.FragmentPrincipal;
+import com.example.usuario.projectasee.Fragments.FragmentResumen;
+import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.R;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
 
-    private AdapterTabs AdapterTabs;
+    private com.example.usuario.projectasee.Adapters.AdapterTabs AdapterTabs;
     private ViewPager mViewPager;
     private Toolbar toolbar;
 
@@ -59,9 +58,6 @@ public class MainActivity extends AppCompatActivity  {
         tabLayout.getTabAt ( 2 ).setText ( "Calendario" );
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
-        //menu
-        //toolbar.setOnMenuItemClickListener ( this );
-
     }
     @Override
     protected void onStart() {
@@ -79,19 +75,17 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /*MenuInflater inflater = getMenuInflater ();
-        inflater.inflate ( R.menu.menu_main , menu );*/
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     private void setupViewPager(ViewPager viewPager) {
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
-        adapter.addFragment ( new FragmentPrincipal () , "Principal" );
+        adapter.addFragment ( new FragmentPrincipal() , "Principal" );
         FragmentListaRutas fr=new FragmentListaRutas ();
        // fr.setRuteList ( ruteList );
         adapter.addFragment ( fr , "Lista rutas" );
-        adapter.addFragment ( new FragmentCalendario () , "Calendario" );
+        adapter.addFragment ( new FragmentCalendario() , "Calendario" );
         FragmentResumen fr1=new FragmentResumen ();
        // fr1.setRuteList ( ruteList );
         adapter.addFragment ( fr1, "Resumen" );

@@ -1,13 +1,13 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Adapters;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.R;
 
 import java.util.List;
 

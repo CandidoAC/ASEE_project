@@ -1,20 +1,16 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Fragments;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import android.text.InputType;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +19,17 @@ import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+
+import com.example.usuario.projectasee.Database.AppDatabase;
+import com.example.usuario.projectasee.Modelo.Event;
+import com.example.usuario.projectasee.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class FragmentCalendario extends Fragment  {
     static List<Event> listE;
@@ -138,4 +136,20 @@ public class FragmentCalendario extends Fragment  {
         }
 
     }
+
+    class AsyncInsertEvent extends AsyncTask<Event, Void, Event> {
+        @Override
+        protected Event doInBackground(Event... eventos) {
+            AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+            db.daoEventos().anadirEvento(eventos[0]);
+            return eventos[0];
+        }
+
+        @Override
+        protected void onPostExecute(Event evento) {
+            super.onPostExecute(evento);
+
+        }
+    }
+
 }

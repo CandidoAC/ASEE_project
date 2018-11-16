@@ -1,11 +1,10 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Fragments;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.usuario.projectasee.Activity.ActivityInfoRuta;
+import com.example.usuario.projectasee.Database.AppDatabase;
+import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.Adapters.RutesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +38,7 @@ public class FragmentListaRutas extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listarutasfragment ,container,false);
-        new AsyncLoad().execute();
+        //new AsyncLoad().execute();
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
@@ -55,6 +60,12 @@ public class FragmentListaRutas extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        new AsyncLoad().execute();
+    }
+
     public List <Ruta> getRuteList() {
         return ruteList;
     }
@@ -69,15 +80,20 @@ public class FragmentListaRutas extends Fragment {
         super.onPause();
         Log.i("onDestroy","**************");
     }
-//    public void cargarRutas(){
-//        new AsyncLoad().execute();
-//    }
-    class AsyncLoad extends AsyncTask<Void, Void, List<Ruta>> {
+
+    class AsyncLoad extends AsyncTask<Void, List<Ruta>, List<Ruta>> {
         @Override
         protected List<Ruta> doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());
             List<Ruta> rutas = db.daoRutas().getRutas();
+            publishProgress(rutas);
             return rutas;
+        }
+
+        @Override
+        protected void onProgressUpdate(List<Ruta>... rutas) {
+            super.onProgressUpdate(rutas[0]);
+            ruteList.addAll(rutas[0]);
         }
 
         @Override
