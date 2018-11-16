@@ -43,7 +43,7 @@ public class FragmentListaRutas extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration (getActivity (), LinearLayoutManager.VERTICAL));
         mAdapter = new RutesAdapter ( ruteList , new RutesAdapter.OnItemClickListener () {
             @Override
-            public void onItemClick(Ruta item) {//TODO Conseguir que cambie la pantalla a la de info rutas
+            public void onItemClick(Ruta item) {
                 Intent i=new Intent ( getContext (),ActivityInfoRuta.class );
                 startActivity ( i );
             }

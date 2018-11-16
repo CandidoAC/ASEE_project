@@ -8,12 +8,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,21 +36,27 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.sql.Time;
 
 import static android.content.Context.LOCATION_SERVICE;
-import static android.support.v4.content.ContextCompat.getSystemService;
 
-
-public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
+public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private Marker marker;
-    private double lat;
-    private double lon;
+    private double lat=0.0;
+    private double lon=0.0;
     private String m_Text = "";
     private MapView mMapView;
     private Chronometer focus;
     private Button start;
     private boolean clicked;
-    private int h, m, s;
+    private int h, m,s;
     private float distancia, calorias;
+
+    private static final int PETICION_PERMISO_LOCALIZACION=101;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -60,60 +66,64 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
         mMapView = (MapView) rootView.findViewById ( R.id.mapView );
         mMapView.onCreate ( savedInstanceState );
 
-        
+        mMapView.onResume (); // needed to get the map to display immediately
 
-        start = (Button) rootView.findViewById ( R.id.startFinish );
-        start.setText ( "Start" );
-        focus = (Chronometer) rootView.findViewById ( R.id.chronometer );
+        start = rootView.findViewById(R.id.startFinish);
+        start.setText("Start");
+        focus = (Chronometer) rootView.findViewById(R.id.chronometer);
         clicked = false;
-
-        focus.setOnChronometerTickListener ( new Chronometer.OnChronometerTickListener () {
+        focus.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                long time = SystemClock.elapsedRealtime () - chronometer.getBase ();
-                h = (int) (time / 3600000);
-                m = (int) (time - h * 3600000) / 60000;
-                s = (int) (time - h * 3600000 - m * 60000) / 1000;
-                String t = (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
-                chronometer.setText ( t );
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                h   = (int)(time /3600000);
+                m = (int)(time - h*3600000)/60000;
+                s= (int)(time - h*3600000- m*60000)/1000 ;
+                String t = (h < 10 ? "0"+h: h)+":"+(m < 10 ? "0"+m: m)+":"+ (s < 10 ? "0"+s: s);
+                chronometer.setText(t);
             }
-        } );
-        focus.setText ( "00:00:00" );
-        start.setOnClickListener ( new View.OnClickListener () {
+        });
+        focus.setText("00:00:00");
+        start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!clicked) {
-                    focus.setBase ( SystemClock.elapsedRealtime () );
+                if(!clicked){
+                    focus.setBase(SystemClock.elapsedRealtime());
                     clicked = true;
-                    start.setText ( "Stop" );
-                    focus.start ();
-                } else {
+                    start.setText("Stop");
+                    focus.start();
+                }else{
                     clicked = false;
-                    start.setText ( "Start" );
-                    focus.stop ();
-                    focus.setBase ( SystemClock.elapsedRealtime () );
-                    focus.setText ( "00:00:00" );
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder ( getContext () );
-                    alertDialog.setTitle ( "Ruta completada" );
-                    alertDialog.setMessage ( "Escribe el nombre de la ruta:" );
+                    start.setText("Start");
+                    focus.stop();
+                    focus.setBase(SystemClock.elapsedRealtime());
+                    focus.setText("00:00:00");
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                    alertDialog.setTitle("Ruta completada");
+                    alertDialog.setMessage("Escribe el nombre de la ruta:");
 
-                    final EditText input = new EditText ( getActivity () );
-                    input.setInputType ( InputType.TYPE_CLASS_TEXT );
-                    alertDialog.setView ( input );
-                    alertDialog.setPositiveButton ( "Confirmar" , new DialogInterface.OnClickListener () {
+                    final EditText input = new EditText(getActivity());
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    alertDialog.setView(input);
+                    alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog , int which) {
-                            m_Text = input.getText ().toString ();
-                            distancia = h * 6000 + m * 6000 / 60 + s * 6000 / 3600;
+                        public void onClick(DialogInterface dialog, int which) {
+                            m_Text = input.getText().toString();
+                            long time = SystemClock.elapsedRealtime() - focus.getBase();
+                            int hs   = (int)(time /3600000);
+                            int mins = (int)(time - h*3600000)/60000;
+                            int ss= (int)(time - h*3600000- m*60000)/1000 ;
+                            distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
                             calorias = 8/*13.75 * peso + 5 * altura - 6.76 * edad + 66*/;
-                            //Ruta ruta = new Ruta ( m_Text , distancia , 5 , new Time ( h , m , s ) );
+                            Ruta ruta = new Ruta(0,m_Text,distancia,calorias,new Time(hs,mins,ss));
+                            new AsyncInsert().execute(ruta);
                         }
-                    } );
+                    });
 
-                    alertDialog.show ();
+                    alertDialog.show();
                 }
             }
-        } );
+        });
 
         try {
             MapsInitializer.initialize ( getActivity ().getApplicationContext () );
@@ -121,7 +131,40 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
             e.printStackTrace ();
         }
 
-        mMapView.getMapAsync ( this );
+
+        mMapView.getMapAsync ( this);
+//              new OnMapReadyCallback () {
+//            @Override
+//            public void onMapReady(GoogleMap mMap) {
+//                /*googleMap = mMap;
+//
+//                // For showing a move to my location button
+//                if (ActivityCompat.checkSelfPermission ( mMapView.getContext () , Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission (  mMapView.getContext ()  , Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+//                    //    ActivityCompat#requestPermissions
+//                    // here to request the missing permissions, and then overriding
+//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                    //                                          int[] grantResults)
+//                    // to handle the case where the user grants the permission. See the documentation
+//                    // for ActivityCompat#requestPermissions for more details.
+//                    return;
+//                }
+//                googleMap.setMyLocationEnabled ( true );
+//
+//                // For dropping a marker at a point on the Map
+//                LatLng sydney = new LatLng(-34, 151);
+//                // create marker
+//                MarkerOptions marker = new MarkerOptions().position(sydney).title("Hello Maps");
+//
+//                googleMap.addMarker(marker);
+//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+//
+//                // For zooming automatically to the location of the marker
+//                googleMap.moveCamera ( CameraUpdateFactory.newLatLng ( sydney ) );
+//                googleMap.getUiSettings ().setAllGesturesEnabled ( false );
+//               // CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(17).build();
+//                //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//            */}
+        //});
         return rootView;
     }
 
@@ -131,18 +174,52 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
         miUbicacion ();
     }
 
-    public void anadirMarker(double Lon , double lat) {
-        LatLng coord = new LatLng ( Lon , lat );
+    public void anadirMarker(double lat , double lon) {
+        LatLng coord = new LatLng ( lat , lon );
         CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 16 );
         if (marker != null) {
             marker.remove ();
         }
-        marker = googleMap.addMarker ( new MarkerOptions ().
-                position ( coord ).
-                title ( "Mi ubicación" )
+        marker = googleMap.addMarker ( new MarkerOptions()
+                .position ( coord )
+                .title ( "Mi ubicación" )
                 .icon ( BitmapDescriptorFactory.fromResource ( R.mipmap.icono ) ) );
         googleMap.animateCamera ( ub );
     }
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     *//*
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }*/
 
     public void actualizarUb(Location location) {
         if (location != null) {
@@ -152,7 +229,7 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    LocationListener locListener = new LocationListener () {
+    LocationListener locListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             actualizarUb ( location );
@@ -175,13 +252,33 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
     };
 
     private void miUbicacion() {
-        LocationManager LocManger = (LocationManager) getActivity ().getSystemService ( LOCATION_SERVICE );
-        if (ActivityCompat.checkSelfPermission ( getActivity () , Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            return;
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PETICION_PERMISO_LOCALIZACION);
+        } else {
+
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
+            actualizarUb(location);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 15000,0,locListener);
         }
-        Location location = LocManger.getLastKnownLocation ( LocationManager.GPS_PROVIDER);
-        actualizarUb ( location );
-        LocManger.requestLocationUpdates ( LocManger.GPS_PROVIDER,500,0,locListener );
+    }
+
+    class AsyncInsert extends AsyncTask<Ruta, Void, Ruta> {
+        @Override
+        protected Ruta doInBackground(Ruta... rutas) {
+            AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+            db.daoRutas().anadirRuta(rutas[0]);
+            return rutas[0];
+        }
+
+        @Override
+        protected void onPostExecute(Ruta ruta) {
+            super.onPostExecute(ruta);
+
+        }
     }
 }
+

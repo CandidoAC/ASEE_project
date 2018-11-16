@@ -128,6 +128,7 @@ public class FragmentCalendario extends Fragment  {
             date=new Date ( year,monthOfYear,dayOfMonth );
             Event e = new Event (0, date ,  dateView);
             addEvent ( e );
+
         }
         public void addEvent(Event e){
             Log.i("Calendar","Añadiendo evento con nombre "+e.getNombre()+" para el día "+e.getDate().toString ());//quitar 1900 años

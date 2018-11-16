@@ -2,7 +2,7 @@
 <resources>
     <color name="colorBackground">#B7E8E4</color>
     <color name="defaultBackground">#B7E8E4</color>
-    <color name="VerdeBackground">#ABF0B1</color>
+    <color name="VerdeBackground">#C4FECD</color>
     <color name="BlancoBackground">#FFFFFF</color>
     <color name="colorBackgroundToolBar">#8FD9DB</color>
     <color name="colorTabNoSelected">#8FD9DB</color>
