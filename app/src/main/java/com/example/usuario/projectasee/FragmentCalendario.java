@@ -85,6 +85,7 @@ public class FragmentCalendario extends Fragment  {
 
     public void verEvents(Date date){
         String s="";
+        int j=1;
         for (int i= 0;i<listE.size ();i++){
             Event e=(Event)listE.get ( i );
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -92,7 +93,8 @@ public class FragmentCalendario extends Fragment  {
             Log.i ( "Cale",date.toString () );
             if(e.getDate().toString().equals(date.toString())) {
                 Log.i("Calendar", "Igual fecha,añadiendo evento a mostrar");
-                s += String.valueOf(i + 1) + "." + e.getNombre() + '\n';
+                s += String.valueOf(j) + "." + e.getNombre() + '\n';
+                j++;
             }
             }
 
