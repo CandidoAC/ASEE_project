@@ -2,6 +2,7 @@ package com.example.usuario.projectasee;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -39,8 +40,8 @@ import static android.content.Context.LOCATION_SERVICE;
 public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private Marker marker;
-    private double lat;
-    private double lon;
+    private double lat=0.0;
+    private double lon=0.0;
     private String m_Text = "";
     private MapView mMapView;
     private Chronometer focus;
@@ -48,6 +49,8 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private boolean clicked;
     private int h, m,s;
     private float distancia, calorias;
+
+    private static final int PETICION_PERMISO_LOCALIZACION=101;
 
 
     @Override
@@ -63,7 +66,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         mMapView = (MapView) rootView.findViewById ( R.id.mapView );
         mMapView.onCreate ( savedInstanceState );
 
-       // mMapView.onResume (); // needed to get the map to display immediately
+        mMapView.onResume (); // needed to get the map to display immediately
 
         start = rootView.findViewById(R.id.startFinish);
         start.setText("Start");
@@ -171,15 +174,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         miUbicacion ();
     }
 
-    public void anadirMarker(double Lon , double lat) {
-        LatLng coord = new LatLng ( Lon , lat );
+    public void anadirMarker(double lat , double lon) {
+        LatLng coord = new LatLng ( lat , lon );
         CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 16 );
         if (marker != null) {
             marker.remove ();
         }
-        marker = googleMap.addMarker ( new MarkerOptions().
-                position ( coord ).
-                title ( "Mi ubicación" )
+        marker = googleMap.addMarker ( new MarkerOptions()
+                .position ( coord )
+                .title ( "Mi ubicación" )
                 .icon ( BitmapDescriptorFactory.fromResource ( R.mipmap.icono ) ) );
         googleMap.animateCamera ( ub );
     }
@@ -249,14 +252,18 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     };
 
     private void miUbicacion() {
-        LocationManager LocManger = (LocationManager) getActivity ().getSystemService ( LOCATION_SERVICE );
-        if (ActivityCompat.checkSelfPermission ( getActivity () , Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            return;
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PETICION_PERMISO_LOCALIZACION);
+        } else {
+
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
+            actualizarUb(location);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 15000,0,locListener);
         }
-        Location location = LocManger.getLastKnownLocation ( LocationManager.NETWORK_PROVIDER);
-        actualizarUb ( location );
-        LocManger.requestLocationUpdates ( LocManger.GPS_PROVIDER,500,0,locListener );
     }
 
     class AsyncInsert extends AsyncTask<Ruta, Void, Ruta> {

@@ -62,7 +62,7 @@ public class SettingFragment extends PreferenceFragment {
         Intent i=new Intent ( getActivity (),MainActivity.class );
         PendingIntent pi=PendingIntent.getActivity ( getActivity (),0 , i,0);
         Notification.Builder not=new Notification.Builder ( getActivity () );
-        not.setContentTitle ( "La aplicacion esta activa"  ).
+        not.setContentTitle ( "La aplicación está activa"  ).
                 setSmallIcon ( R.mipmap.icono_app_round ).
                 setLargeIcon ( BitmapFactory.decodeResource ( getResources (),R.mipmap.icono_app_round ) ).
                 setContentIntent ( pi ).
