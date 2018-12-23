@@ -5,9 +5,11 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
@@ -16,6 +18,7 @@ import com.example.usuario.projectasee.RutesViewModel;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FragmentResumen extends Fragment {
@@ -29,13 +32,14 @@ public class FragmentResumen extends Fragment {
         View view = inflater.inflate(R.layout.resumenfragment ,container,false);
         float distancia=0;
         double calorias=0;
+        Time tiempo=new Time ( 0,0,0 );
         rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
         rutesViewModel.getAllRutes ().observe ( this , new Observer <List <Ruta>> () {
             @Override
             public void onChanged(@Nullable List <Ruta> rutas) {
+                ruteList=rutas;
                 float distancia=0;
                 double calorias=0;
-                ruteList=rutas;
                 Time tiempo=new Time ( 0,0,0 );
                 for(int i=0;i<ruteList.size ();i++){
                     distancia=distancia+ruteList.get ( i ).getDistancia ();
@@ -47,16 +51,16 @@ public class FragmentResumen extends Fragment {
                 }
 
                 TextView t1=getView ().findViewById ( R.id.TextDistancia );
-                t1.setText ( String.valueOf ( distancia ) );
+                t1.setText ( String.format ( "%.1f",distancia ) );
 
-                TextView t2=getView().findViewById ( R.id.TextCalorias );
-                t2.setText ( String.valueOf ( calorias) );
+                TextView t2=getView ().findViewById ( R.id.TextCalorias );
+                t2.setText ( String.format ( "%.2f",calorias) );
 
-                TextView t3= getView().findViewById ( R.id.TextTime);
+                TextView t3= getView ().findViewById ( R.id.TextTime);
                 t3.setText ( tiempo.toString ());
+
             }
         } );
-        Time tiempo=new Time ( 0,0,0 );
         for(int i=0;i<ruteList.size ();i++){
             distancia=distancia+ruteList.get ( i ).getDistancia ();
             calorias=calorias+ruteList.get ( i ).getCalorias();
@@ -74,6 +78,8 @@ public class FragmentResumen extends Fragment {
 
         TextView t3= view.findViewById ( R.id.TextTime);
         t3.setText ( tiempo.toString ());
+
+
         return view;
     }
 

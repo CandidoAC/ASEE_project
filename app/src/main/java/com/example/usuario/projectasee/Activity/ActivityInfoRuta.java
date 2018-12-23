@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 
 import com.example.usuario.projectasee.Activity.ActivityConfiguracion;
 import com.example.usuario.projectasee.Activity.ActivityPerfil;
-import com.example.usuario.projectasee.Database.AppDatabase;
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
 import com.example.usuario.projectasee.RutesViewModel;
@@ -42,7 +40,6 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
     private Marker marker;
     private MapView mMapView;
     private RutesViewModel rutesViewModel;
-    public static Ruta rute;
     private double lat=0.0;
     private double lon=0.0;
     private static final int PETICION_PERMISO_LOCALIZACION=101;
@@ -51,7 +48,6 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.rutaactivity );
-        rute=new Ruta (  );
         mMapView = (MapView) findViewById ( R.id.mapView2 );
         mMapView.onCreate (savedInstanceState );
 
@@ -65,29 +61,30 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                 finish ();
             }
         } );
-        //Log.i ( "Ruta",rute.getNombre () );
+        setSupportActionBar ( toolbar );
+
         try {
             MapsInitializer.initialize ( getApplicationContext () );
         } catch (Exception e) {
             e.printStackTrace ();
         }
 
-        Bundle b=getIntent ().getExtras ();
+        mMapView.getMapAsync ( this);
         rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
-        Ruta r= rutesViewModel.getRuta ( b.getInt ( "ruteId" ) );
+        Bundle b = getIntent().getExtras();
+        Integer id=b.getInt ( "ruteId" );
+        Ruta r=rutesViewModel.getRuta ( id );
+        TextView t=findViewById ( R.id.TextNombreRuta );
+        t.setText ( String.valueOf ( r.getDistancia () ));
 
         TextView t1=findViewById ( R.id.TextDistanciaRuta );
-        t1.setText ( String.valueOf ( r.getDistancia () ) );
+        t1.setText ( String.valueOf ( r.getDistancia () ));
 
         TextView t2=findViewById ( R.id.TextCaloriasRuta );
-        t2.setText ( String.valueOf ( r.getCalorias ()) );
+        t2.setText ( String.valueOf ( r.getCalorias()) );
 
         TextView t3= findViewById ( R.id.TextTimeRuta);
         t3.setText ( r.getTiempo ().toString ());
-
-        TextView t4=findViewById ( R.id.TextNombreRuta );
-        t4.setText ( String.valueOf ( r.getNombre () ));
-
     }
 
     @Override
@@ -143,7 +140,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
 
     public void anadirMarker(double lat , double lon) {
         LatLng coord = new LatLng ( lat , lon );
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 18 );
+        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 16 );
         if (marker != null) {
             marker.remove ();
         }
@@ -153,6 +150,40 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                 .icon ( BitmapDescriptorFactory.fromResource ( R.mipmap.icono ) ) );
         googleMap.animateCamera ( ub );
     }
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     *//*
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }*/
 
     public void actualizarUb(Location location) {
         if (location != null) {
@@ -195,7 +226,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
             actualizarUb(location);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 15000,0,locListener);
         }
     }
 
