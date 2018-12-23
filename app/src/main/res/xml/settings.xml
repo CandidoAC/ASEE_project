@@ -5,7 +5,7 @@
     <SwitchPreference
         android:id="@+id/Notification"
         android:key="switchId"
-        android:title="Show notification"
+        android:title="Mostrar notificaciones"
         android:switchTextOn="Switch on"
         android:switchTextOff="Switch off">
     </SwitchPreference>

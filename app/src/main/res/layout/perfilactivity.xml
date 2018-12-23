@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true"
-    tools:context="MainActivity">
+    tools:context=".Activity.MainActivity">
 
 <android.support.design.widget.AppBarLayout
     android:id="@+id/appbar"
