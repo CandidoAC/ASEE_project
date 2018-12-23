@@ -1,15 +1,12 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Modelo;
 
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.Intent;
-import android.net.rtp.RtpStream;
 
 import java.sql.Time;
-import java.text.ParseException;
-import java.util.Date;
 
 @Entity(tableName = "rutas")
 public class Ruta {

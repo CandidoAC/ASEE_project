@@ -1,4 +1,4 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.usuario.projectasee.R;
 
 public class ActivityPerfil extends AppCompatActivity {
     private ImageButton bnombre, bapellidos, bsexo, bedad, baltura, bpeso;

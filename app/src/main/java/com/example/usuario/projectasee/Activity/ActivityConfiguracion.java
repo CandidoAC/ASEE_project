@@ -1,4 +1,4 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Activity;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -10,24 +10,17 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Switch;
-import android.widget.Toast;
 
-import java.util.List;
+import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.Fragments.SettingFragment;
 
 public class ActivityConfiguracion extends AppCompatActivity {
     @Override
@@ -44,7 +37,7 @@ public class ActivityConfiguracion extends AppCompatActivity {
             }
         } );
         getFragmentManager().beginTransaction()
-                .replace(R.id.fragment, new SettingFragment ())
+                .replace(R.id.fragment, new SettingFragment())
                 .commit();
         setSupportActionBar ( toolbar );
     }

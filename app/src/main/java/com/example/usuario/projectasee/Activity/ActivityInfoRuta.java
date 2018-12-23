@@ -1,5 +1,6 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +18,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.example.usuario.projectasee.Activity.ActivityConfiguracion;
+import com.example.usuario.projectasee.Activity.ActivityPerfil;
+import com.example.usuario.projectasee.Database.AppDatabase;
+import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.RutesViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,6 +41,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap googleMap;
     private Marker marker;
     private MapView mMapView;
+    private RutesViewModel rutesViewModel;
     public static Ruta rute;
     private double lat=0.0;
     private double lon=0.0;
@@ -56,7 +65,6 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                 finish ();
             }
         } );
-        //new AsyncGetRuta().execute ( 9 );
         //Log.i ( "Ruta",rute.getNombre () );
         try {
             MapsInitializer.initialize ( getApplicationContext () );
@@ -64,8 +72,22 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
             e.printStackTrace ();
         }
 
+        Bundle b=getIntent ().getExtras ();
+        rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
+        Ruta r= rutesViewModel.getRuta ( b.getInt ( "ruteId" ) );
 
-        mMapView.getMapAsync ( this);
+        TextView t1=findViewById ( R.id.TextDistanciaRuta );
+        t1.setText ( String.valueOf ( r.getDistancia () ) );
+
+        TextView t2=findViewById ( R.id.TextCaloriasRuta );
+        t2.setText ( String.valueOf ( r.getCalorias ()) );
+
+        TextView t3= findViewById ( R.id.TextTimeRuta);
+        t3.setText ( r.getTiempo ().toString ());
+
+        TextView t4=findViewById ( R.id.TextNombreRuta );
+        t4.setText ( String.valueOf ( r.getNombre () ));
+
     }
 
     @Override
@@ -174,19 +196,6 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
             actualizarUb(location);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
-        }
-    }
-    class AsyncGetRuta extends AsyncTask<Integer, Void, Ruta> {
-        @Override
-        protected Ruta doInBackground(Integer... id) {
-            AppDatabase db = AppDatabase.getAppDatabase(ActivityInfoRuta.this);
-            return db.daoRutas().getRuta(id[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Ruta ruta) {
-            super.onPostExecute(ruta);
-            rute=ruta;
         }
     }
 
