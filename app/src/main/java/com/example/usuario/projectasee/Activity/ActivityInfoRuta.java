@@ -75,7 +75,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
         Integer id=b.getInt ( "ruteId" );
         Ruta r=rutesViewModel.getRuta ( id );
         TextView t=findViewById ( R.id.TextNombreRuta );
-        t.setText ( String.valueOf ( r.getDistancia () ));
+        t.setText ( String.valueOf ( r.getNombre ()));
 
         TextView t1=findViewById ( R.id.TextDistanciaRuta );
         t1.setText ( String.valueOf ( r.getDistancia () ));

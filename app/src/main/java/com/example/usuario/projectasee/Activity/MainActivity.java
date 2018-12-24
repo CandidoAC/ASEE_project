@@ -14,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.usuario.projectasee.Adapters.AdapterTabs;
-import com.example.usuario.projectasee.FragmentPrincipal;
+import com.example.usuario.projectasee.Fragments.FragmentPrincipal;
 import com.example.usuario.projectasee.Fragments.*;
 import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
 import com.example.usuario.projectasee.Fragments.FragmentResumen;
