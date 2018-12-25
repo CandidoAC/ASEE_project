@@ -1,22 +1,21 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Fragments;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,9 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 
-import com.example.usuario.projectasee.Database.AppDatabase;
 import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.RutesViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,11 +36,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.LOCATION_SERVICE;
 
 public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private GoogleMap googleMap;
@@ -55,6 +57,8 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private int h, m,s;
     private float distancia, calorias;
     private RutesViewModel rutesViewModel;
+    private List<LatLng> lcoordenadas;
+    Polyline p;
 
     private static final int PETICION_PERMISO_LOCALIZACION=101;
 
@@ -62,6 +66,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lcoordenadas=new ArrayList <LatLng> (  );
     }
 
     @Nullable
@@ -96,6 +101,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                 if(!clicked){
                     focus.setBase(SystemClock.elapsedRealtime());
                     clicked = true;
+                    lcoordenadas=new ArrayList <LatLng> (  );
                     start.setText("Stop");
                     focus.start();
                 }else{
@@ -119,13 +125,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                             int hs   = (int)(time /3600000);
                             int mins = (int)(time - h*3600000)/60000;
                             int ss= (int)(time - h*3600000- m*60000)/1000 ;
-                            distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
+                            //distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
                             calorias = 8/*13.75 * peso + 5 * altura - 6.76 * edad + 66*/;
-                            Ruta ruta = new Ruta(0,m_Text,distancia,calorias,new Time(hs,mins,ss));
+                            Ruta ruta = new Ruta(0,m_Text,calorias,new Time(hs,mins,ss),lcoordenadas);
 
                             rutesViewModel.insertarRuta ( ruta );
+
                         }
                     });
+                    googleMap.clear ();
 
                     alertDialog.show();
                 }
@@ -176,6 +184,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         @Override
         public void onLocationChanged(Location location) {
             actualizarUb ( location );
+            lcoordenadas.add ( new LatLng ( location.getLatitude (),location.getLongitude () ) );
+            if(clicked){
+                Log.i ( "GPS","new line created" );
+                p=googleMap.addPolyline (new PolylineOptions ()
+                        .addAll ( lcoordenadas )
+                        .color ( Color.RED)
+                        .width ( 20 ));
+            }
+
         }
 
         @Override
@@ -205,7 +222,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
             actualizarUb(location);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 1000,0,locListener);
         }
     }
     }

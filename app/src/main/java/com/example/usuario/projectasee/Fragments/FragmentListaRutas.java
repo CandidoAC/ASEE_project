@@ -1,10 +1,7 @@
 package com.example.usuario.projectasee.Fragments;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +17,6 @@ import android.view.ViewGroup;
 import com.example.usuario.projectasee.*;
 import com.example.usuario.projectasee.Activity.ActivityInfoRuta;
 import com.example.usuario.projectasee.Adapters.RutesAdapter;
-import com.example.usuario.projectasee.Database.AppDatabase;
 import com.example.usuario.projectasee.Modelo.Ruta;
 
 

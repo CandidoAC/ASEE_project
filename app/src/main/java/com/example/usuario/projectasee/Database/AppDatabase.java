@@ -10,16 +10,18 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.usuario.projectasee.Activity.MainActivity;
 import com.example.usuario.projectasee.HttpHandler;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.Modelo.Ruta;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Database(entities = {Ruta.class, Event.class}, version = 1)
@@ -68,7 +70,13 @@ public abstract class AppDatabase extends RoomDatabase {
                         Integer horas=time.getInt ( "Hours" );
                         Integer min=time.getInt ( "Minutes" );
                         Integer s=time.getInt ( "Seconds" );
-                        appdatabase[0].daoRutas ().anadirRuta ( new Ruta ( 0, o.getString ( "nombre" ) , (float) o.getDouble ( "distancia" ) , (float) o.getDouble ( "calorias" ) , new Time ( horas,min,s)) );
+                        List<LatLng> LCoordenadas =new ArrayList<LatLng> ();
+                        JSONArray JArrayCoord = o.getJSONArray ( "coordenadas" );
+                        for (int j = 0; j < JArrayCoord.length (); j++) {
+                            JSONObject coor = JArrayCoord.getJSONObject ( j );
+                            LCoordenadas.add ( new LatLng ( coor.getDouble ( "Lat" ),coor.getDouble ( "Long" ) ) );
+                        }
+                        appdatabase[0].daoRutas ().anadirRuta ( new Ruta ( 0, o.getString ( "nombre" )  , (float) o.getDouble ( "calorias" ) , new Time ( horas,min,s),LCoordenadas) );
                     }
                 } catch (JSONException e) {
                     e.printStackTrace ();

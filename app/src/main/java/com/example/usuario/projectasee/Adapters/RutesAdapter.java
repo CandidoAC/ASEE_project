@@ -1,15 +1,11 @@
 package com.example.usuario.projectasee.Adapters;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.usuario.projectasee.Activity.ActivityInfoRuta;
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
 
@@ -33,7 +29,7 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
         }
 
         public void bind(final Ruta Ruta,final OnItemClickListener listener) {
-            String f=String.valueOf ( Ruta.getDistancia ());
+            String f=String.format ( "%.2f",Ruta.getDistancia ());
             nombre.setText ( Ruta.getNombre () );
             distancia.setText ("\t" +f+" km.");
 

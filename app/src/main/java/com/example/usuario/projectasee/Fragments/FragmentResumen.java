@@ -5,11 +5,9 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
@@ -18,7 +16,6 @@ import com.example.usuario.projectasee.RutesViewModel;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FragmentResumen extends Fragment {
@@ -51,7 +48,7 @@ public class FragmentResumen extends Fragment {
                 }
 
                 TextView t1=getView ().findViewById ( R.id.TextDistancia );
-                t1.setText ( String.format ( "%.1f",distancia ) );
+                t1.setText ( String.format ( "%.2f",distancia)+" kms" );
 
                 TextView t2=getView ().findViewById ( R.id.TextCalorias );
                 t2.setText ( String.format ( "%.2f",calorias) );

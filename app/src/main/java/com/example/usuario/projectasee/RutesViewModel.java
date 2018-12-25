@@ -9,9 +9,6 @@ import com.example.usuario.projectasee.Modelo.Ruta;
 
 import java.util.List;
 
-
-import android.arch.lifecycle.ViewModel;
-
 public class RutesViewModel extends AndroidViewModel {
 
     private RutasRepository repository;

@@ -20,9 +20,6 @@ import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
 import com.example.usuario.projectasee.Fragments.FragmentResumen;
 import com.example.usuario.projectasee.R;
 
-
-import static java.lang.Thread.sleep;
-
 public class  MainActivity extends AppCompatActivity {
 
     private com.example.usuario.projectasee.Adapters.AdapterTabs AdapterTabs;
@@ -80,11 +77,9 @@ public class  MainActivity extends AppCompatActivity {
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
         adapter.addFragment ( new FragmentPrincipal () , "Principal" );
         FragmentListaRutas fr = new FragmentListaRutas ();
-        //fr.setRuteList ( ruteList );
         adapter.addFragment ( fr , "Lista rutas" );
         adapter.addFragment ( new FragmentCalendario () , "Calendario" );
         FragmentResumen fr1 = new FragmentResumen ();
-        // fr1.setRuteList ( ruteList );
         adapter.addFragment ( fr1 , "Resumen" );
         viewPager.setAdapter ( adapter );
     }

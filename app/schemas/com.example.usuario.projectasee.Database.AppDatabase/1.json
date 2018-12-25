@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "31498fdb2b10c9c7c86ffef329d61a38",
+    "identityHash": "2e6ca516de8458d813a377379fbc0a18",
     "entities": [
       {
         "tableName": "rutas",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT, `distancia` REAL NOT NULL, `calorias` REAL NOT NULL, `tiempo` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT, `distancia` REAL NOT NULL, `calorias` REAL NOT NULL, `tiempo` TEXT, `lcoordenadas` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -35,6 +35,12 @@
           {
             "fieldPath": "tiempo",
             "columnName": "tiempo",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lcoordenadas",
+            "columnName": "lcoordenadas",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -83,7 +89,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"31498fdb2b10c9c7c86ffef329d61a38\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2e6ca516de8458d813a377379fbc0a18\")"
     ]
   }
 }
