@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -24,6 +26,7 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.Notification;
 import com.example.usuario.projectasee.R;
 import com.example.usuario.projectasee.RutesViewModel;
 import com.google.android.gms.maps.CameraUpdate;
@@ -58,6 +61,8 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private float distancia, calorias;
     private RutesViewModel rutesViewModel;
     private List<LatLng> lcoordenadas;
+    Notification not;
+    Boolean notificacion;
     Polyline p;
 
     private static final int PETICION_PERMISO_LOCALIZACION=101;
@@ -67,6 +72,13 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lcoordenadas=new ArrayList <LatLng> (  );
+        not=new Notification(getActivity ());
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences ( getActivity () );
+        if(p.getBoolean ( "switchId",false )){
+            notificacion=true;
+        }else{
+            notificacion=false;
+        }
     }
 
     @Nullable
@@ -94,7 +106,16 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                 chronometer.setText(t);
             }
         });
-        focus.setText("00:00:00");
+        Bundle b=new Bundle (  );
+        onViewStateRestored ( b );
+        if(!b.getBoolean ("Started" )) {
+            focus.setText ( "00:00:00" );
+            clicked=false;
+        }else{
+            focus.setText ( b.getCharSequence ( "timer" ) );
+            clicked=true;
+            focus.start ();
+        }
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,12 +125,16 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                     lcoordenadas=new ArrayList <LatLng> (  );
                     start.setText("Stop");
                     focus.start();
+                    if (notificacion)
+                        not.addNotification ();
                 }else{
                     clicked = false;
                     start.setText("Start");
                     focus.stop();
                     focus.setBase(SystemClock.elapsedRealtime());
                     focus.setText("00:00:00");
+                    if(notificacion)
+                        not.destroyNotifications ();
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                     alertDialog.setTitle("Ruta completada");
                     alertDialog.setMessage("Escribe el nombre de la ruta:");
@@ -149,6 +174,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
         mMapView.getMapAsync ( this);
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop ();
+        Bundle b=new Bundle (  );
+        b.putBoolean ( "Started",clicked );
+        b.putCharSequence ( "timer",focus.getText () );
+        onSaveInstanceState ( b );
     }
 
     @Override
