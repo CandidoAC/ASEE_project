@@ -49,6 +49,8 @@ import java.util.List;
 
 public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private GoogleMap googleMap;
+    private LatLng firstUbi;
+    private boolean firstUb=true;
     private Marker marker;
     private double lat=0.0;
     private double lon=0.0;
@@ -123,6 +125,8 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                     focus.setBase(SystemClock.elapsedRealtime());
                     clicked = true;
                     lcoordenadas=new ArrayList <LatLng> (  );
+                    lcoordenadas.add ( firstUbi );
+                    firstUb=false;
                     start.setText("Stop");
                     focus.start();
                     if (notificacion)
@@ -131,6 +135,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                     clicked = false;
                     start.setText("Start");
                     focus.stop();
+                    firstUb=false;
                     focus.setBase(SystemClock.elapsedRealtime());
                     focus.setText("00:00:00");
                     if(notificacion)
@@ -193,6 +198,9 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
     public void anadirMarker(double lat , double lon) {
         LatLng coord = new LatLng ( lat , lon );
+        if(firstUb){
+            firstUbi=coord;
+        }
         CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 18 );
         if (marker != null) {
             marker.remove ();
@@ -207,6 +215,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
 
     public void actualizarUb(Location location) {
+
         if (location != null) {
             lat = location.getLatitude ();
             lon = location.getLongitude ();

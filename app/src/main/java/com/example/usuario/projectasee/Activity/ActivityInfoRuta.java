@@ -121,12 +121,18 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        googleMap.addPolyline (new PolylineOptions ()
-                .addAll ( r.getLcoordenadas () )
-                .color(Color.RED )
-                .width ( 20 ));
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( r.getLcoordenadas ().get ( (int)r.getLcoordenadas ().size()/2 ) , 14 );
-        googleMap.animateCamera ( ub );
+
+        if (r.getLcoordenadas ().size () >1){
+            googleMap.addPolyline ( new PolylineOptions ()
+                    .addAll ( r.getLcoordenadas () )
+                    .color ( Color.RED )
+                    .width ( 20 ) );
+            CameraUpdate ub=CameraUpdateFactory.newLatLngZoom ( r.getLcoordenadas ().get ( (int) r.getLcoordenadas ().size () / 2 ) , 14 );
+            googleMap.animateCamera ( ub );
+        }else{
+            CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( r.getLcoordenadas ().get ( 0 ), 14 );
+            googleMap.animateCamera ( ub );
+        }
 
     }
 
