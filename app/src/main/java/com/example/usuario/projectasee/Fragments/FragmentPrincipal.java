@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -24,10 +25,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.Notification;
 import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.RuteService;
 import com.example.usuario.projectasee.RutesViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,8 +46,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 
 public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
@@ -56,7 +61,8 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private double lon=0.0;
     private String m_Text = "";
     private MapView mMapView;
-    private Chronometer focus;
+    private Time Time;
+    private TextView focus;
     private Button start;
     private boolean clicked;
     private int h, m,s;
@@ -66,6 +72,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     Notification not;
     Boolean notificacion;
     Polyline p;
+    private List<Polyline> ListP;
 
     private static final int PETICION_PERMISO_LOCALIZACION=101;
 
@@ -74,6 +81,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lcoordenadas=new ArrayList <LatLng> (  );
+        ListP=new ArrayList <Polyline> (  );
         not=new Notification(getActivity ());
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences ( getActivity () );
         if(p.getBoolean ( "switchId",false )){
@@ -91,13 +99,11 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         mMapView.onCreate ( savedInstanceState );
 
         mMapView.onResume (); // needed to get the map to display immediately
-
         start = rootView.findViewById(R.id.startFinish);
         start.setText("Start");
         focus = (Chronometer) rootView.findViewById(R.id.chronometer);
-        clicked = false;
         rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
-        focus.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+        /*focus.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
@@ -108,68 +114,61 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                 chronometer.setText(t);
             }
         });
-        Bundle b=new Bundle (  );
-        onViewStateRestored ( b );
-        if(!b.getBoolean ("Started" )) {
-            focus.setText ( "00:00:00" );
-            clicked=false;
-        }else{
-            focus.setText ( b.getCharSequence ( "timer" ) );
-            clicked=true;
-            focus.start ();
-        }
+        */
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!clicked){
-                    focus.setBase(SystemClock.elapsedRealtime());
                     clicked = true;
                     lcoordenadas=new ArrayList <LatLng> (  );
-                    lcoordenadas.add ( firstUbi );
-                    firstUb=false;
                     start.setText("Stop");
-                    focus.start();
+                    iniciarCronometro();
                     if (notificacion)
                         not.addNotification ();
-                }else{
+                }else {
+                    pararCronometro();
+                    clearRute();
                     clicked = false;
-                    start.setText("Start");
-                    focus.stop();
-                    firstUb=false;
-                    focus.setBase(SystemClock.elapsedRealtime());
-                    focus.setText("00:00:00");
-                    if(notificacion)
-                        not.destroyNotifications ();
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                    alertDialog.setTitle("Ruta completada");
-                    alertDialog.setMessage("Escribe el nombre de la ruta:");
+                    start.setText ( "Start" );
+                    firstUb = false;
 
-                    final EditText input = new EditText(getActivity());
-                    input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    alertDialog.setView(input);
-                    alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    focus.setText ( "00:00:00" );
+                    if (notificacion)
+                        not.destroyNotifications ();
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder ( getContext () );
+                    alertDialog.setTitle ( "Ruta completada" );
+                    alertDialog.setMessage ( "Escribe el nombre de la ruta:" );
+
+                    final EditText input = new EditText ( getActivity () );
+                    input.setInputType ( InputType.TYPE_CLASS_TEXT );
+                    alertDialog.setView ( input );
+                    alertDialog.setPositiveButton ( "Confirmar" , new DialogInterface.OnClickListener () {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            m_Text = input.getText().toString();
-                            long time = SystemClock.elapsedRealtime() - focus.getBase();
-                            int hs   = (int)(time /3600000);
-                            int mins = (int)(time - h*3600000)/60000;
-                            int ss= (int)(time - h*3600000- m*60000)/1000 ;
+                        public void onClick(DialogInterface dialog , int which) {
+                            m_Text = input.getText ().toString ();
                             //distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
                             calorias = 8/*13.75 * peso + 5 * altura - 6.76 * edad + 66*/;
-                            Ruta ruta = new Ruta(0,m_Text,calorias,new Time(hs,mins,ss),lcoordenadas);
+                            Ruta ruta = new Ruta ( 0 , m_Text , calorias , Time , lcoordenadas );
 
                             rutesViewModel.insertarRuta ( ruta );
-
                         }
-                    });
-                    googleMap.clear ();
+                    } );
 
-                    alertDialog.show();
+                    alertDialog.show ();
                 }
             }
         });
+        RuteService.setUpdateListener ( this );
+        clicked = RuteService.isRunning () ;
+        if(!clicked){
+            start.setText ( "Start" );
+            focus.setText ( "00:00:00" );
+        }else{
+            start.setText("Stop");
+            if (notificacion)
+                not.addNotification ();
 
+        }
         try {
             MapsInitializer.initialize ( getActivity ().getApplicationContext () );
         } catch (Exception e) {
@@ -181,13 +180,24 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         return rootView;
     }
 
-    @Override
-    public void onStop() {
-        super.onStop ();
-        Bundle b=new Bundle (  );
-        b.putBoolean ( "Started",clicked );
-        b.putCharSequence ( "timer",focus.getText () );
-        onSaveInstanceState ( b );
+    private void iniciarCronometro() {
+        Intent service=new Intent ( getActivity (),RuteService.class );
+        getActivity ().startService(service);
+    }
+
+    private void pararCronometro() {
+        Intent service=new Intent ( getActivity (),RuteService.class );
+        getActivity ().stopService (service);
+    }
+
+    public void setChronometer(int s){
+        int h=(int)s/3600;
+        s=s-h*3600;
+        int m=(int)s/60;
+        s=s-m*60;
+        Time=new Time ( h,m,s );
+
+        focus.setText ( (h < 10 ? "0"+h: h)+":"+(m < 10 ? "0"+m: m)+":"+ (s < 10 ? "0"+s: s) );
     }
 
     @Override
@@ -213,6 +223,13 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     }
 
 
+    public  void clearRute(){
+        for(Polyline line:ListP){
+            line.remove ();
+        }
+        ListP.clear ();
+        googleMap.clear ();
+    }
 
     public void actualizarUb(Location location) {
 
@@ -234,6 +251,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                         .addAll ( lcoordenadas )
                         .color ( Color.RED)
                         .width ( 20 ));
+                ListP.add ( p );
             }
 
         }

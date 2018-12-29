@@ -50,6 +50,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".Activity.MainActivity"
             android:screenOrientation="portrait"/>
-
+        <service android:name="RuteService"></service>
     </application>
 </manifest>
