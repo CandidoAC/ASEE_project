@@ -31,14 +31,14 @@ public class FragmentListaRutas extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ruteList = new ArrayList<> ();
+        ruteList = new ArrayList<Ruta>();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listarutasfragment ,container,false);
-        //new AsyncLoad().execute();
+
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
@@ -56,14 +56,17 @@ public class FragmentListaRutas extends Fragment {
 
         recyclerView.setAdapter(mAdapter);
 
+        new AsyncLoad().execute();
         mAdapter.notifyDataSetChanged();
+
         return view;
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        new AsyncLoad().execute();
+      //  new AsyncLoad().execute();
     }
 
     public List <Ruta> getRuteList() {
@@ -86,6 +89,7 @@ public class FragmentListaRutas extends Fragment {
         protected List<Ruta> doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());
             List<Ruta> rutas = db.daoRutas().getRutas();
+            ruteList.addAll(rutas);
             publishProgress(rutas);
             return rutas;
         }
@@ -93,13 +97,14 @@ public class FragmentListaRutas extends Fragment {
         @Override
         protected void onProgressUpdate(List<Ruta>... rutas) {
             super.onProgressUpdate(rutas[0]);
+            ruteList = new ArrayList<Ruta>();
             ruteList.addAll(rutas[0]);
         }
 
         @Override
         protected void onPostExecute(List<Ruta> rutas) {
             super.onPostExecute(rutas);
-            ruteList.addAll(rutas);
+
         }
     }
 
