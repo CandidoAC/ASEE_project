@@ -3,9 +3,13 @@ package com.example.usuario.projectasee.Fragments;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -22,26 +26,38 @@ import android.widget.TextView;
 
 
 import com.example.usuario.projectasee.Database.AppDatabase;
+import com.example.usuario.projectasee.EventsViewModel;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class FragmentCalendario extends Fragment  {
     static List<Event> listE;
     private static String dateView;
     private static Date date;
+    private EventsViewModel eventsViewModel;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater , @Nullable ViewGroup container , @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater , @Nullable final ViewGroup container , @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate ( R.layout.calendariofragment , container , false );
-        listE=new ArrayList <Event> (  );
         date=new Date();
-        CalendarView c=(CalendarView) view.findViewById ( R.id.calendar );
+        listE=new ArrayList <Event> () ;
+        eventsViewModel = ViewModelProviders.of(this).get(EventsViewModel.class);
+        eventsViewModel.getAllEvents ().observe ( this , new Observer <List <Event>> () {
+            @Override
+            public void onChanged(@Nullable List <Event> events) {
+                listE=events;
+            }
+        } );
+        final CalendarView c=(CalendarView) view.findViewById ( R.id.calendar );
         FloatingActionButton f=view.findViewById ( R.id.floatingActionButton );
         f.setOnClickListener ( new View.OnClickListener () {
             @Override
@@ -71,7 +87,7 @@ public class FragmentCalendario extends Fragment  {
         } );
         c.setOnDateChangeListener ( new CalendarView.OnDateChangeListener () {
             @Override
-            public void onSelectedDayChange(CalendarView view , final int year , final int month , final int dayOfMonth) {
+            public void onSelectedDayChange(CalendarView Cview , final int year , final int month , final int dayOfMonth) {
                 TextView t=(TextView) getView ().findViewById ( R.id.calendarText );
                 t.setText("");
                 verEvents ( new Date ( year ,month,dayOfMonth ) );
@@ -104,11 +120,17 @@ public class FragmentCalendario extends Fragment  {
 
     private void showDatePickerDialog() {
         android.app.DialogFragment datePicker = new DatePickerFragment();
+        ((DatePickerFragment) datePicker).setEventsViewModel ( eventsViewModel );
         datePicker.show(getActivity ().getFragmentManager(), "datePicker");
 
     }
     public static class DatePickerFragment extends android.app.DialogFragment implements
             DatePickerDialog.OnDateSetListener {
+        EventsViewModel eventsViewModel;
+
+        public void setEventsViewModel(EventsViewModel eventsViewModel) {
+            this.eventsViewModel=eventsViewModel;
+        }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -132,24 +154,9 @@ public class FragmentCalendario extends Fragment  {
         }
         public void addEvent(Event e){
             Log.i("Calendar","Añadiendo evento con nombre "+e.getNombre()+" para el día "+e.getDate().toString ());//quitar 1900 años
-            listE.add ( e );
+            eventsViewModel.insertarEvent ( e );
         }
 
-    }
-
-    class AsyncInsertEvent extends AsyncTask<Event, Void, Event> {
-        @Override
-        protected Event doInBackground(Event... eventos) {
-            AppDatabase db = AppDatabase.getAppDatabase(getActivity());
-            db.daoEventos().anadirEvento(eventos[0]);
-            return eventos[0];
-        }
-
-        @Override
-        protected void onPostExecute(Event evento) {
-            super.onPostExecute(evento);
-
-        }
     }
 
 }

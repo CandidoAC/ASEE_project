@@ -28,6 +28,10 @@ public class RutesViewModel extends AndroidViewModel {
         return repository.getRuta ( id );
     }
 
+    public void modificarRuta(Ruta r){
+        repository.ModificarrRuta ( r );
+    }
+
     public void borrarRuta(Ruta r){
         repository.borrarRuta ( r );
     }

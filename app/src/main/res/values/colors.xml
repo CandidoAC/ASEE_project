@@ -9,4 +9,5 @@
     <color name="colorTabSelected">#0CC1DB</color>
     <color name="colorTexto">#090A0A</color>
     <color name="colorBotones">#04B9E6</color>
+    <color name="colorRed">#FF0000</color>
 </resources>

@@ -25,6 +25,10 @@ public class RutasRepository {
         new InsertRute ( this.daoRutas ).execute ( r );
     }
 
+    public void ModificarrRuta(Ruta r){
+        new UpdateRute ( this.daoRutas ).execute ( r );
+    }
+
     public Ruta getRuta(int id){
         Ruta r=null;
         try {
@@ -75,6 +79,20 @@ public class RutasRepository {
         @Override
         protected Void doInBackground(Ruta... rutas) {
             daoRutas.borrarRuta ( rutas[0] );
+            return null;
+        }
+    }
+
+    private static class UpdateRute extends AsyncTask<Ruta, Void, Void> {
+        private DaoRutas daoRutas;
+
+        private UpdateRute(DaoRutas daoRutas) {
+            this.daoRutas = daoRutas;
+        }
+
+        @Override
+        protected Void doInBackground(Ruta... rutas) {
+            daoRutas.updateRuta ( rutas[0] );
             return null;
         }
     }
