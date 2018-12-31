@@ -66,7 +66,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private Button start;
     private boolean clicked;
     private int h, m,s;
-    private float distancia, calorias;
+    private double calorias;
     private RutesViewModel rutesViewModel;
     private List<LatLng> lcoordenadas;
     Notification not;
@@ -146,9 +146,11 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                         @Override
                         public void onClick(DialogInterface dialog , int which) {
                             m_Text = input.getText ().toString ();
-                            //distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
-                            calorias = 8/*13.75 * peso + 5 * altura - 6.76 * edad + 66*/;
-                            Ruta ruta = new Ruta ( 0 , m_Text , calorias , Time , lcoordenadas );
+                            SharedPreferences prefs=getActivity ().getSharedPreferences("User", Context.MODE_PRIVATE);
+                            double timeMIN=Time.getHours ()*60+Time.getMinutes ()+Time.getSeconds ()/60.0;
+                            double peso=Float.valueOf ( prefs.getString ( "Peso", null));
+                            calorias = 0.092*(peso*2.2)*timeMIN;
+                            Ruta ruta = new Ruta ( 0 , m_Text  ,calorias, Time , lcoordenadas );
 
                             rutesViewModel.insertarRuta ( ruta );
                         }

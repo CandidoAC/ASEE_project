@@ -74,7 +74,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
         t1.setText ( String.format ( "%.2f",r.getDistancia ()) + " kms");
 
         TextView t2=findViewById ( R.id.TextCaloriasRuta );
-        t2.setText ( String.valueOf ( r.getCalorias()) );
+        t2.setText ( String.format ( "%.2f",r.getCalorias()) );
 
         TextView t3= findViewById ( R.id.TextTimeRuta);
         t3.setText ( r.getTiempo ().toString ());
