@@ -23,6 +23,9 @@ public interface DaoRutas {
     @Query("select * from rutas where id=:id")
     public Ruta getRuta(int id);
 
+    @Update
+    public void updateRuta(Ruta ruta);
+
     @Delete
     public void borrarRuta(Ruta ruta);
 

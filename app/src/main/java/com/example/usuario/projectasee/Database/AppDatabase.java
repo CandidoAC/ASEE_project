@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -32,6 +33,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract DaoRutas daoRutas();
     public abstract DaoEventos daoEventos();
+    public  static Context context;
 
     public static AppDatabase getAppDatabase(Context context) {
         if (instance == null) {
@@ -39,6 +41,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "rundb")
                             .addCallback ( roomCallback )
                             .build();
+            AppDatabase.getAppDatabase ( context ).context=context.getApplicationContext();
         }
         return instance;
     }
@@ -57,6 +60,8 @@ public abstract class AppDatabase extends RoomDatabase {
             HttpHandler h = new HttpHandler ();
             String url = "https://dl.dropboxusercontent.com/s/k2aj8u5kwv4n8fa/fichero.json?dl=0";
 
+            SharedPreferences prefs=context.getSharedPreferences ("User", Context.MODE_PRIVATE);
+            double peso=Float.valueOf ( prefs.getString ( "Peso", null));
             String jasonUrl = h.makeServiceCall ( url );
 
             if (jasonUrl != null) {
@@ -76,7 +81,9 @@ public abstract class AppDatabase extends RoomDatabase {
                             JSONObject coor = JArrayCoord.getJSONObject ( j );
                             LCoordenadas.add ( new LatLng ( coor.getDouble ( "Lat" ),coor.getDouble ( "Long" ) ) );
                         }
-                        appdatabase[0].daoRutas ().anadirRuta ( new Ruta ( 0, o.getString ( "nombre" )  , (float) o.getDouble ( "calorias" ) , new Time ( horas,min,s),LCoordenadas) );
+                        double timeMIN=horas*60+min+s/60.0;
+                        double calorias = 0.092*(peso*2.2)*timeMIN;
+                        appdatabase[0].daoRutas ().anadirRuta ( new Ruta ( 0, o.getString ( "nombre" )  , calorias , new Time ( horas,min,s),LCoordenadas) );
                     }
                 } catch (JSONException e) {
                     e.printStackTrace ();
