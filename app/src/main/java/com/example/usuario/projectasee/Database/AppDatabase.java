@@ -84,7 +84,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         }
                         double timeMIN=horas*60+min+s/60.0;
                         double calorias = 0.092*(peso*2.2)*timeMIN;
-                        appdatabase[0].daoRutas ().anadirRuta ( new Ruta ( 0, o.getString ( "nombre" )  , calorias , new Time ( horas,min,s),LCoordenadas) );
+                        appdatabase[0].daoRutas ().anadirRuta ( new Ruta (o.getString ( "nombre" )  , calorias , new Time ( horas,min,s),LCoordenadas) );
                     }
                 } catch (JSONException e) {
                     e.printStackTrace ();

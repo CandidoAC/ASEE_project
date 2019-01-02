@@ -33,8 +33,7 @@ public class Ruta {
     public Ruta() {
     }
 
-    public Ruta(int id, String nombre  , double calorias , Time tiempo,List<LatLng> lcoordenadas) {
-        this.id = id;
+    public Ruta(String nombre  , double calorias , Time tiempo,List<LatLng> lcoordenadas) {
         this.nombre = nombre;
         this.calorias = calorias;
         this.tiempo = tiempo;

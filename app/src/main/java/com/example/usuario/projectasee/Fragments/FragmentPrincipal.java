@@ -139,17 +139,28 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onClick(View v) {
                             m_Text = input.getText().toString();
+                            context = getContext();
                             if (!m_Text.trim().isEmpty()) {
                                 m_Text = input.getText().toString();
                                 SharedPreferences prefs = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
                                 double timeMIN = Time.getHours() * 60 + Time.getMinutes() + Time.getSeconds() / 60.0;
                                 double peso = Float.valueOf(prefs.getString("Peso", null));
                                 calorias = 0.092 * (peso * 2.2) * timeMIN;
-                                Ruta ruta = new Ruta(0, m_Text, calorias, Time, lcoordenadas);
-
-                                rutasViewModel.insertarRuta(ruta);
+                                if(lcoordenadas.isEmpty () && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
+                                    LocationManager locationManager = (LocationManager) getActivity ().getSystemService ( Context.LOCATION_SERVICE );
+                                    Location location = locationManager.getLastKnownLocation ( LocationManager.GPS_PROVIDER );
+                                    if(location!=null) {
+                                        lcoordenadas.add ( new LatLng ( location.getLatitude () , location.getLongitude () ) );
+                                        Ruta ruta = new Ruta (m_Text , calorias , Time , lcoordenadas );
+                                        rutasViewModel.insertarRuta ( ruta );
+                                    }else{
+                                        Toast.makeText ( context,"Error al crear ruta: No se encuentra GPS",Toast.LENGTH_SHORT ).show ();
+                                    }
+                                }else {
+                                    Ruta ruta = new Ruta (m_Text , calorias , Time , lcoordenadas );
+                                    rutasViewModel.insertarRuta ( ruta );
+                                }
                             } else {
-                                context = getContext();
                                 Toast.makeText(context, "Por favor, indique un nombre para la ruta", Toast.LENGTH_SHORT).show();
                                 return;
                             }

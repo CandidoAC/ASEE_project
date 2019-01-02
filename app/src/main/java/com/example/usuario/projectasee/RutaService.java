@@ -63,6 +63,8 @@ public class RutaService extends Service {
     private void pararCronometro() {
         isRunning=false;
         if(temporizador!=null){
+            cronometro = 0;
+            handle.sendEmptyMessageDelayed  ( 0,10 );
             Log.i("Cronometro",String.valueOf (  cronometro));
             temporizador.cancel ();
         }
