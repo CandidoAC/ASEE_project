@@ -49,6 +49,26 @@
             android:layout_height="match_parent">
 
             <TableRow
+                android:id="@+id/NombreRuta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/editText4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="@string/nombreruta" />
+
+                <TextView
+                    android:id="@+id/TextNombreRuta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+
+            </TableRow>
+            <TableRow
                 android:id="@+id/Distancia"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

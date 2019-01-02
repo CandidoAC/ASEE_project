@@ -29,10 +29,9 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
         }
 
         public void bind(final Ruta Ruta,final OnItemClickListener listener) {
-            String f=String.valueOf ( Ruta.getDistancia ());
+            String f=String.format ( "%.2f",Ruta.getDistancia ());
             nombre.setText ( Ruta.getNombre () );
             distancia.setText ("\t" +f+" km.");
-
 
             itemView.setOnClickListener ( new View.OnClickListener () {
                 @Override
@@ -52,6 +51,12 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
     public List<Ruta> rutaList () {
         return this.rutaList;
     }
+
+    public void setRutaList(List <Ruta> rutaList) {
+        this.rutaList = rutaList;
+        notifyDataSetChanged ();
+    }
+
     @Override
     public RutesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

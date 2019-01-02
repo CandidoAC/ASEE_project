@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,31 +15,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.usuario.projectasee.Adapters.AdapterTabs;
-import com.example.usuario.projectasee.Fragments.FragmentCalendario;
-import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
 import com.example.usuario.projectasee.Fragments.FragmentPrincipal;
+import com.example.usuario.projectasee.Fragments.*;
+import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
 import com.example.usuario.projectasee.Fragments.FragmentResumen;
-import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity  {
+public class  MainActivity extends AppCompatActivity {
 
     private com.example.usuario.projectasee.Adapters.AdapterTabs AdapterTabs;
     private ViewPager mViewPager;
     private Toolbar toolbar;
-
-    List<Ruta> ruteList;
+    //List <Ruta> ruteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_main );
-
-        //ruteList=new ArrayList<Ruta> () ;
-//        prepareRuteData ();
-
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
 
@@ -46,7 +39,7 @@ public class MainActivity extends AppCompatActivity  {
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
 
         mViewPager = (ViewPager) findViewById ( R.id.contenedor2 );
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit ( 3 );
         setupViewPager ( mViewPager );
 
         //Tabs de la aplicacion
@@ -57,81 +50,61 @@ public class MainActivity extends AppCompatActivity  {
         tabLayout.getTabAt ( 1 ).setText ( "Lista rutas" );
         tabLayout.getTabAt ( 2 ).setText ( "Calendario" );
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
-
     }
+
     @Override
     protected void onStart() {
         super.onStart ();
-        SharedPreferences p=PreferenceManager.getDefaultSharedPreferences ( this );
-        if(p.getString ( "listColor","" ).equals ( "Azul" )){
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences ( this );
+        if (p.getString ( "listColor" , "" ).equals ( "Azul" )) {
             findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.defaultBackground ) );
-        }else{
+        } else {
             if (p.getString ( "listColor" , "" ).equals ( "Blanco" )) {
                 findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.BlancoBackground ) );
-            }else{
+            } else {
                 findViewById ( R.id.main_content ).setBackgroundColor ( getResources ().getColor ( R.color.VerdeBackground ) );
-            }        }
+            }
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater ().inflate ( R.menu.menu_main , menu );
         return true;
     }
 
     private void setupViewPager(ViewPager viewPager) {
         AdapterTabs adapter = new AdapterTabs ( getSupportFragmentManager () );
-        adapter.addFragment ( new FragmentPrincipal() , "Principal" );
-        FragmentListaRutas fr=new FragmentListaRutas ();
-       // fr.setRuteList ( ruteList );
+        adapter.addFragment ( new FragmentPrincipal () , "Principal" );
+        FragmentListaRutas fr = new FragmentListaRutas ();
         adapter.addFragment ( fr , "Lista rutas" );
-        adapter.addFragment ( new FragmentCalendario() , "Calendario" );
-        FragmentResumen fr1=new FragmentResumen ();
-       // fr1.setRuteList ( ruteList );
-        adapter.addFragment ( fr1, "Resumen" );
+        adapter.addFragment ( new FragmentCalendario () , "Calendario" );
+        FragmentResumen fr1 = new FragmentResumen ();
+        adapter.addFragment ( fr1 , "Resumen" );
         viewPager.setAdapter ( adapter );
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
-            case  R.id.ic_action_setting:
-                Log.i("setting","Configuracion");
-                Intent i=new Intent (this,ActivityConfiguracion.class);
+        switch (item.getItemId ()) {
+            case R.id.ic_action_setting:
+                Log.i ( "setting" , "Configuracion" );
+                Intent i = new Intent ( this , ActivityConfiguracion.class );
                 startActivity ( i );
-                Log.i("setting","Configuracion terminada");
+                Log.i ( "setting" , "Configuracion terminada" );
                 break;
-            case  R.id.ic_action_perfil:
-                Log.i("perfil","Perfil");
-                i=new Intent (this,ActivityPerfil.class);
+            case R.id.ic_action_perfil:
+                Log.i ( "perfil" , "Perfil" );
+                i = new Intent ( this , ActivityPerfil.class );
                 startActivity ( i );
-                Log.i("perfil","Perfil terminado");
+                Log.i ( "perfil" , "Perfil terminado" );
                 break;
 
             default:
-                   return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected ( item );
         }
         return true;
     }
-
-
-//    private void prepareRuteData() {
-//        Ruta rute = new Ruta (0,"Nombre1",1,5,new Time (0,1,25 ) );
-//        ruteList.add ( rute );
-//
-//        rute = new Ruta (0,"Nombre2",4,3,new Time ( 1,0,25 ) );
-//        ruteList.add ( rute );
-//
-//        rute = new Ruta (0,"Nombre3",6,1,new Time ( 0,1,0 ) );
-//        ruteList.add ( rute );
-//
-//        rute = new Ruta (0,"Nombre4",3,6,new Time ( 0,0,15 ) );
-//        ruteList.add ( rute );
-//
-//
-//    }
-
-
 }
 

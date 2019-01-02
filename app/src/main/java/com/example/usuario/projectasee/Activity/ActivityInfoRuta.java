@@ -1,41 +1,35 @@
 package com.example.usuario.projectasee.Activity;
 
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.RutesViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap googleMap;
-    private Marker marker;
+    Ruta r;
     private MapView mMapView;
-    private double lat=0.0;
-    private double lon=0.0;
-    private static final int PETICION_PERMISO_LOCALIZACION=101;
+    private RutesViewModel rutesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +56,23 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
             e.printStackTrace ();
         }
 
-
         mMapView.getMapAsync ( this);
+        rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
+        Bundle b = getIntent().getExtras();
+        Integer id=b.getInt ( "ruteId" );
+        r=rutesViewModel.getRuta ( id );
+
+        TextView t=findViewById ( R.id.TextNombreRuta );
+        t.setText ( String.valueOf ( r.getNombre ()));
+
+        TextView t1=findViewById ( R.id.TextDistanciaRuta );
+        t1.setText ( String.format ( "%.2f",r.getDistancia ()) + " kms");
+
+        TextView t2=findViewById ( R.id.TextCaloriasRuta );
+        t2.setText ( String.valueOf ( r.getCalorias()) );
+
+        TextView t3= findViewById ( R.id.TextTimeRuta);
+        t3.setText ( r.getTiempo ().toString ());
     }
 
     @Override
@@ -83,8 +92,6 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /*MenuInflater inflater = getMenuInflater ();
-        inflater.inflate ( R.menu.menu_main , menu );*/
         getMenuInflater ().inflate ( R.menu.menu_main , menu );
         return true;
     }
@@ -114,65 +121,19 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        miUbicacion ();
-    }
 
-    public void anadirMarker(double lat , double lon) {
-        LatLng coord = new LatLng ( lat , lon );
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 20 );
-        if (marker != null) {
-            marker.remove ();
-        }
-        marker = googleMap.addMarker ( new MarkerOptions ()
-                .position ( coord )
-                .title ( "Mi ubicación" )
-                .icon ( BitmapDescriptorFactory.fromResource ( R.mipmap.icono ) ) );
-        googleMap.animateCamera ( ub );
-    }
-
-    public void actualizarUb(Location location) {
-        if (location != null) {
-            lat = location.getLatitude ();
-            lon = location.getLongitude ();
-            anadirMarker ( lat , lon );
-        }
-    }
-
-    LocationListener locListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            actualizarUb ( location );
+        if (r.getLcoordenadas ().size () >1){
+            googleMap.addPolyline ( new PolylineOptions ()
+                    .addAll ( r.getLcoordenadas () )
+                    .color ( Color.RED )
+                    .width ( 20 ) );
+            CameraUpdate ub=CameraUpdateFactory.newLatLngZoom ( r.getLcoordenadas ().get ( (int) r.getLcoordenadas ().size () / 2 ) , 14 );
+            googleMap.animateCamera ( ub );
+        }else{
+            CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( r.getLcoordenadas ().get ( 0 ), 14 );
+            googleMap.animateCamera ( ub );
         }
 
-        @Override
-        public void onStatusChanged(String provider , int status , Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    };
-
-    private void miUbicacion() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PETICION_PERMISO_LOCALIZACION);
-        } else {
-
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
-            actualizarUb(location);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
-        }
     }
 
 }

@@ -18,7 +18,7 @@ public interface DaoRutas {
     public void anadirRuta(Ruta ruta);
 
     @Query("select * from rutas")
-    public List<Ruta> getRutas();
+    public android.arch.lifecycle.LiveData <List <Ruta>> getRutas();
 
     @Query("select * from rutas where id=:id")
     public Ruta getRuta(int id);

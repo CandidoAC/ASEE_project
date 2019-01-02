@@ -20,6 +20,7 @@
     <string name="startStopButton">Start/Stop</string>
     <string name="sexo">Sexo</string>
     <string name="fotoPerfil">Foto de perfil</string>
+    <string name="nombreruta">NombreRuta</string>
     <array name="listColor">
         <item>Azul</item>
         <item>Blanco</item>

@@ -263,8 +263,6 @@ public class ActivityPerfil extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /*MenuInflater inflater = getMenuInflater ();
-        inflater.inflate ( R.menu.menu_main , menu );*/
         getMenuInflater ().inflate ( R.menu.menu_main , menu );
         return true;
     }

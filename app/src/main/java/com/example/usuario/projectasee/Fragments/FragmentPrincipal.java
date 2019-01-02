@@ -1,20 +1,23 @@
 package com.example.usuario.projectasee.Fragments;
 
 import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +25,10 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 
-import com.example.usuario.projectasee.Database.AppDatabase;
 import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.Notification;
 import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.RutesViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,13 +39,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private GoogleMap googleMap;
+    private LatLng firstUbi;
+    private boolean firstUb=true;
     private Marker marker;
     private double lat=0.0;
     private double lon=0.0;
@@ -51,9 +60,12 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     private Button start;
     private boolean clicked;
     private int h, m,s;
-    private float distancia;
-    private double calorias;
-    private SharedPreferences prefs;
+    private float distancia, calorias;
+    private RutesViewModel rutesViewModel;
+    private List<LatLng> lcoordenadas;
+    Notification not;
+    Boolean notificacion;
+    Polyline p;
 
     private static final int PETICION_PERMISO_LOCALIZACION=101;
 
@@ -61,14 +73,20 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = getActivity().getSharedPreferences("User", MODE_PRIVATE);
+        lcoordenadas=new ArrayList <LatLng> (  );
+        not=new Notification(getActivity ());
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences ( getActivity () );
+        if(p.getBoolean ( "switchId",false )){
+            notificacion=true;
+        }else{
+            notificacion=false;
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater , @Nullable ViewGroup container , @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate ( R.layout.principalfragment , container , false );
-
         mMapView = (MapView) rootView.findViewById ( R.id.mapView );
         mMapView.onCreate ( savedInstanceState );
 
@@ -78,6 +96,7 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         start.setText("Start");
         focus = (Chronometer) rootView.findViewById(R.id.chronometer);
         clicked = false;
+        rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
         focus.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
@@ -89,21 +108,38 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                 chronometer.setText(t);
             }
         });
-        focus.setText("00:00:00");
+        Bundle b=new Bundle (  );
+        onViewStateRestored ( b );
+        if(!b.getBoolean ("Started" )) {
+            focus.setText ( "00:00:00" );
+            clicked=false;
+        }else{
+            focus.setText ( b.getCharSequence ( "timer" ) );
+            clicked=true;
+            focus.start ();
+        }
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!clicked){
                     focus.setBase(SystemClock.elapsedRealtime());
                     clicked = true;
+                    lcoordenadas=new ArrayList <LatLng> (  );
+                    lcoordenadas.add ( firstUbi );
+                    firstUb=false;
                     start.setText("Stop");
                     focus.start();
+                    if (notificacion)
+                        not.addNotification ();
                 }else{
                     clicked = false;
                     start.setText("Start");
                     focus.stop();
+                    firstUb=false;
                     focus.setBase(SystemClock.elapsedRealtime());
                     focus.setText("00:00:00");
+                    if(notificacion)
+                        not.destroyNotifications ();
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                     alertDialog.setTitle("Ruta completada");
                     alertDialog.setMessage("Escribe el nombre de la ruta:");
@@ -119,20 +155,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
                             int hs   = (int)(time /3600000);
                             int mins = (int)(time - h*3600000)/60000;
                             int ss= (int)(time - h*3600000- m*60000)/1000 ;
-                            distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
-                            float peso = Float.valueOf(prefs.getString("Peso", String.valueOf(0)));
-                            int altura = Integer.valueOf(prefs.getString("Altura", String.valueOf(0)));
-                            int edad = Integer.valueOf(prefs.getString("Edad", String.valueOf(0)));
-                            if(peso != 0 && altura != 0 && edad != 0){
-                                calorias = 13.75 * peso + 5 * altura - 6.76 * edad + 66;
-                            }else{
-                                calorias = 13.75 + 5 - 6.76 + 66;
-                            }
+                            //distancia = hs * 6000 + mins * 6000/60 + ss * 6000/3600;
+                            calorias = 8/*13.75 * peso + 5 * altura - 6.76 * edad + 66*/;
+                            Ruta ruta = new Ruta(0,m_Text,calorias,new Time(hs,mins,ss),lcoordenadas);
 
-                            Ruta ruta = new Ruta(0,m_Text,distancia,calorias,new Time(hs,mins,ss));
-                            new AsyncInsert().execute(ruta);
+                            rutesViewModel.insertarRuta ( ruta );
+
                         }
                     });
+                    googleMap.clear ();
 
                     alertDialog.show();
                 }
@@ -151,6 +182,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
     }
 
     @Override
+    public void onStop() {
+        super.onStop ();
+        Bundle b=new Bundle (  );
+        b.putBoolean ( "Started",clicked );
+        b.putCharSequence ( "timer",focus.getText () );
+        onSaveInstanceState ( b );
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         miUbicacion ();
@@ -158,7 +198,10 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
 
     public void anadirMarker(double lat , double lon) {
         LatLng coord = new LatLng ( lat , lon );
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 20 );
+        if(firstUb){
+            firstUbi=coord;
+        }
+        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 18 );
         if (marker != null) {
             marker.remove ();
         }
@@ -169,7 +212,10 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         googleMap.animateCamera ( ub );
     }
 
+
+
     public void actualizarUb(Location location) {
+
         if (location != null) {
             lat = location.getLatitude ();
             lon = location.getLongitude ();
@@ -181,6 +227,15 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
         @Override
         public void onLocationChanged(Location location) {
             actualizarUb ( location );
+            lcoordenadas.add ( new LatLng ( location.getLatitude (),location.getLongitude () ) );
+            if(clicked){
+                Log.i ( "GPS","new line created" );
+                p=googleMap.addPolyline (new PolylineOptions ()
+                        .addAll ( lcoordenadas )
+                        .color ( Color.RED)
+                        .width ( 20 ));
+            }
+
         }
 
         @Override
@@ -210,23 +265,8 @@ public class FragmentPrincipal extends Fragment  implements OnMapReadyCallback {
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER );
             actualizarUb(location);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 5000,0,locListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER , 1000,0,locListener);
         }
     }
-
-    class AsyncInsert extends AsyncTask<Ruta, Ruta, Ruta> {
-        @Override
-        protected Ruta doInBackground(Ruta... rutas) {
-            AppDatabase db = AppDatabase.getAppDatabase(getActivity());
-            db.daoRutas().anadirRuta(rutas[0]);
-            return rutas[0];
-        }
-
-        @Override
-        protected void onPostExecute(Ruta ruta) {
-            super.onPostExecute(ruta);
-
-        }
     }
-}
 
