@@ -1,5 +1,6 @@
 package com.example.usuario.projectasee.Database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -18,18 +19,15 @@ public interface DaoRutas {
     public void anadirRuta(Ruta ruta);
 
     @Query("select * from rutas")
-    public android.arch.lifecycle.LiveData <List <Ruta>> getRutas();
+    public LiveData<List<Ruta>> getRutas();
 
     @Query("select * from rutas where id=:id")
     public Ruta getRuta(int id);
-
-    @Update
-    public void updateRuta(Ruta ruta);
 
     @Delete
     public void borrarRuta(Ruta ruta);
 
     @Update
-    public void editarUsuario(Ruta ruta);
+    public void editarRuta(Ruta ruta);
 
 }

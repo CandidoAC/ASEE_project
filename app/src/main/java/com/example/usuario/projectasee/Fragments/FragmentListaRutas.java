@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.usuario.projectasee.*;
 import com.example.usuario.projectasee.Activity.ActivityInfoRuta;
-import com.example.usuario.projectasee.Adapters.RutesAdapter;
+import com.example.usuario.projectasee.Adapters.RutasAdapter;
 import com.example.usuario.projectasee.Modelo.Ruta;
 
 
@@ -26,15 +26,15 @@ import java.util.List;
 public class FragmentListaRutas extends Fragment {
     private List<Ruta> ruteList;
     private RecyclerView recyclerView;
-    private RutesAdapter mAdapter;
-    private RutesViewModel rutesViewModel;
+    private RutasAdapter mAdapter;
+    private RutasViewModel rutasViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ruteList=new ArrayList<>(  );
-        rutesViewModel=new RutesViewModel ( getActivity ().getApplication () );
-        rutesViewModel.getAllRutes ().observe ( this , new Observer <List <Ruta>> () {
+        rutasViewModel =new RutasViewModel( getActivity ().getApplication () );
+        rutasViewModel.getAllRoutes().observe ( this , new Observer <List <Ruta>> () {
             @Override
             public void onChanged(@Nullable List <Ruta> rutas) {
                 ruteList=rutas;
@@ -55,7 +55,7 @@ public class FragmentListaRutas extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator ());
         recyclerView.addItemDecoration(new DividerItemDecoration (getActivity (), LinearLayoutManager.VERTICAL));
-        mAdapter = new RutesAdapter ( ruteList , new RutesAdapter.OnItemClickListener () {
+        mAdapter = new RutasAdapter( ruteList , new RutasAdapter.OnItemClickListener () {
             @Override
             public void onItemClick(Ruta item) {
                 Intent i=new Intent ( getContext (),ActivityInfoRuta.class );

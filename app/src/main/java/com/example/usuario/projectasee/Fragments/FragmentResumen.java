@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
-import com.example.usuario.projectasee.RutesViewModel;
+import com.example.usuario.projectasee.RutasViewModel;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
 public class FragmentResumen extends Fragment {
 
     private List<Ruta> ruteList = new ArrayList<> ();
-    private RutesViewModel rutesViewModel;
+    private RutasViewModel rutasViewModel;
 
     @Nullable
     @Override
@@ -30,8 +30,8 @@ public class FragmentResumen extends Fragment {
         float distancia=0;
         double calorias=0;
         Time tiempo=new Time ( 0,0,0 );
-        rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
-        rutesViewModel.getAllRutes ().observe ( this , new Observer <List <Ruta>> () {
+        rutasViewModel = ViewModelProviders.of(this).get(RutasViewModel.class);
+        rutasViewModel.getAllRoutes().observe ( this , new Observer <List <Ruta>> () {
             @Override
             public void onChanged(@Nullable List <Ruta> rutas) {
                 ruteList=rutas;

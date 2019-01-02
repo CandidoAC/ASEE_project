@@ -24,10 +24,10 @@ public class Ruta {
 
     private List<LatLng> lcoordenadas;
 
-    public final static String NOMBRE = "nombre";
-    public final static String DISTANCIA = "distancia";
-    public final static String CALORIAS = "calorias";
-    public final static String TIEMPO = "tiempo";
+    private final static String NOMBRE = "nombre";
+    private final static String DISTANCIA = "distancia";
+    private final static String CALORIAS = "calorias";
+    private final static String TIEMPO = "tiempo";
 
     @Ignore
     public Ruta() {

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RuteService extends Service {
+public class RutaService extends Service {
     private Timer temporizador=new Timer (  );
     private static  final long Intervalo=1000;
     private int cronometro=0;

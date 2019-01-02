@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
-import com.example.usuario.projectasee.RutesViewModel;
+import com.example.usuario.projectasee.RutasViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,7 +34,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
     private GoogleMap googleMap;
     Ruta r;
     private MapView mMapView;
-    private RutesViewModel rutesViewModel;
+    private RutasViewModel rutasViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +62,13 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
         }
 
         mMapView.getMapAsync ( this);
-        rutesViewModel = ViewModelProviders.of(this).get(RutesViewModel.class);
+        rutasViewModel = ViewModelProviders.of(this).get(RutasViewModel.class);
         Bundle b = getIntent().getExtras();
         Integer id=b.getInt ( "ruteId" );
-        r=rutesViewModel.getRuta ( id );
+        r= rutasViewModel.getRuta ( id );
 
         TextView t=findViewById ( R.id.TextNombreRuta );
-        t.setText ( String.valueOf ( r.getNombre ()));
+        t.setText ( r.getNombre ());
 
         TextView t1=findViewById ( R.id.TextDistanciaRuta );
         t1.setText ( String.format ( "%.2f",r.getDistancia ()) + " kms");
@@ -94,7 +94,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                     public void onClick(DialogInterface dialog , int which) {
                         String m_Text = input.getText ().toString ();
                         Ruta ruta = new Ruta ( r.getId () , m_Text , r.getCalorias (), r.getTiempo () , r.getLcoordenadas ());
-                        rutesViewModel.modificarRuta ( ruta );
+                        rutasViewModel.modificarRuta ( ruta );
 
                         TextView t=findViewById ( R.id.TextNombreRuta );
                         t.setText ( String.valueOf ( ruta.getNombre ()));
@@ -108,7 +108,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
         bBorrar.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {
-                rutesViewModel.borrarRuta ( r );
+                rutasViewModel.borrarRuta ( r );
                 Intent i=new Intent ( getBaseContext (),MainActivity.class );
                 startActivity ( i );
             }

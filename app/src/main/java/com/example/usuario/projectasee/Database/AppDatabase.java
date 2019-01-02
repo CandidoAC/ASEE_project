@@ -26,7 +26,7 @@ import java.util.List;
 
 
 @Database(entities = {Ruta.class, Event.class}, version = 1)
-@TypeConverters({Converters.class, ConverterDate.class})
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -39,6 +39,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (instance == null) {
             instance =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "rundb")
+                            .fallbackToDestructiveMigration()
                             .addCallback ( roomCallback )
                             .build();
             AppDatabase.getAppDatabase ( context ).context=context.getApplicationContext();
