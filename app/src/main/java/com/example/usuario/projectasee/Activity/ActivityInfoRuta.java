@@ -68,7 +68,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
         r=rutesViewModel.getRuta ( id );
 
         TextView t=findViewById ( R.id.TextNombreRuta );
-        t.setText ( String.valueOf ( r.getNombre ()));
+        t.setText ( r.getNombre ());
 
         TextView t1=findViewById ( R.id.TextDistanciaRuta );
         t1.setText ( String.format ( "%.2f",r.getDistancia ()) + " kms");
@@ -168,13 +168,15 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                     .addAll ( r.getLcoordenadas () )
                     .color ( Color.RED )
                     .width ( 20 ) );
+
             CameraUpdate ub=CameraUpdateFactory.newLatLngZoom ( r.getLcoordenadas ().get ( (int) r.getLcoordenadas ().size () / 2 ) , 14 );
             googleMap.animateCamera ( ub );
         }else{
             CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( r.getLcoordenadas ().get ( 0 ), 14 );
             googleMap.animateCamera ( ub );
         }
-
+        this.googleMap.getUiSettings ().setAllGesturesEnabled ( false );
+        this.googleMap.getUiSettings ().setZoomGesturesEnabled (true);
     }
 
 }
