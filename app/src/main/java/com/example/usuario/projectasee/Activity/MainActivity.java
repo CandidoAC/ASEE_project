@@ -15,11 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.usuario.projectasee.Adapters.AdapterTabs;
+import com.example.usuario.projectasee.AppActiva;
 import com.example.usuario.projectasee.Fragments.FragmentPrincipal;
 import com.example.usuario.projectasee.Fragments.*;
 import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
 import com.example.usuario.projectasee.Fragments.FragmentResumen;
 import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.RutaService;
 
 public class  MainActivity extends AppCompatActivity {
 
@@ -31,9 +33,23 @@ public class  MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
+        Intent service = new Intent(this, AppActiva.class);
+        startService(service);
+
         setContentView ( R.layout.activity_main );
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
+
+        //User default
+        SharedPreferences.Editor prefsEditor = getSharedPreferences("User", MODE_PRIVATE).edit();
+        prefsEditor.putString ( "Nombre" , "Luke" );
+        prefsEditor.putString ( "Apellidos" , "SkyWalker" );
+        prefsEditor.putString ( "Sexo" , "H" );
+        prefsEditor.putString ( "Edad" , "50" );
+        prefsEditor.putString ( "Altura" , "165" );
+        prefsEditor.putString ( "Peso" , "70" );
+        prefsEditor.commit ();
+
 
         //Prepara la parte donde se situaran los fragments
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
@@ -51,15 +67,6 @@ public class  MainActivity extends AppCompatActivity {
         tabLayout.getTabAt ( 2 ).setText ( "Calendario" );
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
-        //User default
-        SharedPreferences.Editor prefsEditor = getSharedPreferences("User", MODE_PRIVATE).edit();
-        prefsEditor.putString("Nombre", "Luke");
-        prefsEditor.putString("Apellidos", "SkyWalker");
-        prefsEditor.putString("Sexo", "M");
-        prefsEditor.putString("Edad", "50");
-        prefsEditor.putString("Altura", "165");
-        prefsEditor.putString("Peso", "70");
-        prefsEditor.commit();
     }
 
     @Override

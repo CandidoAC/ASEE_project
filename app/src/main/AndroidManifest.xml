@@ -4,10 +4,9 @@
     package="com.example.usuario.projectasee">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icono_app"
@@ -16,40 +15,47 @@
         android:supportsRtl="true"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".Activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.GraficasActivity"
+        <activity
+            android:name=".Activity.GraficasActivity"
             android:label="ProjectASEE"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ActivityPerfil"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ActivityPerfil"
             android:label="ProjectASEE"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".Activity.MainActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ActivityConfiguracion"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.ActivityConfiguracion"
             android:label="ProjectASEE"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".Activity.MainActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ActivityInfoRuta"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.ActivityInfoRuta"
             android:label="ProjectASEE"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".Activity.MainActivity"
-            android:screenOrientation="portrait"/>
-        <service android:name=".RutaService"></service>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".RutaService" />
+        <service
+            android:name=".AppActiva"/>
     </application>
+
 </manifest>

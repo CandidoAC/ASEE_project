@@ -38,6 +38,10 @@ public class EventRepository {
         return ev;
     }
 
+    public void updateEvento(Event e){
+            new UpdateEvento ( this.daoEventos ).execute ( e );
+    }
+
 
     public void borrarEvent(Event e){
         new DeleteEvento ( this.daoEventos ).execute ( e );
@@ -57,6 +61,26 @@ public class EventRepository {
         @Override
         protected Event doInBackground(Event... eventos) {
             daoEventos.anadirEvento ( eventos[0] );
+            return eventos[0];
+        }
+
+        @Override
+        protected void onPostExecute(Event event) {
+            super.onPostExecute ( event );
+
+        }
+    }
+
+    private static class UpdateEvento extends AsyncTask<Event, Void, Event>{
+        private DaoEventos daoEventos;
+
+        private UpdateEvento(DaoEventos daoEventos){
+            this.daoEventos=daoEventos;
+        }
+
+        @Override
+        protected Event doInBackground(Event... eventos) {
+            daoEventos.editarEvento ( eventos[0] );
             return eventos[0];
         }
 

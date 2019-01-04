@@ -103,7 +103,8 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String m_Text = input.getText().toString();
-                        Ruta ruta = new Ruta(m_Text, r.getCalorias(), r.getTiempo(), r.getLcoordenadas());
+                        Ruta ruta = r;
+                        r.setNombre ( m_Text );
                         rutasViewModel.modificarRuta(ruta);
 
                         TextView t = findViewById(R.id.TextNombreRuta);

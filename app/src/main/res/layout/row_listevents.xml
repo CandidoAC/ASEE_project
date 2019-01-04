@@ -9,21 +9,37 @@
 
 
     <TextView
-        android:id="@+id/Nombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/NombreEvent"
+        android:layout_width="363dp"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:textColor="@color/colorTexto"
         android:textSize="16dp"
-        android:textStyle="bold" />
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/Distancia"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/ModificarE"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Nombre"
-        android:textColor="@color/colorTexto"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="9dp"
+        android:layout_toLeftOf="@+id/BorrarE"
+        android:text="Modificar"
+        android:src="@drawable/ic_create_black_20dp"
+        android:background="@null"
+        />
+
+    <ImageButton
+        android:id="@+id/BorrarE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_delete_black_24dp"
+        android:background="@null"/>
+
 
 </RelativeLayout>

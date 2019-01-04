@@ -87,7 +87,7 @@ public class Notification {
                 .setContentTitle ( title )
                 .setContentText ( body )
                 .setSmallIcon ( R.mipmap.icono_app_round )
-                .setAutoCancel ( false )
+                .setAutoCancel ( true )
                 .setOngoing ( true );
     }
 }

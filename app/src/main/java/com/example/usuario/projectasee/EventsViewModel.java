@@ -24,6 +24,10 @@ public class EventsViewModel extends AndroidViewModel {
         repository.insertarEvento ( e );
     }
 
+    public void updateEvent(Event e){
+        repository.updateEvento ( e );
+    }
+
     public Event getEvent(int id){
         return repository.getEvento ( id );
     }

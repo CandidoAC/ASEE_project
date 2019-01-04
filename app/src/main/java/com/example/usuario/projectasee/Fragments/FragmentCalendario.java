@@ -3,13 +3,10 @@ package com.example.usuario.projectasee.Fragments;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -25,7 +22,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-import com.example.usuario.projectasee.Database.AppDatabase;
 import com.example.usuario.projectasee.EventsViewModel;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.R;
@@ -33,17 +29,16 @@ import com.example.usuario.projectasee.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class FragmentCalendario extends Fragment  {
     static List<Event> listE;
     private static String dateView;
     private static Date date;
     private EventsViewModel eventsViewModel;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater , @Nullable final ViewGroup container , @Nullable Bundle savedInstanceState) {
@@ -90,7 +85,22 @@ public class FragmentCalendario extends Fragment  {
             public void onSelectedDayChange(CalendarView Cview , final int year , final int month , final int dayOfMonth) {
                 TextView t=(TextView) getView ().findViewById ( R.id.calendarText );
                 t.setText("");
-                verEvents ( new Date ( year ,month,dayOfMonth ) );
+
+                Bundle b=new Bundle (  );
+                b.putLong ("Date", new Date ( year,month,dayOfMonth ).getDate () );
+                List<Event> eventos=eventsViewModel.getAllEvents ().getValue ();
+                List<Event> EventList=new ArrayList <> (  );
+                for (int i = 0; i < eventos.size (); i++) {
+                    if (eventos.get ( i ).getDate ().toString ().equals ( new Date ( year,month,dayOfMonth ).toString () ))
+                        EventList.add ( eventos.get ( i ) );
+                }
+                if(EventList.size ()>0){
+                    Log.i ( "dialog","show it" );
+                    FragmentListaEvents dialog=new FragmentListaEvents ().newInstance("Eventos del dia "+new Date ( year,month,dayOfMonth ).toString ());
+                    dialog.setEventList ( EventList );
+                    dialog.show ( getFragmentManager (),"ListEvents" );
+                }
+                //verEvents ( new Date ( year ,month,dayOfMonth ) );
             }
         } );
         return view;
@@ -148,7 +158,7 @@ public class FragmentCalendario extends Fragment  {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             date=new Date ( year,monthOfYear,dayOfMonth );
-            Event e = new Event (0, date ,  dateView);
+            Event e = new Event (date ,  dateView);
             addEvent ( e );
 
         }

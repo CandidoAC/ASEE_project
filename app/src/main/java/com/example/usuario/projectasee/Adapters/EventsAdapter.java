@@ -1,67 +1,107 @@
 package com.example.usuario.projectasee.Adapters;
 
+import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.usuario.projectasee.EventsViewModel;
+import com.example.usuario.projectasee.Fragments.FragmentListaEvents;
+import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
+import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.MyViewHolder>{
-    private List<Ruta> rutaList;
-    private final OnItemClickListener listener;
+public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHolder>{
+    private List<Event> eventList;
+    private FragmentListaEvents fragment;
 
-    public interface OnItemClickListener {
-        void onItemClick(Ruta ruta);     //Type of the element to be returned
-    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView nombre,distancia;
+        private TextView nombre;
+        Integer id;
+        private FragmentListaEvents fragment;
+        ImageButton mod,borrar;
 
         public MyViewHolder(View view) {
             super(view);
-            nombre = (TextView) view.findViewById(R.id.Nombre);
-            distancia = (TextView) view.findViewById(R.id.Distancia);
+            nombre = (TextView) view.findViewById(R.id.NombreEvent);
+            mod=(ImageButton) view.findViewById ( R.id.ModificarE );
+
+            borrar=(ImageButton) view.findViewById ( R.id.BorrarE );
         }
 
-        public void bind(final Ruta Ruta,final OnItemClickListener listener) {
-            String f=String.format ( "%.2f",Ruta.getDistancia ());
-            nombre.setText ( Ruta.getNombre () );
-            distancia.setText ("\t" +f+" km.");
+        public void bind(final Event event, final FragmentListaEvents frag) {
+            id=event.getId ();
+            nombre.setText ( event.getNombre () );
+            this.fragment=frag;
 
-            itemView.setOnClickListener ( new View.OnClickListener () {
+            final EventsViewModel eventsViewModel = ViewModelProviders.of(fragment ).get(EventsViewModel.class);
+            mod.setOnClickListener ( new View.OnClickListener () {
                 @Override
-                public void onClick(View v) {
-                    listener.onItemClick ( Ruta );
+                public void onClick(final View v) {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                    alertDialog.setMessage("Escribe el nombre del evento:");
+
+                    final EditText input = new EditText(v.getContext());
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    alertDialog.setView(input);
+                    alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String m_Text = input.getText().toString();
+                            Event ev=eventsViewModel.getEvent ( id );
+                            ev.setNombre ( m_Text );
+                            eventsViewModel.updateEvent ( ev );
+
+                            nombre.setText(String.valueOf(ev.getNombre()));
+                            frag.setEventList ( eventList );
+                        }
+                    });
+
+                    alertDialog.show();
                 }
             });
+            borrar.setOnClickListener ( new View.OnClickListener () {
+                @Override
+                public void onClick(View v) {
+                    frag.delete ( id );
+                }
+            } );
+
         }
     }
 
 
-    public RutasAdapter(List<Ruta> rutaList, OnItemClickListener listener) {
+    public EventsAdapter(List<Event> eventsList,FragmentListaEvents frag) {
 
-        this.rutaList = rutaList;
-        this.listener = listener;
+        this.eventList = eventsList;
+        this.fragment=frag;
     }
-    public List<Ruta> rutaList () {
-        return this.rutaList;
+    public List<Event> eventList () {
+        return this.eventList;
     }
 
-    public void setRutaList(List <Ruta> rutaList) {
-        this.rutaList = rutaList;
+    public void setEventList(List <Event> eventsList) {
+        this.eventList = eventsList;
         notifyDataSetChanged ();
     }
 
     @Override
-    public RutasAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EventsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_listrutes, parent, false);
+                .inflate(R.layout.row_listevents, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -70,13 +110,13 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.bind(rutaList.get(position),listener);
+        holder.bind(eventList.get(position),fragment);
 
     }
 
     @Override
     public int getItemCount() {
-        return rutaList.size();
+        return eventList.size();
     }
 
 }

@@ -98,7 +98,7 @@ public class ActivityPerfil extends AppCompatActivity {
                     edit = (TextView) findViewById(R.id.TextNombre);
                     prefsEditor.putString("Nombre", input.getText().toString());
                     prefsEditor.commit();
-                    edit.setText(prefs.getString("Nombre", null));
+                    edit.setText(prefs.getString("Nombre", "Luke"));
                 }
                 });
                 alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -128,7 +128,7 @@ public class ActivityPerfil extends AppCompatActivity {
                     edit = (TextView) findViewById(R.id.TextApellidos);
                     prefsEditor.putString("Apellidos", input.getText().toString());
                     prefsEditor.commit();
-                    edit.setText(prefs.getString("Apellidos", null));
+                    edit.setText(prefs.getString("Apellidos", "SkyWalker"));
                 }
              });
                 alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -157,7 +157,7 @@ public class ActivityPerfil extends AppCompatActivity {
                                                 edit = (TextView) findViewById(R.id.TextSexo);
                                                 prefsEditor.putString("Sexo", input.getText().toString());
                                                 prefsEditor.commit();
-                                                edit.setText(prefs.getString("Sexo", null));
+                                                edit.setText(prefs.getString("Sexo", "H"));
                                             }
                                         });
 
@@ -188,7 +188,7 @@ public class ActivityPerfil extends AppCompatActivity {
                                                 edit = (TextView) findViewById(R.id.TextEdad);
                                                 prefsEditor.putString("Edad", input.getText().toString());
                                                 prefsEditor.commit();
-                                                edit.setText(prefs.getString("Edad", null));
+                                                edit.setText(prefs.getString("Edad", "50"));
                                             }
                                         });
 
@@ -213,7 +213,7 @@ public class ActivityPerfil extends AppCompatActivity {
                                                   edit = (TextView) findViewById(R.id.TextAltura);
                                                   prefsEditor.putString("Altura", input.getText().toString());
                                                   prefsEditor.commit();
-                                                  edit.setText(prefs.getString("Altura", null));
+                                                  edit.setText(prefs.getString("Altura", "165"));
                                               }
                                           });
                                           alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -243,7 +243,7 @@ public class ActivityPerfil extends AppCompatActivity {
                                                 edit = (TextView) findViewById(R.id.TextPeso);
                                                 prefsEditor.putString("Peso", input.getText().toString());
                                                 prefsEditor.commit();
-                                                edit.setText(prefs.getString("Peso", null));
+                                                edit.setText(prefs.getString("Peso", "70"));
                                             }
                                         });
                                         alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
