@@ -30,7 +30,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="190dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="160dp"
@@ -53,28 +53,26 @@
     android:id="@+id/tableLayoutPerfil"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="55dp">
+    android:layout_marginTop="50dp">
 
     <TableRow
         android:id="@+id/Nombre"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/TextViewNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="8"
-            android:inputType="textPersonName"
+            android:ems="10"
             android:text="@string/nombre" />
 
-        <EditText
+        <TextView
             android:id="@+id/TextNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="9"
-            android:inputType="text" />
+            android:ems="10"/>
 
         <ImageButton
             android:id="@+id/botonNombre"
@@ -89,7 +87,7 @@
         android:id="@+id/Apellidos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/textViewApellidos"
@@ -97,12 +95,11 @@
             android:layout_height="wrap_content"
             android:text="@string/apellidos" />
 
-        <EditText
+        <TextView
             android:id="@+id/TextApellidos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="9"
-            android:inputType="text" />
+            android:ems="10" />
 
         <ImageButton
             android:id="@+id/botonApellidos"
@@ -117,7 +114,7 @@
         android:id="@+id/Sexo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/textViewSexo"
@@ -125,12 +122,11 @@
             android:layout_height="wrap_content"
             android:text="@string/sexo" />
 
-        <EditText
+        <TextView
             android:id="@+id/TextSexo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="9"
-            android:inputType="text" />
+            android:ems="10" />
 
         <ImageButton
             android:id="@+id/botonSexo"
@@ -145,7 +141,7 @@
         android:id="@+id/Edad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/textViewEdad"
@@ -153,12 +149,11 @@
             android:layout_height="wrap_content"
             android:text="@string/edad" />
 
-        <EditText
+        <TextView
             android:id="@+id/TextEdad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="9"
-            android:inputType="text" />
+            android:ems="10"/>
 
         <ImageButton
             android:id="@+id/botonEdad"
@@ -172,7 +167,7 @@
         android:id="@+id/Altura"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/textViewAltura"
@@ -180,11 +175,11 @@
             android:layout_height="wrap_content"
             android:text="@string/altura" />
 
-        <EditText
+        <TextView
             android:id="@+id/TextAltura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="9"
+            android:ems="10"
             android:inputType="text" />
 
         <ImageButton
@@ -199,7 +194,7 @@
         android:id="@+id/Peso"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/textViewPeso"
@@ -207,12 +202,12 @@
             android:layout_height="wrap_content"
             android:text="@string/peso" />
 
-        <EditText
+        <TextView
             android:id="@+id/TextPeso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="9"
-            android:inputType="text" />
+            android:ems="10"/>
+
         <ImageButton
             android:id="@+id/botonPeso"
             android:layout_width="wrap_content"

@@ -4,17 +4,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -23,20 +18,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.example.usuario.projectasee.R;
 
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class ActivityPerfil extends AppCompatActivity {
     private static final int SELECT_PICTURE = 0;
-    private ImageButton bnombre, bapellidos, bsexo, bedad, baltura, bpeso;
-    private EditText edit;
+    private TableRow bnombre, bapellidos, bsexo, bedad, baltura, bpeso;
+    private TextView edit;
     private SharedPreferences.Editor prefsEditor;
     private SharedPreferences prefs;
     private ImageView imageView;
@@ -73,8 +66,8 @@ public class ActivityPerfil extends AppCompatActivity {
             }
         });
 
-        prefs = getSharedPreferences("User", MODE_PRIVATE);
         prefsEditor = getSharedPreferences("User", MODE_PRIVATE).edit();
+        prefs = getSharedPreferences("User", MODE_PRIVATE);
 
         /*Iniciamos el valor de todos los campos*/
         edit = findViewById(R.id.TextNombre);
@@ -95,15 +88,10 @@ public class ActivityPerfil extends AppCompatActivity {
         edit = findViewById(R.id.TextPeso);
         edit.setText(prefs.getString("Peso", "70"));
 
-        if(!prefs.getString("Foto","").equals("")){
-//            try {
-
-            String path = prefs.getString("Foto","");
+        if (!prefs.getString("Foto", "").equals("")) {
+            String path = prefs.getString("Foto", "");
             Uri uri = Uri.parse(path);
-                imageView.setImageURI(uri);
-            //} catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
+            imageView.setImageURI(uri);
         }
 
         setSupportActionBar(toolbar);
@@ -114,12 +102,12 @@ public class ActivityPerfil extends AppCompatActivity {
                 selectImage();
             }
         });
-        bnombre = findViewById(R.id.botonNombre);
-        bapellidos = findViewById(R.id.botonApellidos);
-        bsexo = findViewById(R.id.botonSexo);
-        bedad = findViewById(R.id.botonEdad);
-        baltura = findViewById(R.id.botonAltura);
-        bpeso = findViewById(R.id.botonPeso);
+        bnombre = findViewById(R.id.Nombre);
+        bapellidos = findViewById(R.id.Apellidos);
+        bsexo = findViewById(R.id.Sexo);
+        bedad = findViewById(R.id.Edad);
+        baltura = findViewById(R.id.Altura);
+        bpeso = findViewById(R.id.Peso);
 
         bnombre.setOnClickListener(new View.OnClickListener() {
                                        @Override
@@ -230,7 +218,11 @@ public class ActivityPerfil extends AppCompatActivity {
                                                  edit.setText(prefs.getString("Edad", null));
                                              }
                                          });
-
+                                         alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                             public void onClick(DialogInterface dialog, int id) {
+                                                 dialog.dismiss();
+                                             }
+                                         });
                                          alertDialog.show();
                                      }
                                  }
@@ -332,7 +324,7 @@ public class ActivityPerfil extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            Bitmap bitmap= null;
+            Bitmap bitmap = null;
             try {
                 Uri result = data.getData();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -349,62 +341,61 @@ public class ActivityPerfil extends AppCompatActivity {
         }
     }
 
-    private Bitmap getPath(Uri uri) {
-
-        String[] proj = { MediaStore.Images.Media.DATA };
-        CursorLoader loader = new CursorLoader(this, uri, proj, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(column_index);
-        cursor.close();
-
-        // Convert file path into bitmap image using below line.
-        Bitmap bitmap = BitmapFactory.decodeFile(result);
-        return bitmap;
-    }
+//    private Bitmap getPath(Uri uri) {
+//
+//        String[] proj = {MediaStore.Images.Media.DATA};
+//        CursorLoader loader = new CursorLoader(this, uri, proj, null, null, null);
+//        Cursor cursor = loader.loadInBackground();
+//        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//        cursor.moveToFirst();
+//        String result = cursor.getString(column_index);
+//        cursor.close();
+//
+//        // Convert file path into bitmap image using below line.
+//        Bitmap bitmap = BitmapFactory.decodeFile(result);
+//        return bitmap;
+//    }
 
     public void selectImage() {
 
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        final int takeFlags = intent.getFlags()
-                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//        final int takeFlags = intent.getFlags()
+//                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
 
-
-
-    private class GetImagen extends AsyncTask<Uri, Void, Bitmap> {
-        private Bitmap bitmap;
-
-        public Bitmap getBitmapFromUri(Uri uri) throws IOException {
-            ParcelFileDescriptor parcelFileDescriptor =
-                    getContentResolver().openFileDescriptor(uri, "r");
-            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-            parcelFileDescriptor.close();
-            return image;
-        }
-        @Override
-        protected Bitmap doInBackground(Uri... uri) {
-            try {
-                bitmap = getBitmapFromUri ( uri[0] );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute ( bitmap );
-
-        }
-    }
+//    private class GetImagen extends AsyncTask<Uri, Void, Bitmap> {
+//        private Bitmap bitmap;
+//
+//        public Bitmap getBitmapFromUri(Uri uri) throws IOException {
+//            ParcelFileDescriptor parcelFileDescriptor =
+//                    getContentResolver().openFileDescriptor(uri, "r");
+//            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+//            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+//            parcelFileDescriptor.close();
+//            return image;
+//        }
+//
+//        @Override
+//        protected Bitmap doInBackground(Uri... uri) {
+//            try {
+//                bitmap = getBitmapFromUri(uri[0]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return bitmap;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Bitmap bitmap) {
+//            super.onPostExecute(bitmap);
+//
+//        }
+//    }
 
 }

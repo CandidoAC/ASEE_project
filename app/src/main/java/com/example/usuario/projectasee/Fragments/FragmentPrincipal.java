@@ -115,7 +115,6 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                     if (notificacion)
                         not.addNotification();
                 } else {
-                    pararCronometro();
                     clearRute();
                     clicked = false;
                     start.setText("Start");
@@ -143,13 +142,14 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                             if (!m_Text.trim().isEmpty()) {
                                 SharedPreferences prefs = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
                                 double timeMIN = Time.getHours() * 60 + Time.getMinutes() + Time.getSeconds() / 60.0;
-                                double peso = Float.valueOf(prefs.getString("Peso", null));
+                                double peso = Float.valueOf(prefs.getString("Peso", "70"));
                                 calorias = 0.092 * (peso * 2.2) * timeMIN;
                                 if(lcoordenadas.isEmpty () && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
                                     LocationManager locationManager = (LocationManager) getActivity ().getSystemService ( Context.LOCATION_SERVICE );
                                     Location location = locationManager.getLastKnownLocation ( LocationManager.GPS_PROVIDER );
                                     if(location!=null) {
                                         lcoordenadas.add ( new LatLng ( location.getLatitude () , location.getLongitude () ) );
+                                        Log.i("Tieeempo","Muestrame ese tiempo "+Time.toString());
                                         Ruta ruta = new Ruta (m_Text , calorias , Time , lcoordenadas );
                                         rutasViewModel.insertarRuta ( ruta );
                                     }else{
@@ -164,6 +164,7 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                                 return;
                             }
                             dialog.dismiss();
+                            pararCronometro();
                         }
                     });
                 }
@@ -184,7 +185,6 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         mMapView.getMapAsync(this);
         return rootView;
@@ -296,4 +296,3 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
         }
     }
 }
-

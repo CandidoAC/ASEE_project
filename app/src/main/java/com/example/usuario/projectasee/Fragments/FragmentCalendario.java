@@ -149,7 +149,7 @@ public class FragmentCalendario extends Fragment  {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
             date=new Date ( year,monthOfYear,dayOfMonth );
-            Event e = new Event (0, date ,  dateView);
+            Event e = new Event (date ,  dateView);
             addEvent ( e );
 
         }
