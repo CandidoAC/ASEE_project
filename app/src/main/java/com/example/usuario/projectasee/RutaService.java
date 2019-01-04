@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RuteService extends Service {
+public class RutaService extends Service {
     private Timer temporizador=new Timer (  );
     private static  final long Intervalo=1000;
     private int cronometro=0;
@@ -63,9 +63,9 @@ public class RuteService extends Service {
     private void pararCronometro() {
         isRunning=false;
         if(temporizador!=null){
-            cronometro=0;
-            Log.i("Cronometro",String.valueOf (  cronometro));
+            cronometro = 0;
             handle.sendEmptyMessageDelayed  ( 0,10 );
+            Log.i("Cronometro",String.valueOf (  cronometro));
             temporizador.cancel ();
         }
     }

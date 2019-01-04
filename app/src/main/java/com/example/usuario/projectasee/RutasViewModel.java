@@ -9,15 +9,15 @@ import com.example.usuario.projectasee.Modelo.Ruta;
 
 import java.util.List;
 
-public class RutesViewModel extends AndroidViewModel {
+public class RutasViewModel extends AndroidViewModel {
 
     private RutasRepository repository;
-    private LiveData<List<Ruta>> allRutes;
+    private LiveData<List<Ruta>> allRoutes;
 
-    public RutesViewModel(@NonNull Application application) {
+    public RutasViewModel(@NonNull Application application) {
         super (application);
         repository=new RutasRepository ( application );
-        allRutes=repository.getAllRutes ();
+        allRoutes =repository.getAllRoutes();
     }
 
     public void insertarRuta(Ruta r){
@@ -29,15 +29,19 @@ public class RutesViewModel extends AndroidViewModel {
     }
 
     public void modificarRuta(Ruta r){
-        repository.ModificarrRuta ( r );
+        repository.editarRuta ( r );
     }
 
     public void borrarRuta(Ruta r){
         repository.borrarRuta ( r );
     }
 
-    public LiveData<List<Ruta>> getAllRutes(){
-        return allRutes;
+    public void editarRuta(Ruta r) {
+        repository.editarRuta(r);
+    }
+
+    public LiveData<List<Ruta>> getAllRoutes(){
+        return allRoutes;
     }
 
 }

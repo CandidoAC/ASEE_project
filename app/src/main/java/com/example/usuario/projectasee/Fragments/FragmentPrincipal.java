@@ -3,7 +3,6 @@ package com.example.usuario.projectasee.Fragments;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -24,14 +23,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.Notification;
 import com.example.usuario.projectasee.R;
-import com.example.usuario.projectasee.RuteService;
-import com.example.usuario.projectasee.RutesViewModel;
+import com.example.usuario.projectasee.RutasViewModel;
+import com.example.usuario.projectasee.RutaService;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,26 +62,26 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
     private TextView focus;
     private Button start;
     private boolean clicked;
-    private int h, m, s;
     private double calorias;
-    private RutesViewModel rutesViewModel;
-    private List <LatLng> lcoordenadas;
+    private RutasViewModel rutasViewModel;
+    private List<LatLng> lcoordenadas;
     Notification not;
     Boolean notificacion;
     Polyline p;
-    private List <Polyline> ListP;
+    private List<Polyline> ListP;
+    Context context;
 
     private static final int PETICION_PERMISO_LOCALIZACION = 101;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate ( savedInstanceState );
-        lcoordenadas = new ArrayList <LatLng> ();
-        ListP = new ArrayList <Polyline> ();
-        not = new Notification ( getActivity () );
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences ( getActivity () );
-        if (p.getBoolean ( "switchId" , false )) {
+        super.onCreate(savedInstanceState);
+        lcoordenadas = new ArrayList<LatLng>();
+        ListP = new ArrayList<Polyline>();
+        not = new Notification(getActivity());
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if (p.getBoolean("switchId", false)) {
             notificacion = true;
         } else {
             notificacion = false;
@@ -91,104 +90,115 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater , @Nullable ViewGroup container , @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate ( R.layout.principalfragment , container , false );
-        mMapView = (MapView) rootView.findViewById ( R.id.mapView );
-        mMapView.onCreate ( savedInstanceState );
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.principalfragment, container, false);
+        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
 
-        mMapView.onResume (); // needed to get the map to display immediately
-        start = rootView.findViewById ( R.id.startFinish );
-        start.setText ( "Start" );
-        focus = (Chronometer) rootView.findViewById ( R.id.chronometer );
-        rutesViewModel = ViewModelProviders.of ( this ).get ( RutesViewModel.class );
-        start.setOnClickListener ( new View.OnClickListener () {
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        start = rootView.findViewById(R.id.startFinish);
+        start.setText("Start");
+        focus = (Chronometer) rootView.findViewById(R.id.chronometer);
+        clicked = false;
+        rutasViewModel = ViewModelProviders.of(this).get(RutasViewModel.class);
+
+
+        start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!clicked) {
                     clicked = true;
-                    lcoordenadas = new ArrayList <LatLng> ();
-                    start.setText ( "Stop" );
-                    iniciarCronometro ();
+                    lcoordenadas = new ArrayList<LatLng>();
+                    start.setText("Stop");
+                    iniciarCronometro();
                     if (notificacion)
-                        not.addNotification ();
+                        not.addNotification();
                 } else {
-                    pararCronometro ();
-                    clearRute ();
+                    pararCronometro();
+                    clearRute();
                     clicked = false;
-                    start.setText ( "Start" );
+                    start.setText("Start");
                     firstUb = false;
 
-                    focus.setText ( "00:00:00" );
+                    focus.setText("00:00:00");
                     if (notificacion)
-                        not.destroyNotifications ();
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder ( getContext () );
-                    alertDialog.setTitle ( "Ruta completada" );
-                    alertDialog.setMessage ( "Escribe el nombre de la ruta:" );
+                        not.destroyNotifications();
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                    alertDialog.setTitle("Ruta completada");
+                    alertDialog.setMessage("Escribe el nombre de la ruta:");
 
-                    final EditText input = new EditText ( getActivity () );
-                    input.setInputType ( InputType.TYPE_CLASS_TEXT );
-                    alertDialog.setView ( input );
-                    alertDialog.setPositiveButton ( "Confirmar" , new DialogInterface.OnClickListener () {
+                    final EditText input = new EditText(getActivity());
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    alertDialog.setView(input);
+                    alertDialog.setPositiveButton("Confirmar", null);
+                    alertDialog.setNegativeButton("Cancelar", null);
+                    final AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog , int which) {
-                            m_Text = input.getText ().toString ();
-                            SharedPreferences prefs = getActivity ().getSharedPreferences ( "User" , Context.MODE_PRIVATE );
-                            double timeMIN = Time.getHours () * 60 + Time.getMinutes () + Time.getSeconds () / 60.0;
-                            double peso = Float.valueOf ( prefs.getString ( "Peso" , null ) );
-                            calorias = 0.092 * (peso * 2.2) * timeMIN;
-                            if(lcoordenadas.isEmpty () && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
+                        public void onClick(View v) {
+                            m_Text = input.getText().toString();
+                            context = getContext();
+                            if (!m_Text.trim().isEmpty()) {
+                                m_Text = input.getText().toString();
+                                SharedPreferences prefs = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+                                double timeMIN = Time.getHours() * 60 + Time.getMinutes() + Time.getSeconds() / 60.0;
+                                double peso = Float.valueOf(prefs.getString("Peso", null));
+                                calorias = 0.092 * (peso * 2.2) * timeMIN;
+                                if(lcoordenadas.isEmpty () && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED){
                                     LocationManager locationManager = (LocationManager) getActivity ().getSystemService ( Context.LOCATION_SERVICE );
                                     Location location = locationManager.getLastKnownLocation ( LocationManager.GPS_PROVIDER );
                                     if(location!=null) {
                                         lcoordenadas.add ( new LatLng ( location.getLatitude () , location.getLongitude () ) );
-                                        Ruta ruta = new Ruta ( 0 , m_Text , calorias , Time , lcoordenadas );
-                                        rutesViewModel.insertarRuta ( ruta );
+                                        Ruta ruta = new Ruta (m_Text , calorias , Time , lcoordenadas );
+                                        rutasViewModel.insertarRuta ( ruta );
                                     }else{
-                                        Context c=getContext ();
-                                        Toast.makeText ( c,"Error al crear ruta: No se encuentra GPS",Toast.LENGTH_SHORT ).show ();
+                                        Toast.makeText ( context,"Error al crear ruta: No se encuentra GPS",Toast.LENGTH_SHORT ).show ();
                                     }
-                            }else {
-                                Ruta ruta = new Ruta ( 0 , m_Text , calorias , Time , lcoordenadas );
-                                rutesViewModel.insertarRuta ( ruta );
+                                }else {
+                                    Ruta ruta = new Ruta (m_Text , calorias , Time , lcoordenadas );
+                                    rutasViewModel.insertarRuta ( ruta );
+                                }
+                            } else {
+                                Toast.makeText(context, "Por favor, indique un nombre para la ruta", Toast.LENGTH_SHORT).show();
+                                return;
                             }
-
+                            dialog.dismiss();
                         }
-                    } );
-
-                    alertDialog.show ();
+                    });
                 }
             }
-        } );
-        RuteService.setUpdateListener ( this );
-        clicked = RuteService.isRunning ();
+        });
+        RutaService.setUpdateListener(this);
+        clicked = RutaService.isRunning();
         if (!clicked) {
-            start.setText ( "Start" );
-            focus.setText ( "00:00:00" );
+            start.setText("Start");
+            focus.setText("00:00:00");
         } else {
-            start.setText ( "Stop" );
+            start.setText("Stop");
             if (notificacion)
-                not.addNotification ();
-
+                not.addNotification();
         }
         try {
-            MapsInitializer.initialize ( getActivity ().getApplicationContext () );
+            MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
-            e.printStackTrace ();
+            e.printStackTrace();
         }
 
 
-        mMapView.getMapAsync ( this );
+        mMapView.getMapAsync(this);
         return rootView;
     }
 
     private void iniciarCronometro() {
-        Intent service = new Intent ( getActivity () , RuteService.class );
-        getActivity ().startService ( service );
+        Intent service = new Intent(getActivity(), RutaService.class);
+        getActivity().startService(service);
     }
 
     private void pararCronometro() {
-        Intent service = new Intent ( getActivity () , RuteService.class );
-        getActivity ().stopService ( service );
+        Intent service = new Intent(getActivity(), RutaService.class);
+        getActivity().stopService(service);
     }
 
     public void setChronometer(int s) {
@@ -196,69 +206,68 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
         s = s - h * 3600;
         int m = (int) s / 60;
         s = s - m * 60;
-        Time = new Time ( h , m , s );
+        Time = new Time(h, m, s);
 
-        focus.setText ( (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s) );
+        focus.setText((h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        miUbicacion ();
+        miUbicacion();
     }
 
-    public void anadirMarker(double lat , double lon) {
-        LatLng coord = new LatLng ( lat , lon );
+    public void anadirMarker(double lat, double lon) {
+        LatLng coord = new LatLng(lat, lon);
         if (firstUb) {
             firstUbi = coord;
         }
-        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom ( coord , 18 );
+        CameraUpdate ub = CameraUpdateFactory.newLatLngZoom(coord, 18);
         if (marker != null) {
-            marker.remove ();
+            marker.remove();
         }
-        marker = googleMap.addMarker ( new MarkerOptions ()
-                .position ( coord )
-                .title ( "Mi ubicación" )
-                .icon ( BitmapDescriptorFactory.fromResource ( R.mipmap.icono ) ) );
-        googleMap.animateCamera ( ub );
+        marker = googleMap.addMarker(new MarkerOptions()
+                .position(coord)
+                .title("Mi ubicación")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.icono)));
+        googleMap.animateCamera(ub);
     }
-
 
     public void clearRute() {
         for (Polyline line : ListP) {
-            line.remove ();
+            line.remove();
         }
-        ListP.clear ();
-        googleMap.clear ();
+        ListP.clear();
+        googleMap.clear();
     }
+
 
     public void actualizarUb(Location location) {
 
         if (location != null) {
-            lat = location.getLatitude ();
-            lon = location.getLongitude ();
-            anadirMarker ( lat , lon );
+            lat = location.getLatitude();
+            lon = location.getLongitude();
+            anadirMarker(lat, lon);
         }
     }
 
-    LocationListener locListener = new LocationListener () {
+    LocationListener locListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            actualizarUb ( location );
-            lcoordenadas.add ( new LatLng ( location.getLatitude () , location.getLongitude () ) );
+            actualizarUb(location);
+            lcoordenadas.add(new LatLng(location.getLatitude(), location.getLongitude()));
             if (clicked) {
-                Log.i ( "GPS" , "new line created" );
-                p = googleMap.addPolyline ( new PolylineOptions ()
-                        .addAll ( lcoordenadas )
-                        .color ( Color.RED )
-                        .width ( 20 ) );
-                ListP.add ( p );
+                Log.i("GPS", "new line created");
+                p = googleMap.addPolyline(new PolylineOptions()
+                        .addAll(lcoordenadas)
+                        .color(Color.RED)
+                        .width(20));
             }
 
         }
 
         @Override
-        public void onStatusChanged(String provider , int status , Bundle extras) {
+        public void onStatusChanged(String provider, int status, Bundle extras) {
 
         }
 
@@ -274,17 +283,17 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
     };
 
     private void miUbicacion() {
-        if (ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission ( getActivity () , android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions ( getActivity () ,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION} ,
-                    PETICION_PERMISO_LOCALIZACION );
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PETICION_PERMISO_LOCALIZACION);
         } else {
 
-            LocationManager locationManager = (LocationManager) getActivity ().getSystemService ( Context.LOCATION_SERVICE );
-            Location location = locationManager.getLastKnownLocation ( LocationManager.GPS_PROVIDER );
-            actualizarUb ( location );
-            locationManager.requestLocationUpdates ( LocationManager.GPS_PROVIDER , 1000 , 0 , locListener );
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            actualizarUb(location);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locListener);
         }
     }
 }

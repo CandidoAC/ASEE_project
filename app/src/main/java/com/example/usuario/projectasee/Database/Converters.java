@@ -8,9 +8,27 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 public class Converters {
+
+    @TypeConverter
+    public static Long fromDate(Date date) {
+        if (date==null) {
+            return(null);
+        }
+
+        return(date.getTime());
+    }
+
+    @TypeConverter
+    public static Date toDate(Long millisSinceEpoch) {
+        if (millisSinceEpoch==null) {
+            return(null);
+        }
+        return(new Date(millisSinceEpoch));
+    }
 
     @TypeConverter
     public static Time fromString(String value) {

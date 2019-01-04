@@ -24,17 +24,16 @@ public class Ruta {
 
     private List<LatLng> lcoordenadas;
 
-    public final static String NOMBRE = "nombre";
-    public final static String DISTANCIA = "distancia";
-    public final static String CALORIAS = "calorias";
-    public final static String TIEMPO = "tiempo";
+    private final static String NOMBRE = "nombre";
+    private final static String DISTANCIA = "distancia";
+    private final static String CALORIAS = "calorias";
+    private final static String TIEMPO = "tiempo";
 
     @Ignore
     public Ruta() {
     }
 
-    public Ruta(int id, String nombre  , double calorias , Time tiempo,List<LatLng> lcoordenadas) {
-        this.id = id;
+    public Ruta(String nombre  , double calorias , Time tiempo,List<LatLng> lcoordenadas) {
         this.nombre = nombre;
         this.calorias = calorias;
         this.tiempo = tiempo;

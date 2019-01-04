@@ -13,26 +13,22 @@ import java.util.concurrent.ExecutionException;
 
 public class RutasRepository {
     private DaoRutas daoRutas;
-    private LiveData<List<Ruta>> allRutes;
+    private LiveData<List<Ruta>> allRoutes;
 
     public RutasRepository(Application app){
-        AppDatabase db=AppDatabase.getAppDatabase ( app );
-        daoRutas=db.daoRutas ();
-        allRutes=daoRutas.getRutas();
+        AppDatabase db=AppDatabase.getAppDatabase( app );
+        daoRutas=db.daoRutas();
+        allRoutes = daoRutas.getRutas();
     }
 
     public void insertarRuta(Ruta r){
-        new InsertRute ( this.daoRutas ).execute ( r );
-    }
-
-    public void ModificarrRuta(Ruta r){
-        new UpdateRute ( this.daoRutas ).execute ( r );
+        new InsertRoute( this.daoRutas ).execute ( r );
     }
 
     public Ruta getRuta(int id){
         Ruta r=null;
         try {
-            r=new GetRute ( this.daoRutas ).execute ( id ).get ();
+            r=new GetRoute( this.daoRutas ).execute ( id ).get ();
         } catch (ExecutionException e) {
             e.printStackTrace ();
         } catch (InterruptedException e) {
@@ -42,23 +38,27 @@ public class RutasRepository {
     }
 
     public void borrarRuta(Ruta r){
-        new DeleteRute ( this.daoRutas ).execute ( r );
+        new DeleteRoute( this.daoRutas ).execute ( r );
     }
 
-    public LiveData<List<Ruta>> getAllRutes(){
-        return allRutes;
+    public void editarRuta(Ruta r){
+        new UpdateRoute(this.daoRutas).execute(r);
     }
 
-    private static class InsertRute extends AsyncTask<Ruta, Void, Ruta>{
+    public LiveData<List<Ruta>> getAllRoutes(){
+        return allRoutes;
+    }
+
+    private static class InsertRoute extends AsyncTask<Ruta, Void, Ruta>{
         private DaoRutas daoRutas;
 
-        private InsertRute(DaoRutas daoRutas){
+        private InsertRoute(DaoRutas daoRutas){
             this.daoRutas=daoRutas;
         }
 
         @Override
         protected Ruta doInBackground(Ruta... rutas) {
-            daoRutas.anadirRuta ( rutas[0] );
+            daoRutas.anadirRuta( rutas[0] );
             return rutas[0];
         }
 
@@ -69,10 +69,10 @@ public class RutasRepository {
         }
     }
 
-    private static class DeleteRute extends AsyncTask<Ruta, Void, Void> {
+    private static class DeleteRoute extends AsyncTask<Ruta, Void, Void> {
         private DaoRutas daoRutas;
 
-        private DeleteRute(DaoRutas daoRutas) {
+        private DeleteRoute(DaoRutas daoRutas) {
             this.daoRutas = daoRutas;
         }
 
@@ -83,23 +83,24 @@ public class RutasRepository {
         }
     }
 
-    private static class UpdateRute extends AsyncTask<Ruta, Void, Void> {
+    private static class UpdateRoute extends AsyncTask<Ruta, Void, Void> {
         private DaoRutas daoRutas;
 
-        private UpdateRute(DaoRutas daoRutas) {
+        private UpdateRoute(DaoRutas daoRutas) {
             this.daoRutas = daoRutas;
         }
 
         @Override
         protected Void doInBackground(Ruta... rutas) {
-            daoRutas.updateRuta ( rutas[0] );
+            daoRutas.editarRuta( rutas[0] );
             return null;
         }
     }
-    private static class GetRute extends AsyncTask<Integer, Void, Ruta>{
+
+    private static class GetRoute extends AsyncTask<Integer, Void, Ruta>{
         private DaoRutas daoRutas;
 
-        private GetRute(DaoRutas daoRutas){
+        private GetRoute(DaoRutas daoRutas){
             this.daoRutas=daoRutas;
         }
 

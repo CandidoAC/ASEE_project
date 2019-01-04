@@ -9,9 +9,10 @@ import android.widget.TextView;
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolder>{
+public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.MyViewHolder>{
     private List<Ruta> rutaList;
     private final OnItemClickListener listener;
 
@@ -43,7 +44,7 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
     }
 
 
-    public RutesAdapter(List<Ruta> rutaList,OnItemClickListener listener) {
+    public RutasAdapter(List<Ruta> rutaList, OnItemClickListener listener) {
 
         this.rutaList = rutaList;
         this.listener = listener;
@@ -58,7 +59,7 @@ public class RutesAdapter  extends RecyclerView.Adapter<RutesAdapter.MyViewHolde
     }
 
     @Override
-    public RutesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RutasAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_listrutes, parent, false);
 
