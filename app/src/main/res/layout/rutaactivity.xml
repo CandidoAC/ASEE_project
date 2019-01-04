@@ -131,23 +131,15 @@
 
         </TableLayout>
 
-        <Button
-            android:id="@+id/graficastotales"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="110dp"
-            android:text="@string/graficas"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/toolbar" />
 
         <Button
             android:id="@+id/Modificar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="110dp"
-            android:layout_marginLeft="140dp"
+            android:layout_marginLeft="60dp"
             android:text="@string/modificar"
+            android:background="@color/colorBotones"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/toolbar" />
@@ -157,7 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="110dp"
-            android:layout_marginLeft="270dp"
+            android:layout_marginLeft="210dp"
             android:text="@string/borrar"
             android:background="@color/colorRed"
             app:layout_constraintEnd_toEndOf="parent"

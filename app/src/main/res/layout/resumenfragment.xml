@@ -24,15 +24,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:textColor="@color/colorTexto"
                 android:text="@string/distancia" />
 
             <TextView
                 android:id="@+id/TextDistancia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="numberDecimal" />
+                android:textColor="@color/colorTexto"
+                android:ems="10" />
 
         </TableRow>
 
@@ -45,14 +45,15 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorTexto"
                 android:text="@string/calorias" />
 
             <TextView
                 android:id="@+id/TextCalorias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="numberDecimal" />
+                android:textColor="@color/colorTexto"
+                android:ems="10" />
 
         </TableRow>
 
@@ -65,25 +66,29 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorTexto"
                 android:text="@string/tiempo" />
 
             <TextView
                 android:id="@+id/TextTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="time" />
+                android:textColor="@color/colorTexto"
+                android:ems="10"/>
         </TableRow>
 
     </TableLayout>
 
-    <Button
-        android:id="@+id/graficastotales"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
-        android:text="@string/graficas"
-        app:layout_constraintBottom_toBottomOf="@id/tableLayout"
-        android:background="@color/colorBotones"/>
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="80dp"
+        >
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/Graph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
 
 </FrameLayout>

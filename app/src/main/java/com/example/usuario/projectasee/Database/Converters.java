@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Converters {
 
+    //Date
     @TypeConverter
     public static Long fromDate(Date date) {
         if (date==null) {
@@ -30,6 +31,7 @@ public class Converters {
         return(new Date(millisSinceEpoch));
     }
 
+    //Time
     @TypeConverter
     public static Time fromString(String value) {
         Type timeType = new TypeToken<Time>() {}.getType();
@@ -43,6 +45,7 @@ public class Converters {
         return json;
     }
 
+    //Lista LatLng
     @TypeConverter
     public static List<LatLng> fromStringcoord(String value) {
       Type listType = new TypeToken<List<LatLng>>() {}.getType();

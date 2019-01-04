@@ -18,7 +18,7 @@ public class Event {
     public Event() {
     }
 
-    public Event( Date date , String nombre) {
+    public Event(Date date , String nombre) {
         this.date = date;
         this.nombre = nombre;
     }

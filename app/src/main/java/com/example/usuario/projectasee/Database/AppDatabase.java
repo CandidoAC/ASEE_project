@@ -62,7 +62,7 @@ public abstract class AppDatabase extends RoomDatabase {
             String url = "https://dl.dropboxusercontent.com/s/k2aj8u5kwv4n8fa/fichero.json?dl=0";
 
             SharedPreferences prefs=context.getSharedPreferences ("User", Context.MODE_PRIVATE);
-            double peso=Float.valueOf ( prefs.getString ( "Peso", null));
+            double peso=Float.valueOf ( prefs.getString ( "Peso", "70"));
             String jasonUrl = h.makeServiceCall ( url );
 
             if (jasonUrl != null) {
