@@ -141,7 +141,6 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                             m_Text = input.getText().toString();
                             context = getContext();
                             if (!m_Text.trim().isEmpty()) {
-                                m_Text = input.getText().toString();
                                 SharedPreferences prefs = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
                                 double timeMIN = Time.getHours() * 60 + Time.getMinutes() + Time.getSeconds() / 60.0;
                                 double peso = Float.valueOf(prefs.getString("Peso", null));

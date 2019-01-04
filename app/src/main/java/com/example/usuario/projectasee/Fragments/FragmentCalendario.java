@@ -44,12 +44,13 @@ public class FragmentCalendario extends Fragment  {
     private static String dateView;
     private static Date date;
     private EventsViewModel eventsViewModel;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater , @Nullable final ViewGroup container , @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate ( R.layout.calendariofragment , container , false );
-        date=new Date();
-        listE=new ArrayList <Event> () ;
+        date = new Date();
+        listE=new ArrayList<Event> () ;
         eventsViewModel = ViewModelProviders.of(this).get(EventsViewModel.class);
         eventsViewModel.getAllEvents ().observe ( this , new Observer <List <Event>> () {
             @Override
@@ -57,8 +58,8 @@ public class FragmentCalendario extends Fragment  {
                 listE=events;
             }
         } );
-        final CalendarView c=(CalendarView) view.findViewById ( R.id.calendar );
-        FloatingActionButton f=view.findViewById ( R.id.floatingActionButton );
+        final CalendarView c = view.findViewById ( R.id.calendar );
+        FloatingActionButton f = view.findViewById ( R.id.floatingActionButton );
         f.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View v) {

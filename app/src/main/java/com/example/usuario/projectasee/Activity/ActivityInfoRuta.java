@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
@@ -94,24 +95,34 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                alertDialog.setTitle("Editar ruta");
                 alertDialog.setMessage("Escribe el nombre de la ruta:");
 
                 final EditText input = new EditText(v.getContext());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 alertDialog.setView(input);
-                alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                alertDialog.setPositiveButton("Confirmar", null);
+                alertDialog.setNegativeButton("Cancelar", null);
+                final AlertDialog dialog = alertDialog.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         String m_Text = input.getText().toString();
-                        Ruta ruta = new Ruta(m_Text, r.getCalorias(), r.getTiempo(), r.getLcoordenadas());
-                        rutasViewModel.modificarRuta(ruta);
+                        if (!m_Text.trim().isEmpty()) {
+                            Ruta ruta = r;
+                            ruta.setNombre(m_Text);
+                            rutasViewModel.modificarRuta(ruta);
 
-                        TextView t = findViewById(R.id.TextNombreRuta);
-                        t.setText(String.valueOf(ruta.getNombre()));
+                            TextView t = findViewById(R.id.TextNombreRuta);
+                            t.setText(String.valueOf(ruta.getNombre()));
+                        }else{
+                            Toast.makeText(ActivityInfoRuta.this, "Por favor, indique un nombre para la ruta", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        dialog.dismiss();
                     }
                 });
-
-                alertDialog.show();
             }
         });
         Button bBorrar = findViewById(R.id.Borrar);

@@ -51,15 +51,6 @@ public class  MainActivity extends AppCompatActivity {
         tabLayout.getTabAt ( 2 ).setText ( "Calendario" );
         tabLayout.getTabAt ( 3 ).setText ( "Resumen" );
 
-        //User default
-        SharedPreferences.Editor prefsEditor = getSharedPreferences("User", MODE_PRIVATE).edit();
-        prefsEditor.putString("Nombre", "Luke");
-        prefsEditor.putString("Apellidos", "SkyWalker");
-        prefsEditor.putString("Sexo", "M");
-        prefsEditor.putString("Edad", "50");
-        prefsEditor.putString("Altura", "165");
-        prefsEditor.putString("Peso", "70");
-        prefsEditor.commit();
     }
 
     @Override
