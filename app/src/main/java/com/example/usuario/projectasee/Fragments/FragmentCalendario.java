@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import android.text.InputType;
@@ -22,7 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-import com.example.usuario.projectasee.EventsViewModel;
+import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.R;
 
@@ -96,7 +97,10 @@ public class FragmentCalendario extends Fragment  {
                 }
                 if(EventList.size ()>0){
                     Log.i ( "dialog","show it" );
-                    FragmentListaEvents dialog=new FragmentListaEvents ().newInstance("Eventos del dia "+new Date ( year,month,dayOfMonth ).toString ());
+                    SimpleDateFormat formatter
+                            = new SimpleDateFormat ("dd/MM/yy");
+                    FragmentListaEvents dialog=new FragmentListaEvents ().newInstance("Eventos del dia "+formatter.format ( new Date(year,month,dayOfMonth) )+" :");
+                    dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                     dialog.setEventList ( EventList );
                     dialog.show ( getFragmentManager (),"ListEvents" );
                 }
@@ -105,28 +109,6 @@ public class FragmentCalendario extends Fragment  {
         } );
         return view;
     }
-
-
-    public void verEvents(Date date){
-        String s="";
-        int j=1;
-        for (int i= 0;i<listE.size ();i++){
-            Event e=(Event)listE.get ( i );
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            Log.i ( "Cale",e.getDate().toString() );
-            Log.i ( "Cale",date.toString () );
-            if(e.getDate().toString().equals(date.toString())) {
-                Log.i("Calendar", "Igual fecha,añadiendo evento a mostrar");
-                s += String.valueOf(j) + "." + e.getNombre() + '\n';
-                j++;
-            }
-            }
-
-        Log.i ( "Calendar2",s );
-        TextView t=(TextView) getView ().findViewById ( R.id.calendarText );
-        t.setText ( s );
-    }
-
 
     private void showDatePickerDialog() {
         android.app.DialogFragment datePicker = new DatePickerFragment();

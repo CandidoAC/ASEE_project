@@ -125,7 +125,7 @@ public class ActivityPerfil extends AppCompatActivity {
                                                    edit = findViewById(R.id.TextNombre);
                                                    prefsEditor.putString("Nombre", input.getText().toString());
                                                    prefsEditor.commit();
-                                                   edit.setText(prefs.getString("Nombre", "Luke"));
+                                                   edit.setText(prefs.getString("Nombre", null));
                                                }
                                            });
                                            alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

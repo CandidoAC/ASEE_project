@@ -1,31 +1,24 @@
 package com.example.usuario.projectasee.Fragments;
 
-import android.app.ActionBar;
-import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.example.usuario.projectasee.Adapters.EventsAdapter;
-import com.example.usuario.projectasee.EventsViewModel;
+import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.R;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,9 +63,9 @@ public class FragmentListaEvents extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.listaeventsfragment ,container,false);
-        Bundle args = new Bundle();
+        Bundle args = new Bundle(getArguments ());
         getDialog ().setTitle ( args.getString("title", null) );
+        View view = inflater.inflate(R.layout.listaeventsfragment ,container,false);
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_viewEvent);
         recyclerView.setHasFixedSize(true);
 
@@ -92,7 +85,6 @@ public class FragmentListaEvents extends DialogFragment {
 
     public void delete(int id){
         eventsViewModel.borrarEvents ( eventsViewModel.getEvent ( id ));
-        mAdapter.setEventList ( EventList );
     }
 
     public void setEventList(List <Event> eventsList)

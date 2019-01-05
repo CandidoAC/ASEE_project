@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.example.usuario.projectasee.RutaService;
+import com.example.usuario.projectasee.Utils.RutaService;
 
 public class PrimeraApp extends Activity {
     @Override

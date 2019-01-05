@@ -1,4 +1,4 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.ViewModels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
+import com.example.usuario.projectasee.Repository.RutasRepository;
 
 import java.util.List;
 

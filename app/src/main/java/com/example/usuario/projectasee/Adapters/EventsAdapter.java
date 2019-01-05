@@ -41,6 +41,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             super(view);
             nombre = (TextView) view.findViewById(R.id.NombreEvent);
             mod=(ImageButton) view.findViewById ( R.id.ModificarE );
+
             borrar=(ImageButton) view.findViewById ( R.id.BorrarE );
             context = view.getContext();
         }
@@ -77,7 +78,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                             nombre.setText(String.valueOf(ev.getNombre()));
                             frag.setEventList ( eventList );
                             }else{
-                                Toast.makeText(context, "Por favor, indique un nombre para elvento", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Por favor, indique un nombre para el evento", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             dialog.dismiss();
