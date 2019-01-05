@@ -35,17 +35,6 @@ public class  MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
 
-        //User default
-        SharedPreferences.Editor prefsEditor = getSharedPreferences("User", MODE_PRIVATE).edit();
-        prefsEditor.putString ( "Nombre" , "Luke" );
-        prefsEditor.putString ( "Apellidos" , "SkyWalker" );
-        prefsEditor.putString ( "Sexo" , "H" );
-        prefsEditor.putString ( "Edad" , "50" );
-        prefsEditor.putString ( "Altura" , "165" );
-        prefsEditor.putString ( "Peso" , "70" );
-        prefsEditor.commit ();
-
-
         //Prepara la parte donde se situaran los fragments
         AdapterTabs = new AdapterTabs ( getSupportFragmentManager () );
 
