@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.example.usuario.projectasee.HttpHandler;
+import com.example.usuario.projectasee.Utils.HttpHandler;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.google.android.gms.maps.model.LatLng;

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,7 @@ import android.widget.Toast;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
-import com.example.usuario.projectasee.RutasViewModel;
-import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.example.usuario.projectasee.ViewModels.RutasViewModel;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.DataPointInterface;
@@ -25,9 +23,7 @@ import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FragmentResumen extends Fragment {
@@ -110,8 +106,6 @@ public class FragmentResumen extends Fragment {
                 } else{
                     graphView.getViewport().setMaxYAxisSize(maxDistancia+100);
                 }
-
-                Log.i("CUAL", "JAJAJJAJAJJAJAJAJ:"+ graphView.getViewport().getMaxYAxisSize());
 
                 line1Series.setOnDataPointTapListener(new OnDataPointTapListener() {
                     @Override

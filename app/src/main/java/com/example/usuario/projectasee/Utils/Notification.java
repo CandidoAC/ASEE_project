@@ -1,4 +1,4 @@
-package com.example.usuario.projectasee;
+package com.example.usuario.projectasee.Utils;
 
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
@@ -13,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.usuario.projectasee.Activity.MainActivity;
+import com.example.usuario.projectasee.R;
 
 public class Notification {
 

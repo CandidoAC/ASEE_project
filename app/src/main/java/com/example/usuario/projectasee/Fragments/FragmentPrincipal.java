@@ -27,10 +27,10 @@ import android.widget.Toast;
 import android.widget.TextView;
 
 import com.example.usuario.projectasee.Modelo.Ruta;
-import com.example.usuario.projectasee.Notification;
+import com.example.usuario.projectasee.Utils.Notification;
 import com.example.usuario.projectasee.R;
-import com.example.usuario.projectasee.RutasViewModel;
-import com.example.usuario.projectasee.RutaService;
+import com.example.usuario.projectasee.ViewModels.RutasViewModel;
+import com.example.usuario.projectasee.Utils.RutaService;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -149,7 +149,6 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                                     Location location = locationManager.getLastKnownLocation ( LocationManager.GPS_PROVIDER );
                                     if(location!=null) {
                                         lcoordenadas.add ( new LatLng ( location.getLatitude () , location.getLongitude () ) );
-                                        Log.i("Tieeempo","Muestrame ese tiempo "+Time.toString());
                                         Ruta ruta = new Ruta (m_Text , calorias , Time , lcoordenadas );
                                         rutasViewModel.insertarRuta ( ruta );
                                     }else{

@@ -1,9 +1,7 @@
 package com.example.usuario.projectasee.Adapters;
 
 import android.app.AlertDialog;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -14,11 +12,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.usuario.projectasee.EventsViewModel;
+import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 import com.example.usuario.projectasee.Fragments.FragmentListaEvents;
-import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
 import com.example.usuario.projectasee.Modelo.Event;
-import com.example.usuario.projectasee.Modelo.Ruta;
 import com.example.usuario.projectasee.R;
 
 import java.util.List;
