@@ -94,9 +94,10 @@ public class FragmentListaEvents extends DialogFragment {
         eventsViewModel.borrarEvents ( eventsViewModel.getEvent ( id ));
         mAdapter.setEventList ( EventList );
     }
-    public void setEventList(List <Event> ruteList)
+
+    public void setEventList(List <Event> eventsList)
     {
-        this.EventList = ruteList;
+        this.EventList = eventsList;
         mAdapter = new EventsAdapter ( EventList,this );
         mAdapter.notifyDataSetChanged ();
     }

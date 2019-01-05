@@ -14,11 +14,11 @@ import com.example.usuario.projectasee.Activity.MainActivity;
 import java.util.Iterator;
 import java.util.List;
 
-public class AppActiva extends Service {
+public abstract class AppActiva /*extends Service*/{
     public AppActiva() {
     }
 
-    @Override
+//    @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException ( "Not yet implemented" );
@@ -42,8 +42,8 @@ public class AppActiva extends Service {
             }
         }
         if(!enc){
-            this.getSystemService ( this.NOTIFICATION_SERVICE ).;
-            stopSelf ();
+//            this.getSystemService ( this.NOTIFICATION_SERVICE ).;
+//            stopSelf ();
         }
     }
 }

@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.usuario.projectasee.Activity.ActivityInfoRuta;
 import com.example.usuario.projectasee.EventsViewModel;
 import com.example.usuario.projectasee.Fragments.FragmentListaEvents;
 import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
@@ -33,13 +35,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         Integer id;
         private FragmentListaEvents fragment;
         ImageButton mod,borrar;
+        private Context context;
 
         public MyViewHolder(View view) {
             super(view);
             nombre = (TextView) view.findViewById(R.id.NombreEvent);
             mod=(ImageButton) view.findViewById ( R.id.ModificarE );
-
             borrar=(ImageButton) view.findViewById ( R.id.BorrarE );
+            context = view.getContext();
         }
 
         public void bind(final Event event, final FragmentListaEvents frag) {
@@ -52,31 +55,43 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                 @Override
                 public void onClick(final View v) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                    alertDialog.setTitle("Editar evento");
                     alertDialog.setMessage("Escribe el nombre del evento:");
 
                     final EditText input = new EditText(v.getContext());
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
                     alertDialog.setView(input);
-                    alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    alertDialog.setPositiveButton("Confirmar", null);
+                    alertDialog.setNegativeButton("Cancelar", null);
+                    final AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(View v) {
                             String m_Text = input.getText().toString();
+                            if (!m_Text.trim().isEmpty()) {
                             Event ev=eventsViewModel.getEvent ( id );
                             ev.setNombre ( m_Text );
                             eventsViewModel.updateEvent ( ev );
 
                             nombre.setText(String.valueOf(ev.getNombre()));
                             frag.setEventList ( eventList );
+                            }else{
+                                Toast.makeText(context, "Por favor, indique un nombre para elvento", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            dialog.dismiss();
                         }
                     });
-
-                    alertDialog.show();
-                }
+                    }
             });
             borrar.setOnClickListener ( new View.OnClickListener () {
                 @Override
                 public void onClick(View v) {
-                    frag.delete ( id );
+//                    Event ev=eventsViewModel.getEvent ( id );
+//                    eventsViewModel.borrarEvents(ev);
+//                    eventList.remove(ev);
+                    frag.delete(id);
                 }
             } );
 

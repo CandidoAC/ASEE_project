@@ -125,7 +125,7 @@ public class ActivityPerfil extends AppCompatActivity {
                                                    edit = findViewById(R.id.TextNombre);
                                                    prefsEditor.putString("Nombre", input.getText().toString());
                                                    prefsEditor.commit();
-                                                   edit.setText(prefs.getString("Nombre", null));
+                                                   edit.setText(prefs.getString("Nombre", "Luke"));
                                                }
                                            });
                                            alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -341,61 +341,14 @@ public class ActivityPerfil extends AppCompatActivity {
         }
     }
 
-//    private Bitmap getPath(Uri uri) {
-//
-//        String[] proj = {MediaStore.Images.Media.DATA};
-//        CursorLoader loader = new CursorLoader(this, uri, proj, null, null, null);
-//        Cursor cursor = loader.loadInBackground();
-//        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//        cursor.moveToFirst();
-//        String result = cursor.getString(column_index);
-//        cursor.close();
-//
-//        // Convert file path into bitmap image using below line.
-//        Bitmap bitmap = BitmapFactory.decodeFile(result);
-//        return bitmap;
-//    }
-
     public void selectImage() {
 
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-//        final int takeFlags = intent.getFlags()
-//                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
 
-//    private class GetImagen extends AsyncTask<Uri, Void, Bitmap> {
-//        private Bitmap bitmap;
-//
-//        public Bitmap getBitmapFromUri(Uri uri) throws IOException {
-//            ParcelFileDescriptor parcelFileDescriptor =
-//                    getContentResolver().openFileDescriptor(uri, "r");
-//            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-//            Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-//            parcelFileDescriptor.close();
-//            return image;
-//        }
-//
-//        @Override
-//        protected Bitmap doInBackground(Uri... uri) {
-//            try {
-//                bitmap = getBitmapFromUri(uri[0]);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return bitmap;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Bitmap bitmap) {
-//            super.onPostExecute(bitmap);
-//
-//        }
-//    }
 
 }

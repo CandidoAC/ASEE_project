@@ -123,6 +123,7 @@ public class ActivityInfoRuta extends AppCompatActivity implements OnMapReadyCal
                         dialog.dismiss();
                     }
                 });
+                alertDialog.show();
             }
         });
         Button bBorrar = findViewById(R.id.Borrar);

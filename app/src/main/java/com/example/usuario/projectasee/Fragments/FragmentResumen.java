@@ -111,8 +111,6 @@ public class FragmentResumen extends Fragment {
                     graphView.getViewport().setMaxYAxisSize(maxDistancia+100);
                 }
 
-                Log.i("CUAL", "JAJAJJAJAJJAJAJAJ:"+ graphView.getViewport().getMaxYAxisSize());
-
                 line1Series.setOnDataPointTapListener(new OnDataPointTapListener() {
                     @Override
                     public void onTap(Series series, DataPointInterface dataPoint) {

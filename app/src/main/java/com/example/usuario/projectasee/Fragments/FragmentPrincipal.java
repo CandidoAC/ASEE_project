@@ -116,8 +116,6 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                         not.addNotification();
                 } else {
                     clearRute();
-                    clicked = false;
-                    start.setText("Start");
                     firstUb = false;
 
                     focus.setText("00:00:00");
@@ -163,6 +161,8 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                                 Toast.makeText(context, "Por favor, indique un nombre para la ruta", Toast.LENGTH_SHORT).show();
                                 return;
                             }
+                            clicked = false;
+                            start.setText("Start");
                             dialog.dismiss();
                             pararCronometro();
                         }
