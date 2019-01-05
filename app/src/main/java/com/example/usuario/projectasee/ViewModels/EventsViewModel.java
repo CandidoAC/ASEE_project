@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.Repository.EventRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public class EventsViewModel extends AndroidViewModel {
@@ -31,6 +32,10 @@ public class EventsViewModel extends AndroidViewModel {
 
     public Event getEvent(int id){
         return repository.getEvento ( id );
+    }
+
+    public LiveData<List<Event>> getEventsByDate(Date date){
+        return repository.getEvento ( date );
     }
 
     public void borrarEvents(Event e){

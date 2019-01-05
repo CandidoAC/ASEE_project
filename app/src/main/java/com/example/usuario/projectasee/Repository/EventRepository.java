@@ -19,11 +19,23 @@ public class EventRepository {
     public EventRepository(Application app){
         AppDatabase db=AppDatabase.getAppDatabase ( app );
         daoEventos=db.daoEventos ();
-        allEvents=daoEventos.getRutas();
+        allEvents=daoEventos.getEvents ();
     }
 
     public void insertarEvento(Event e){
         new InsertEvento ( this.daoEventos ).execute ( e );
+    }
+
+    public LiveData<List<Event>> getEvento(Date date){
+        LiveData<List<Event>> leventsBydate=null;
+        try {
+            leventsBydate = new GetEventosByDate ( this.daoEventos ).execute ( date ).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace ();
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        }
+        return leventsBydate;
     }
 
     public Event getEvento(int id){
@@ -118,6 +130,25 @@ public class EventRepository {
 
         @Override
         protected void onPostExecute(Event event) {
+            super.onPostExecute ( event );
+
+        }
+    }
+
+    private static class GetEventosByDate extends AsyncTask<Date, Void, LiveData<List<Event>>>{
+        private DaoEventos daoEventos;
+
+        private GetEventosByDate(DaoEventos daoEventos){
+            this.daoEventos=daoEventos;
+        }
+
+        @Override
+        protected LiveData<List<Event>> doInBackground(Date... date) {
+            return daoEventos.getEventsByDate ( date[0] );
+        }
+
+        @Override
+        protected void onPostExecute(LiveData<List<Event>> event) {
             super.onPostExecute ( event );
 
         }

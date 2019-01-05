@@ -62,7 +62,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                             eventsViewModel.updateEvent ( ev );
 
                             nombre.setText(String.valueOf(ev.getNombre()));
-                            frag.setEventList ( eventList );
                         }
                     });
 

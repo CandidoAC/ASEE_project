@@ -18,7 +18,10 @@ public interface DaoEventos {
     public void anadirEvento(Event evento);
 
     @Query("select * from eventos")
-    public android.arch.lifecycle.LiveData <List<Event>> getRutas();
+    public android.arch.lifecycle.LiveData <List<Event>> getEvents();
+
+    @Query("select * from eventos where date=:date")
+    public android.arch.lifecycle.LiveData <List<Event>> getEventsByDate(Date date);
 
     @Query("select * from eventos where id=:id")
     public Event getEvent(int id);
