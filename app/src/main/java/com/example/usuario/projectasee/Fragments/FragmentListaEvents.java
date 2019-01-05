@@ -19,6 +19,7 @@ import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.R;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,10 +30,11 @@ public class FragmentListaEvents extends DialogFragment {
     private EventsViewModel eventsViewModel;
 
 
-    public static FragmentListaEvents newInstance(String title) {
+    public static FragmentListaEvents newInstance(String title, long date) {
         FragmentListaEvents frag = new FragmentListaEvents();
         Bundle args = new Bundle();
         args.putString("title", title);
+        args.putLong("Date", date);
         frag.setArguments(args);
         return frag;
     }
@@ -40,19 +42,17 @@ public class FragmentListaEvents extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventList = new ArrayList<>();
+        mAdapter = new EventsAdapter(EventList,this);
+        final Date date = new Date ( getArguments().getLong ( "Date" ) );
         eventsViewModel = ViewModelProviders.of(this).get(EventsViewModel.class);
-        eventsViewModel.getAllEvents ().observe ( this , new Observer <List <Event>> () {
+        eventsViewModel.getAllEventsByDate (date).observe ( this , new Observer <List <Event>> () {
             @Override
             public void onChanged(@Nullable List <Event> eventos) {
-                Bundle b = new Bundle ();
-                Date date = new Date ( b.getLong ( "Date" ) );
-                for (int i = 0; i < eventos.size (); i++) {
-                    if (eventos.get ( i ).getDate ().toString ().equals ( date.toString () ))
-                        EventList.add ( eventos.get ( i ) );
-                }
                 if(EventList.size ()==0){
                     dismiss ();
                 }else {
+                    EventList=eventos;
                     mAdapter.setEventList ( EventList );
                 }
             }
@@ -63,7 +63,7 @@ public class FragmentListaEvents extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        Bundle args = new Bundle(getArguments ());
+        Bundle args = new Bundle(this.getArguments());
         getDialog ().setTitle ( args.getString("title", null) );
         View view = inflater.inflate(R.layout.listaeventsfragment ,container,false);
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_viewEvent);
@@ -84,6 +84,7 @@ public class FragmentListaEvents extends DialogFragment {
 
 
     public void delete(int id){
+
         eventsViewModel.borrarEvents ( eventsViewModel.getEvent ( id ));
     }
 

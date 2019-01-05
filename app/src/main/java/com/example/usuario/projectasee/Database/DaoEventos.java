@@ -1,5 +1,6 @@
 package com.example.usuario.projectasee.Database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -18,7 +19,10 @@ public interface DaoEventos {
     public void anadirEvento(Event evento);
 
     @Query("select * from eventos")
-    public android.arch.lifecycle.LiveData <List<Event>> getRutas();
+    public LiveData<List<Event>> getEventos();
+
+    @Query("select * from eventos where date=:date")
+    public LiveData<List<Event>> getEventosPorFecha(Date date);
 
     @Query("select * from eventos where id=:id")
     public Event getEvent(int id);

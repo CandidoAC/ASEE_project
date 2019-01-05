@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.Repository.EventRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public class EventsViewModel extends AndroidViewModel {
@@ -39,6 +40,10 @@ public class EventsViewModel extends AndroidViewModel {
 
     public LiveData<List<Event>> getAllEvents(){
         return allEvents;
+    }
+
+    public LiveData<List<Event>> getAllEventsByDate(Date d){
+        return repository.getAllEventsDate(d);
     }
 
 }

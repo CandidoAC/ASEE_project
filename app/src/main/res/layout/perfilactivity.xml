@@ -60,7 +60,7 @@
         android:id="@+id/Nombre"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="35dp">
 
         <TextView
             android:id="@+id/TextViewNombre"
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_create_black_20dp"
-            android:background="@color/colorBackground"/>
+            android:background="@null"/>
 
     </TableRow>
 
@@ -88,7 +88,7 @@
         android:id="@+id/Apellidos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="35dp">
 
         <TextView
             android:id="@+id/textViewApellidos"
@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_create_black_20dp"
-            android:background="@color/colorBackground"/>
+            android:background="@null"/>
 
     </TableRow>
 
@@ -115,7 +115,7 @@
         android:id="@+id/Sexo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="35dp">
 
         <TextView
             android:id="@+id/textViewSexo"
@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_create_black_20dp"
-            android:background="@color/colorBackground"/>
+            android:background="@null"/>
 
     </TableRow>
 
@@ -142,7 +142,7 @@
         android:id="@+id/Edad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="35dp">
 
         <TextView
             android:id="@+id/textViewEdad"
@@ -161,14 +161,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_create_black_20dp"
-            android:background="@color/colorBackground"/>
+            android:background="@null"/>
     </TableRow>
 
     <TableRow
         android:id="@+id/Altura"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="35dp">
 
         <TextView
             android:id="@+id/textViewAltura"
@@ -188,14 +188,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_create_black_20dp"
-            android:background="@color/colorBackground"/>
+            android:background="@null"/>
     </TableRow>
 
     <TableRow
         android:id="@+id/Peso"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="35dp">
 
         <TextView
             android:id="@+id/textViewPeso"
@@ -214,7 +214,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_create_black_20dp"
-            android:background="@color/colorBackground"/>
+            android:background="@null"/>
     </TableRow>
 
     </TableLayout>

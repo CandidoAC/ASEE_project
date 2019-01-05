@@ -15,11 +15,12 @@ import java.util.concurrent.ExecutionException;
 public class EventRepository {
     private DaoEventos daoEventos;
     private LiveData<List<Event>> allEvents;
+    private LiveData<List<Event>> allEventsDate;
 
     public EventRepository(Application app){
         AppDatabase db=AppDatabase.getAppDatabase ( app );
         daoEventos=db.daoEventos ();
-        allEvents=daoEventos.getRutas();
+        allEvents=daoEventos.getEventos();
     }
 
     public void insertarEvento(Event e){
@@ -49,6 +50,17 @@ public class EventRepository {
 
     public LiveData<List<Event>> getAllEvents(){
         return allEvents;
+    }
+
+    public LiveData<List<Event>> getAllEventsDate(Date d) {
+        try {
+            allEventsDate = new getEventosFecha(this.daoEventos).execute(d).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return allEventsDate;
     }
 
     private static class InsertEvento extends AsyncTask<Event, Void, Event>{
@@ -119,6 +131,25 @@ public class EventRepository {
         @Override
         protected void onPostExecute(Event event) {
             super.onPostExecute ( event );
+
+        }
+    }
+
+    private static class getEventosFecha extends AsyncTask<Date, Void, LiveData<List<Event>>>{
+        private DaoEventos daoEventos;
+
+        private getEventosFecha(DaoEventos daoEventos){
+            this.daoEventos=daoEventos;
+        }
+
+        @Override
+        protected LiveData<List<Event>> doInBackground(Date... date) {
+           return daoEventos.getEventosPorFecha( date[0] );
+        }
+
+        @Override
+        protected void onPostExecute(LiveData<List<Event>> events) {
+            super.onPostExecute ( events );
 
         }
     }
