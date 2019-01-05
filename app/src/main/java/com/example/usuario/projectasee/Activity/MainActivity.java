@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,13 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.usuario.projectasee.Adapters.AdapterTabs;
-import com.example.usuario.projectasee.AppActiva;
 import com.example.usuario.projectasee.Fragments.FragmentPrincipal;
 import com.example.usuario.projectasee.Fragments.*;
 import com.example.usuario.projectasee.Fragments.FragmentListaRutas;
 import com.example.usuario.projectasee.Fragments.FragmentResumen;
 import com.example.usuario.projectasee.R;
-import com.example.usuario.projectasee.RutaService;
 
 public class  MainActivity extends AppCompatActivity {
 
@@ -33,8 +30,6 @@ public class  MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
-        Intent service = new Intent(this, AppActiva.class);
-        startService(service);
 
         setContentView ( R.layout.activity_main );
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
