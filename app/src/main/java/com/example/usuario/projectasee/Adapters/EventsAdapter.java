@@ -30,7 +30,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         Integer id;
         private FragmentListaEvents fragment;
         ImageButton mod, borrar;
-        private Context context;
 
         public MyViewHolder(View view) {
             super(view);
@@ -70,15 +69,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                                 eventsViewModel.updateEvent(ev);
 
                                 nombre.setText(String.valueOf(ev.getNombre()));
-                                dialog.dismiss();
-                            } else {
-                                Toast.makeText(context, "Por favor, indique un nombre para el evento", Toast.LENGTH_SHORT).show();
-                                return;
                             }
+                            dialog.dismiss();
                         }
                     });
-
-                    alertDialog.show();
                 }
             });
             borrar.setOnClickListener ( new View.OnClickListener () {

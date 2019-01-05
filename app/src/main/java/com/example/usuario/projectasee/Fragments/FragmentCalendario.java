@@ -35,7 +35,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class FragmentCalendario extends Fragment  {
+public class FragmentCalendario extends Fragment {
     static List<Event> listE;
     private static String dateView;
     private static Date date;
@@ -44,74 +44,76 @@ public class FragmentCalendario extends Fragment  {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater , @Nullable final ViewGroup container , @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate ( R.layout.calendariofragment , container , false );
-        date=new Date();
-        listE=new ArrayList <Event> () ;
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.calendariofragment, container, false);
+        date = new Date();
+        listE = new ArrayList<Event>();
         eventsViewModel = ViewModelProviders.of(this).get(EventsViewModel.class);
-        eventsViewModel.getAllEvents ().observe ( this , new Observer <List <Event>> () {
+        eventsViewModel.getAllEvents().observe(this, new Observer<List<Event>>() {
             @Override
-            public void onChanged(@Nullable List <Event> events) {
-                listE=events;
+            public void onChanged(@Nullable List<Event> events) {
+                listE = events;
             }
-        } );
-        final CalendarView c=(CalendarView) view.findViewById ( R.id.calendar );
-        FloatingActionButton f=view.findViewById ( R.id.floatingActionButton );
-        f.setOnClickListener ( new View.OnClickListener () {
+        });
+        final CalendarView c = (CalendarView) view.findViewById(R.id.calendar);
+        FloatingActionButton f = view.findViewById(R.id.floatingActionButton);
+        f.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext ());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage("Escribe el nombre del evento")
                         .setTitle("Evento");
-                final EditText input=new EditText ( getActivity () );
+                final EditText input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
-                builder.setPositiveButton ( "Confirmar" , new DialogInterface.OnClickListener () {
-                    public void onClick(DialogInterface dialog , int id) {
-                        if(!input.getText ().toString ().equals ( "" )) {
-                            dateView=input.getText ().toString ();
-                            showDatePickerDialog ();
+                builder.setPositiveButton("Confirmar", null);
+                builder.setNegativeButton("Cancelar", null);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (!input.getText().toString().trim().equals("")) {
+                            dateView = input.getText().toString();
+                            showDatePickerDialog();
+                        } else {
+                            Toast.makeText(getContext(), "Por favor, indique un nombre para la ruta", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                     }
-                } );
-                builder.setNegativeButton ( "Cancel",new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss ();
-                    }
-                } );
-                builder.show ();
+                });
             }
 
-        } );
-        c.setOnDateChangeListener ( new CalendarView.OnDateChangeListener () {
+        });
+        c.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(CalendarView Cview , final int year , final int month , final int dayOfMonth) {
-                TextView t=(TextView) getView ().findViewById ( R.id.calendarText );
+            public void onSelectedDayChange(CalendarView Cview, final int year, final int month, final int dayOfMonth) {
+                TextView t = (TextView) getView().findViewById(R.id.calendarText);
                 t.setText("");
 
                 SimpleDateFormat formatter
-                        = new SimpleDateFormat ( "dd/MM/yy" );
-                FragmentListaEvents dialog = new FragmentListaEvents ().newInstance ( "Eventos del dia " + formatter.format ( new Date ( year , month , dayOfMonth ) ) + " :" , new Date ( year , month , dayOfMonth ) );
-                dialog.setStyle ( DialogFragment.STYLE_NORMAL , R.style.CustomDialog );
-                dialog.show ( getFragmentManager () , "ListEvents" );
+                        = new SimpleDateFormat("dd/MM/yy");
+                FragmentListaEvents dialog = new FragmentListaEvents().newInstance("Eventos del dia " + formatter.format(new Date(year, month, dayOfMonth)) + " :", new Date(year, month, dayOfMonth));
+                dialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+                dialog.show(getFragmentManager(), "ListEvents");
 
             }
-        } );
+        });
         return view;
     }
 
     private void showDatePickerDialog() {
         android.app.DialogFragment datePicker = new DatePickerFragment();
-        ((DatePickerFragment) datePicker).setEventsViewModel ( eventsViewModel );
-        datePicker.show(getActivity ().getFragmentManager(), "datePicker");
+        ((DatePickerFragment) datePicker).setEventsViewModel(eventsViewModel);
+        datePicker.show(getActivity().getFragmentManager(), "datePicker");
 
     }
+
     public static class DatePickerFragment extends android.app.DialogFragment implements
             DatePickerDialog.OnDateSetListener {
         EventsViewModel eventsViewModel;
 
         public void setEventsViewModel(EventsViewModel eventsViewModel) {
-            this.eventsViewModel=eventsViewModel;
+            this.eventsViewModel = eventsViewModel;
         }
 
         @Override
@@ -123,20 +125,21 @@ public class FragmentCalendario extends Fragment  {
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
             // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog (getActivity(), this, year, month, day);
+            return new DatePickerDialog(getActivity(), this, year, month, day);
         }
 
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-            date=new Date ( year,monthOfYear,dayOfMonth );
-            Event e = new Event (date ,  dateView);
-            addEvent ( e );
+            date = new Date(year, monthOfYear, dayOfMonth);
+            Event e = new Event(date, dateView);
+            addEvent(e);
 
         }
-        public void addEvent(Event e){
-            Log.i("Calendar","Añadiendo evento con nombre "+e.getNombre()+" para el día "+e.getDate().toString ());//quitar 1900 años
-            eventsViewModel.insertarEvent ( e );
+
+        public void addEvent(Event e) {
+            Log.i("Calendar", "Añadiendo evento con nombre " + e.getNombre() + " para el día " + e.getDate().toString());//quitar 1900 años
+            eventsViewModel.insertarEvent(e);
         }
 
     }

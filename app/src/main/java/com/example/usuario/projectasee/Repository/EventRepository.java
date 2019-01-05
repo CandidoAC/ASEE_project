@@ -27,7 +27,7 @@ public class EventRepository {
         new InsertEvento ( this.daoEventos ).execute ( e );
     }
 
-    public LiveData<List<Event>> getEvento(Date date){
+    public LiveData<List<Event>> getAllEventsDate(Date date){
         LiveData<List<Event>> leventsBydate=null;
         try {
             leventsBydate = new GetEventosByDate ( this.daoEventos ).execute ( date ).get();
