@@ -34,6 +34,10 @@ public class EventsViewModel extends AndroidViewModel {
         return repository.getEvento ( id );
     }
 
+    public LiveData<List<Event>> getEventsByDate(Date date){
+        return repository.getEvento ( date );
+    }
+
     public void borrarEvents(Event e){
         repository.borrarEvent ( e );
     }

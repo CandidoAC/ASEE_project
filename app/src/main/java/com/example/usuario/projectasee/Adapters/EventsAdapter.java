@@ -13,14 +13,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 import com.example.usuario.projectasee.Fragments.FragmentListaEvents;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.R;
-import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 
 import java.util.List;
 
-public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHolder> {
+public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHolder>{
     private List<Event> eventList;
     private FragmentListaEvents fragment;
 
@@ -35,18 +35,18 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
         public MyViewHolder(View view) {
             super(view);
             nombre = (TextView) view.findViewById(R.id.NombreEvent);
-            mod = (ImageButton) view.findViewById(R.id.ModificarE);
-            borrar = (ImageButton) view.findViewById(R.id.BorrarE);
-            context = view.getContext();
+            mod=(ImageButton) view.findViewById ( R.id.ModificarE );
+
+            borrar=(ImageButton) view.findViewById ( R.id.BorrarE );
         }
 
         public void bind(final Event event, final FragmentListaEvents frag) {
-            id = event.getId();
-            nombre.setText(event.getNombre());
-            this.fragment = frag;
+            id=event.getId ();
+            nombre.setText ( event.getNombre () );
+            this.fragment=frag;
 
-            final EventsViewModel eventsViewModel = ViewModelProviders.of(fragment).get(EventsViewModel.class);
-            mod.setOnClickListener(new View.OnClickListener() {
+            final EventsViewModel eventsViewModel = ViewModelProviders.of(fragment ).get(EventsViewModel.class);
+            mod.setOnClickListener ( new View.OnClickListener () {
                 @Override
                 public void onClick(final View v) {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
@@ -70,7 +70,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                                 eventsViewModel.updateEvent(ev);
 
                                 nombre.setText(String.valueOf(ev.getNombre()));
-                                frag.setEventList(eventList);
                                 dialog.dismiss();
                             } else {
                                 Toast.makeText(context, "Por favor, indique un nombre para el evento", Toast.LENGTH_SHORT).show();
@@ -78,32 +77,33 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                             }
                         }
                     });
+
+                    alertDialog.show();
                 }
             });
-            borrar.setOnClickListener(new View.OnClickListener() {
+            borrar.setOnClickListener ( new View.OnClickListener () {
                 @Override
                 public void onClick(View v) {
-                    frag.delete(id);
+                    frag.delete ( id );
                 }
-            });
+            } );
 
         }
     }
 
 
-    public EventsAdapter(List<Event> eventsList, FragmentListaEvents frag) {
+    public EventsAdapter(List<Event> eventsList,FragmentListaEvents frag) {
 
         this.eventList = eventsList;
-        this.fragment = frag;
+        this.fragment=frag;
     }
-
-    public List<Event> eventList() {
+    public List<Event> eventList () {
         return this.eventList;
     }
 
-    public void setEventList(List<Event> eventsList) {
+    public void setEventList(List <Event> eventsList) {
         this.eventList = eventsList;
-        notifyDataSetChanged();
+        notifyDataSetChanged ();
     }
 
     @Override
@@ -115,9 +115,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     }
 
 
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.bind(eventList.get(position), fragment);
+        holder.bind(eventList.get(position),fragment);
 
     }
 

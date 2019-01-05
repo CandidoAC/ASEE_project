@@ -18,6 +18,7 @@ import com.example.usuario.projectasee.Adapters.EventsAdapter;
 import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 import com.example.usuario.projectasee.Modelo.Event;
 import com.example.usuario.projectasee.R;
+import com.example.usuario.projectasee.ViewModels.EventsViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,31 +31,30 @@ public class FragmentListaEvents extends DialogFragment {
     private EventsViewModel eventsViewModel;
 
 
-    public static FragmentListaEvents newInstance(String title, long date) {
-        FragmentListaEvents frag = new FragmentListaEvents();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        args.putLong("Date", date);
-        frag.setArguments(args);
+    public static FragmentListaEvents newInstance(String title,Date date) {
+        FragmentListaEvents frag = new FragmentListaEvents ();
+        Bundle args = new Bundle ();
+        args.putString ( "title" , title );
+        args.putLong ( "Date",date.getTime () );
+        frag.setArguments ( args );
         return frag;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventList = new ArrayList<>();
-        mAdapter = new EventsAdapter(EventList,this);
-        final Date date = new Date ( getArguments().getLong ( "Date" ) );
-        eventsViewModel = ViewModelProviders.of(this).get(EventsViewModel.class);
-        eventsViewModel.getAllEventsByDate (date).observe ( this , new Observer <List <Event>> () {
+        super.onCreate ( savedInstanceState );
+        EventList=new ArrayList <> (  );
+        mAdapter=new EventsAdapter ( EventList,this );
+        Bundle args = new Bundle ( getArguments () );
+        Date date=new Date(args.getLong ( "Date" ));
+        eventsViewModel = ViewModelProviders.of (this).get ( EventsViewModel.class );
+        eventsViewModel.getEventsByDate (date).observe ( this , new Observer <List <Event>> () {
             @Override
             public void onChanged(@Nullable List <Event> eventos) {
-                if(EventList.size ()==0){
-                    dismiss ();
-                }else {
-                    EventList=eventos;
-                    mAdapter.setEventList ( EventList );
+                if(eventos.size ()==0){
+                    getDialog ().dismiss ();
                 }
+                mAdapter.setEventList ( eventos );
             }
         });
 
@@ -63,7 +63,7 @@ public class FragmentListaEvents extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        Bundle args = new Bundle(this.getArguments());
+        Bundle args = new Bundle(getArguments ());
         getDialog ().setTitle ( args.getString("title", null) );
         View view = inflater.inflate(R.layout.listaeventsfragment ,container,false);
         recyclerView=(RecyclerView) view.findViewById(R.id.recycler_viewEvent);
@@ -78,22 +78,11 @@ public class FragmentListaEvents extends DialogFragment {
         return view;
     }
 
-    public List <Event> getEventList() {
-        return EventList;
-    }
-
 
     public void delete(int id){
-
         eventsViewModel.borrarEvents ( eventsViewModel.getEvent ( id ));
     }
 
-    public void setEventList(List <Event> eventsList)
-    {
-        this.EventList = eventsList;
-        mAdapter = new EventsAdapter ( EventList,this );
-        mAdapter.notifyDataSetChanged ();
-    }
 
     @Override
     public void onResume() {

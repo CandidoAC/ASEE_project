@@ -27,6 +27,18 @@ public class EventRepository {
         new InsertEvento ( this.daoEventos ).execute ( e );
     }
 
+    public LiveData<List<Event>> getEvento(Date date){
+        LiveData<List<Event>> leventsBydate=null;
+        try {
+            leventsBydate = new GetEventosByDate ( this.daoEventos ).execute ( date ).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace ();
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        }
+        return leventsBydate;
+    }
+
     public Event getEvento(int id){
         Event ev=null;
         try {
@@ -50,17 +62,6 @@ public class EventRepository {
 
     public LiveData<List<Event>> getAllEvents(){
         return allEvents;
-    }
-
-    public LiveData<List<Event>> getAllEventsDate(Date d) {
-        try {
-            allEventsDate = new getEventosFecha(this.daoEventos).execute(d).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return allEventsDate;
     }
 
     private static class InsertEvento extends AsyncTask<Event, Void, Event>{
@@ -135,21 +136,21 @@ public class EventRepository {
         }
     }
 
-    private static class getEventosFecha extends AsyncTask<Date, Void, LiveData<List<Event>>>{
+    private static class GetEventosByDate extends AsyncTask<Date, Void, LiveData<List<Event>>>{
         private DaoEventos daoEventos;
 
-        private getEventosFecha(DaoEventos daoEventos){
+        private GetEventosByDate(DaoEventos daoEventos){
             this.daoEventos=daoEventos;
         }
 
         @Override
         protected LiveData<List<Event>> doInBackground(Date... date) {
-           return daoEventos.getEventosPorFecha( date[0] );
+            return daoEventos.getEventosPorFecha ( date[0] );
         }
 
         @Override
-        protected void onPostExecute(LiveData<List<Event>> events) {
-            super.onPostExecute ( events );
+        protected void onPostExecute(LiveData<List<Event>> event) {
+            super.onPostExecute ( event );
 
         }
     }
