@@ -66,12 +66,8 @@ public class FragmentCalendario extends Fragment {
                 final EditText input = new EditText(getActivity());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
-                builder.setPositiveButton("Confirmar", null);
-                builder.setNegativeButton("Cancelar", null);
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
+                builder.setPositiveButton ( "Confirmar" , new DialogInterface.OnClickListener () {
+                    public void onClick(DialogInterface dialog , int id) {
                         if (!input.getText().toString().trim().equals("")) {
                             dateView = input.getText().toString();
                             showDatePickerDialog();
@@ -80,7 +76,10 @@ public class FragmentCalendario extends Fragment {
                             return;
                         }
                     }
-                });
+                } );
+                builder.setNegativeButton("Cancelar", null);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
             }
 
         });

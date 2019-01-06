@@ -173,7 +173,7 @@ public class ActivityPerfil extends AppCompatActivity {
                                      public void onClick(View v) {
                                          AlertDialog.Builder alertDialog = new AlertDialog.Builder(ActivityPerfil.this);
                                          alertDialog.setTitle("Sexo");
-                                         alertDialog.setMessage("Editar sexo:");
+                                         alertDialog.setMessage("Editar sexo(M/H):");
 
                                          final EditText input = new EditText(getBaseContext());
                                          input.setInputType(InputType.TYPE_CLASS_TEXT);

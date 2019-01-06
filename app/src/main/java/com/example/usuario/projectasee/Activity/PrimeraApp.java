@@ -14,6 +14,19 @@ public class PrimeraApp extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
 
+        //User default
+        SharedPreferences edit=getSharedPreferences ( "User",MODE_PRIVATE );
+        if(edit.getString ( "Nombre", "Luke" )=="" && edit.getString ( "UsPesoer", "70" )=="") {
+            SharedPreferences.Editor prefsEditor = getSharedPreferences ( "User" , MODE_PRIVATE ).edit ();
+            prefsEditor.putString ( "Nombre" , "Luke" );
+            prefsEditor.putString ( "Apellidos" , "SkyWalker" );
+            prefsEditor.putString ( "Sexo" , "H" );
+            prefsEditor.putString ( "Edad" , "50" );
+            prefsEditor.putString ( "Altura" , "165" );
+            prefsEditor.putString ( "Peso" , "70" );
+            prefsEditor.commit ();
+        }
+
         Intent i=new Intent ( this,MainActivity.class );
         startActivity ( i );
     }

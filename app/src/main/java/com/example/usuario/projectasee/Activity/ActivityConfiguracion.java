@@ -88,21 +88,5 @@ public class ActivityConfiguracion extends AppCompatActivity {
         return true;
 
     }
-    // Creates and displays a notification
-    @TargetApi(Build.VERSION_CODES.M)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public void addNotification() {
-        Intent i = new Intent ( this , MainActivity.class );
-        PendingIntent pi = PendingIntent.getActivity ( this , 0 , i , 0 );
-        Notification.Builder not = new Notification.Builder ( this );
-        not.setContentTitle ( "La aplicacion esta activa" ).
-                setSmallIcon ( R.mipmap.icono_app_round ).
-                setLargeIcon ( BitmapFactory.decodeResource ( getResources () , R.mipmap.icono_app_round ) ).
-                setContentIntent ( pi ).
-                setVibrate ( new long[]{Notification.DEFAULT_VIBRATE} ).
-                setPriority ( Notification.PRIORITY_MAX );
-        NotificationManager nm = (NotificationManager) this.getSystemService ( Context.NOTIFICATION_SERVICE );
-        nm.notify ( 0 , not.build () );
-    }
     }
 

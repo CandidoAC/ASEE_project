@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutionException;
 public class EventRepository {
     private DaoEventos daoEventos;
     private LiveData<List<Event>> allEvents;
-    private LiveData<List<Event>> allEventsDate;
 
     public EventRepository(Application app){
         AppDatabase db=AppDatabase.getAppDatabase ( app );
