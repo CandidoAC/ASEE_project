@@ -31,7 +31,8 @@ public class FragmentResumen extends Fragment {
     private List<Ruta> routeList = new ArrayList<>();
     private LineGraphSeries<DataPoint> line1Series, line2Series;
     private RutasViewModel rutasViewModel;
-    GraphView graphView;
+    int tamano=0;
+    private GraphView graphView;
 
     @Nullable
     @Override
@@ -49,6 +50,7 @@ public class FragmentResumen extends Fragment {
                 routeList = rutas;
                 float distancia = 0;
                 double calorias = 0;
+                tamano=routeList.size ();
                 Time tiempo = new Time(0, 0, 0);
                 for (int i = 0; i < routeList.size(); i++) {
                     distancia = distancia + routeList.get(i).getDistancia();
@@ -97,7 +99,7 @@ public class FragmentResumen extends Fragment {
 
                 graphView.getLegendRenderer().setVisible(true);
 
-                graphView.getGridLabelRenderer().setNumHorizontalLabels(4);
+                graphView.getGridLabelRenderer().setNumHorizontalLabels((int)(tamano/2)+1);
 
                 graphView.getViewport().setYAxisBoundsManual(true);
 
