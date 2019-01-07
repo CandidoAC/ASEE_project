@@ -115,7 +115,6 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                     if (notificacion)
                         not.addNotification();
                 } else {
-                    clearRute();
                     firstUb = false;
 
                     focus.setText("00:00:00");
@@ -155,6 +154,7 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
                                 }else {
                                     Ruta ruta = new Ruta (m_Text , calorias , Time , lcoordenadas );
                                     rutasViewModel.insertarRuta ( ruta );
+                                    clearRute();
                                 }
                             } else {
                                 Toast.makeText(context, "Por favor, indique un nombre para la ruta", Toast.LENGTH_SHORT).show();
@@ -253,13 +253,14 @@ public class FragmentPrincipal extends Fragment implements OnMapReadyCallback {
         @Override
         public void onLocationChanged(Location location) {
             actualizarUb(location);
-            lcoordenadas.add(new LatLng(location.getLatitude(), location.getLongitude()));
             if (clicked) {
                 Log.i("GPS", "new line created");
+                lcoordenadas.add(new LatLng(location.getLatitude(), location.getLongitude()));
                 p = googleMap.addPolyline(new PolylineOptions()
                         .addAll(lcoordenadas)
                         .color(Color.RED)
                         .width(20));
+                ListP.add ( p );
             }
 
         }
